@@ -9,7 +9,8 @@ See more about wssocks: https://github.com/genshen/wssocks.
 
 ## install
 ```bash
-go get -u github.com/genshen/wssocks-plugin-ustb
+go get -u github.com/genshen/wssocks-plugin-ustb/wssocks-ustb
+wssocks-ustb --help
 ```
 
 Or download from [release](https://github.com/genshen/wssocks-plugin-ustb/release) page.

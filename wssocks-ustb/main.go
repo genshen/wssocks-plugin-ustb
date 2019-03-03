@@ -2,13 +2,13 @@ package main
 
 import (
 	"github.com/genshen/cmds"
+	"github.com/genshen/wssocks-plugin-ustb/vpn_plugin"
 	"github.com/genshen/wssocks/client"
 	_ "github.com/genshen/wssocks/client"
 	_ "github.com/genshen/wssocks/server"
 	"log"
 	//_ "github.com/genshen/wssocks/version"
-	_ "github.com/genshen/wssocks-plugin-ustb/version"
-	"github.com/genshen/wssocks-plugin-ustb/vpn_plugin"
+	_ "github.com/genshen/wssocks-plugin-ustb/wssocks-ustb/version"
 )
 
 // initialize USTB vpn (n.ustb.edu.cn) plugin
