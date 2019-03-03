@@ -7,8 +7,8 @@ import (
 	_ "github.com/genshen/wssocks/server"
 	"log"
 	//_ "github.com/genshen/wssocks/version"
-	_ "github.com/genshen/wssocks-ustb/version"
-	"github.com/genshen/wssocks-ustb/vpn_plugin"
+	_ "github.com/genshen/wssocks-plugin-ustb/version"
+	"github.com/genshen/wssocks-plugin-ustb/vpn_plugin"
 )
 
 // initialize USTB vpn (n.ustb.edu.cn) plugin

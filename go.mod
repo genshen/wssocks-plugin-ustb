@@ -1,4 +1,4 @@
-module github.com/genshen/wssocks-ustb
+module github.com/genshen/wssocks-plugin-ustb
 
 go 1.12
 
