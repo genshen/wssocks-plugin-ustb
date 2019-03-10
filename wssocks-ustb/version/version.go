@@ -35,7 +35,7 @@ func (v *version) Run() error {
 	fmt.Printf("version\t %s.\n", VERSION)
 	fmt.Printf("protocol version\t %d\n", wss.VersionCode)
 	fmt.Println("This is a socks5 proxy which allows you to visit internal network in USTB.")
-	fmt.Println("github https://github.com/genshen/wssocks-ustb")
+	fmt.Println("github https://github.com/genshen/wssocks-plugin-ustb")
 	fmt.Println("based on https://github.com/genshen/ws-socks")
 	return nil
 }
