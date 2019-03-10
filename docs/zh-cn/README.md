@@ -3,8 +3,12 @@
 ## 使用示例:服务端
  在内网的服务端的主机(如地址为`proxy.gensh.me`的主机)上执行:
  ```bash
- wssocks server --addr :1088
+ # For instance, listener on port 80.
+ # And make sure your port has been added to the white list of your firewall.
+ wssocks server --addr :80
  ```
+ 例如上面的命令，在服务端监听80端口(或者是别的端口,但client端`remote`选项需要和其相一致)。另外，需要确保你监听的端口已经被添加到主机防火墙的白名单列表中。
+
  see more: https://github.com/genshen/wssocks#server-side.
 
 ## 使用示例:客户端
