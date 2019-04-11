@@ -12,24 +12,16 @@
  see more: https://github.com/genshen/wssocks#server-side.
 
 ## 使用示例:客户端
-1. 登录 n.ustb.edu.cn;
-
-2. 打开浏览器的 DevTools (以chrome为例), 获得当前页面(登录成功的n.ustb.edu.cn)的cookie, 主要是名为`wengine_vpn_ticket`的cookie;
-![](asserts/get-cookie.png)
-**声明**: 服务器端不会保存任何用户信息, 所有的信息(如cookie)均保存中用户客户端主机中。  
-
-3. 打开命令行,执行如下命令:
+1. 打开命令行,执行如下命令,运行客户端:
    > 下面命令中, `wssocks-ustb`可执行程序均指代包含`wssocks-plugin-ustb`插件功能的`wssocks`程序.
    ```bash
-   # macOS, linux
-   USTB_VPN=ON VPN_COOKIE=wengine_vpn_ticket=b28f9aabf8d4f3dd wssocks-ustb client --addr :1080 --remote ws://proxy.gensh.me
-   # windows powershell
-   $env:USTB_VPN='ON'; $env:VPN_COOKIE='wengine_vpn_ticket=b28f9aabf8d4f3dd'; wssocks-ustb client --addr :1080 --remote ws://proxy.gensh.me
+   wssocks-ustb client --addr :1080 --remote ws://proxy.gensh.me --vpn-enable
    ```
-   这里，设置了两个环境变量`USTB_VPN`与`VPN_COOKIE`, 分别说明当前环境是需要通过n.ustb.edu.cn连接校内网络的以及设置n.ustb.edu.cn网站的cookie。  
-   此外，客户端本地监听地址为`:1080`(即0.0.0.0:1080), 服务器端地址为`ws://proxy.gensh.me`。
+   以上命令通过启用`--vpn-enable`选项启用通过vpn连接校内到网络。
+   随后, 要求输入vpn的用户名和密码登录`n.ustb.edu.cn`以获取其cookie (用户名和密码也可以在命令中通过`--vpn-usernam`和`--vpn-password`选项指定)。  
+   此外，客户端默认本地监听地址为`:1080`(即0.0.0.0:1080), 服务器端地址为`ws://proxy.gensh.me`。
 
-4. 设置代理  
+2. 设置代理  
 使用socks代理客户端软件(如mac系统的全局代理功能), 设置代理地址。
 ![](asserts/mac-proxy.png)
 在mac中，勾选**socks代理**选项框, 并填入代理服务器的地址及端口(即wssocks客户端本地监听地址及端口)，保存生效。  
