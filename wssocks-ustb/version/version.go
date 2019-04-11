@@ -7,7 +7,7 @@ import (
 	"github.com/genshen/wssocks/wss"
 )
 
-const VERSION = "0.1.0"
+const VERSION = "0.2.0"
 
 var versionCommand = &cmds.Command{
 	Name:        "version",
@@ -36,6 +36,6 @@ func (v *version) Run() error {
 	fmt.Printf("protocol version\t %d\n", wss.VersionCode)
 	fmt.Println("This is a socks5 proxy which allows you to visit internal network in USTB.")
 	fmt.Println("github https://github.com/genshen/wssocks-plugin-ustb")
-	fmt.Println("based on https://github.com/genshen/ws-socks")
+	fmt.Println("based on https://github.com/genshen/wssocks")
 	return nil
 }
