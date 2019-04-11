@@ -1,14 +1,18 @@
 package vpn_plugin
 
 import (
+	"bufio"
+	"errors"
 	"fmt"
 	"github.com/genshen/cmds"
 	"github.com/genshen/wssocks/client"
 	"github.com/gorilla/websocket"
+	"github.com/howeyc/gopass"
 	"net"
 	"net/http"
 	"net/http/cookiejar"
 	"net/url"
+	"os"
 	"strings"
 )
 
@@ -41,6 +45,25 @@ func (v *UstbVpn) BeforeRequest(dialer *websocket.Dialer, url *url.URL, header h
 	if !v.enable {
 		return nil
 	}
+	// read username and password if they are empty.
+	if v.username == "" {
+		reader := bufio.NewReader(os.Stdin)
+		fmt.Print("Enter username: ")
+		if text, err := reader.ReadString('\n'); err != nil {
+			return errors.New("Whoops! Error while reading username:" + err.Error())
+		} else {
+			v.username = strings.TrimSuffix(text,"\n")
+		}
+	}
+	if v.password == "" {
+		fmt.Print("Enter Password: ")
+		if bytePassword, err := gopass.GetPasswd(); err != nil { // error
+			return errors.New("Whoops! Error while parsing password:" + err.Error())
+		} else {
+			v.password = string(bytePassword)
+		}
+	}
+
 	// change target url.
 	vpnUrl(url)
 	// add cookie
