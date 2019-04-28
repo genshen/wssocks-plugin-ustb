@@ -22,28 +22,30 @@
    此外，客户端默认本地监听地址为`:1080`(即0.0.0.0:1080), 服务器端地址为`ws://proxy.gensh.me`。
 
 2. 设置代理  
-使用socks代理客户端软件(如mac系统的全局代理功能), 设置代理地址。
-![](asserts/mac-proxy.png)
-在mac中，勾选**socks代理**选项框, 并填入代理服务器的地址及端口(即wssocks客户端本地监听地址及端口)，保存生效。  
-如果你使用的是windows, 可以使用[Proxifier](https://www.proxifier.com/)软件。
+  使用socks代理客户端软件(如mac系统的全局代理功能), 设置代理地址。
+  ![](asserts/mac-proxy.png)
+  在mac中，勾选**socks代理**选项框, 并填入代理服务器的地址及端口(即wssocks客户端本地监听地址及端口)，保存生效。  
+  如果你使用的是windows, 可以使用[Proxifier](https://www.proxifier.com/)软件。  
+  (下图proxifier界面来自于  www.proxifier.com , 以展示添加代理方法。使用wssocks时，图中各个字段(如地址和端口)和选项会有区别。)
+  ![proxifier](https://www.proxifier.com/screenshots/proxy.png)
 
-5. 访问网页  
-直接在浏览器地址栏输入对应的地址即可访问，即可访问校内网络,不用任何特殊设置。
+3. 访问网页  
+  直接在浏览器地址栏输入对应的地址即可访问，即可访问校内网络,不用任何特殊设置。
 
-6. ssh连接(仅macOS)
+4. ssh连接(仅macOS)
    ```bash
    ssh -o ProxyCommand='nc -x 127.0.0.1:1080 %h %p' ssh.hpc.gensh.me
    ```
    ![](asserts/ssh-example.png)  
    windows和linux中可直接使用类似的`ssh ssh.hpc.gensh.me`命令。
 
-7. git 命令(仅macOS)
+5. git 命令(仅macOS)
    ```bash
    GIT_SSH_COMMAND="ssh -o ProxyCommand='nc -x 127.0.0.1:1080 %h %p' " git clone repo_address
    ```
    windows和linux中可直接使用类似的`git clone repo_address`命令。
 
-8. 其他终端操作(仅macOS)
+6. 其他终端操作(仅macOS)
    ```bash
    export all_proxy=socks5://127.0.0.1:1080
    git clone repo_address # git clone, 效果同 7.
