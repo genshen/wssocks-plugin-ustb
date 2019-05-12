@@ -23,6 +23,7 @@ type UstbVpn struct {
 	password    string
 	targetVpn   string
 	hostEncrypt bool
+	forceLogout bool
 }
 
 // create a UstbVpn instance, and add necessary command options to client sub-command.
@@ -34,6 +35,8 @@ func NewUstbVpn() *UstbVpn {
 		clientCmd.FlagSet.StringVar(&vpn.username, "vpn-username", "", `username to login vpn.`)
 		clientCmd.FlagSet.StringVar(&vpn.password, "vpn-password", "", `password to login vpn.`)
 		clientCmd.FlagSet.StringVar(&vpn.targetVpn, "vpn-host", USTBVpnHost, `hostname of vpn server.`)
+		clientCmd.FlagSet.BoolVar(&vpn.forceLogout, "vpn-force-logout", false,
+			`force logout account on other devices.`)
 		clientCmd.FlagSet.BoolVar(&vpn.hostEncrypt, "vpn-host-encrypt", true,
 			`encrypt proxy host using aes algorithm.`)
 	}
@@ -68,7 +71,8 @@ func (v *UstbVpn) BeforeRequest(dialer *websocket.Dialer, url *url.URL, header h
 	fmt.Println("real url:", url.String())
 
 	// add cookie
-	if cookies, err := vpnLogin(v.targetVpn, v.username, v.password); err != nil {
+	al := AutoLogin{Host: v.targetVpn, ForceLogout: v.forceLogout}
+	if cookies, err := al.vpnLogin(v.username, v.password); err != nil {
 		return err
 	} else {
 		if jar, err := cookiejar.New(nil); err != nil {
