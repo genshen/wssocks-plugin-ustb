@@ -2,6 +2,7 @@ package vpn_plugin
 
 import (
 	"bufio"
+	"encoding/hex"
 	"errors"
 	"fmt"
 	"github.com/genshen/cmds"
@@ -16,16 +17,13 @@ import (
 	"strings"
 )
 
-const USTBVpnHost = "n.ustb.edu.cn"
-const USTBVpnHttpScheme = "http"
-const USTBVpnLoginUrl = USTBVpnHttpScheme + "://" + USTBVpnHost + "/do-login"
-const USTBVpnWSScheme = "ws"
-
 type UstbVpn struct {
-	enable    bool
-	username  string
-	password  string
-	targetUrl string
+	enable      bool
+	username    string
+	password    string
+	targetVpn   string
+	hostEncrypt bool
+	forceLogout bool
 }
 
 // create a UstbVpn instance, and add necessary command options to client sub-command.
@@ -36,7 +34,11 @@ func NewUstbVpn() *UstbVpn {
 		clientCmd.FlagSet.BoolVar(&vpn.enable, "vpn-enable", false, `enable USTB vpn feature.`)
 		clientCmd.FlagSet.StringVar(&vpn.username, "vpn-username", "", `username to login vpn.`)
 		clientCmd.FlagSet.StringVar(&vpn.password, "vpn-password", "", `password to login vpn.`)
-		clientCmd.FlagSet.StringVar(&vpn.targetUrl, "vpn-login-url", USTBVpnLoginUrl, `address to login vpn.`)
+		clientCmd.FlagSet.StringVar(&vpn.targetVpn, "vpn-host", USTBVpnHost, `hostname of vpn server.`)
+		clientCmd.FlagSet.BoolVar(&vpn.forceLogout, "vpn-force-logout", false,
+			`force logout account on other devices.`)
+		clientCmd.FlagSet.BoolVar(&vpn.hostEncrypt, "vpn-host-encrypt", true,
+			`encrypt proxy host using aes algorithm.`)
 	}
 	return &vpn
 }
@@ -52,7 +54,7 @@ func (v *UstbVpn) BeforeRequest(dialer *websocket.Dialer, url *url.URL, header h
 		if text, err := reader.ReadString('\n'); err != nil {
 			return errors.New("Whoops! Error while reading username:" + err.Error())
 		} else {
-			v.username = strings.TrimSuffix(text,"\n")
+			v.username = strings.TrimSuffix(text, "\n")
 		}
 	}
 	if v.password == "" {
@@ -65,9 +67,12 @@ func (v *UstbVpn) BeforeRequest(dialer *websocket.Dialer, url *url.URL, header h
 	}
 
 	// change target url.
-	vpnUrl(url)
+	vpnUrl(v.hostEncrypt, v.targetVpn, url)
+	fmt.Println("real url:", url.String())
+
 	// add cookie
-	if cookies, err := vpnLogin(v.targetUrl, v.username, v.password); err != nil {
+	al := AutoLogin{Host: v.targetVpn, ForceLogout: v.forceLogout}
+	if cookies, err := al.vpnLogin(v.username, v.password); err != nil {
 		return err
 	} else {
 		if jar, err := cookiejar.New(nil); err != nil {
@@ -83,7 +88,7 @@ func (v *UstbVpn) BeforeRequest(dialer *websocket.Dialer, url *url.URL, header h
 	}
 }
 
-func vpnUrl(u *url.URL) {
+func vpnUrl(hostEncrypt bool, vpnHost string, u *url.URL) {
 	// replace https://abc.com to "http://n.ustb.edu.cn/https/abc.com"
 	// replace https://abc.com:8080 to "http://n.ustb.edu.cn/https-8080/abc.com"
 	// ?wrdrecordrvisit=record
@@ -109,8 +114,15 @@ func vpnUrl(u *url.URL) {
 		schemeWithPort = u.Scheme + "-" + port
 	}
 
-	u.Path = schemeWithPort + "/" + u.Host + u.Path
-	u.Host = USTBVpnHost
+	if hostEncrypt {
+		const key = "wrdvpnisthebest!"
+		var aes_e = newAesEncrypt(key)
+		encryptHost, _ := aes_e.Encrypt(u.Host)
+		u.Path = schemeWithPort + "/" + hex.EncodeToString([]byte(key)) + hex.EncodeToString(encryptHost) + u.Path
+	} else {
+		u.Path = schemeWithPort + "/" + u.Host + u.Path
+	}
+	u.Host = vpnHost
 
 	// set scheme
 	if u.Scheme == "wss" || u.Scheme == "ws" {
@@ -120,6 +132,4 @@ func vpnUrl(u *url.URL) {
 	} else {
 		u.Scheme = USTBVpnHttpScheme
 	}
-
-	fmt.Println("real url:", u.String())
 }
