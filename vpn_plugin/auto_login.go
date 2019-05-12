@@ -8,8 +8,13 @@ import (
 	"strings"
 )
 
+const USTBVpnHost = "n.ustb.edu.cn"
+const USTBVpnHttpScheme = "http"
+const USTBVpnWSScheme = "ws"
+
 // auto login vpn and get cookie
-func vpnLogin(address, uname, passwd string) ([]*http.Cookie, error) {
+func vpnLogin(loginHost, uname, passwd string) ([]*http.Cookie, error) {
+	var loginAddress = USTBVpnHttpScheme + "://" + loginHost + "/do-login"
 	form := url.Values{
 		"auth_type": {"local"},
 		"sms_code":  {""},
@@ -23,7 +28,7 @@ func vpnLogin(address, uname, passwd string) ([]*http.Cookie, error) {
 			return http.ErrUseLastResponse
 		},
 	}
-	req, err := http.NewRequest("POST", address, strings.NewReader(form.Encode())) // // todo missing http.
+	req, err := http.NewRequest("POST", loginAddress, strings.NewReader(form.Encode())) // todo missing http.
 	if err != nil {
 		return nil, err
 	}
@@ -37,7 +42,7 @@ func vpnLogin(address, uname, passwd string) ([]*http.Cookie, error) {
 		cookies := resp.Cookies()
 		// return cookies or error.
 		if len(cookies) == 0 {
-			return nil, errors.New(fmt.Sprintf("no cookie while auto login to %s ", address))
+			return nil, errors.New(fmt.Sprintf("no cookie while auto login to %s ", loginAddress))
 		} else {
 			return cookies, nil
 		}

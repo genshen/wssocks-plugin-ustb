@@ -17,16 +17,11 @@ import (
 	"strings"
 )
 
-const USTBVpnHost = "n.ustb.edu.cn"
-const USTBVpnHttpScheme = "http"
-const USTBVpnLoginUrl = USTBVpnHttpScheme + "://" + USTBVpnHost + "/do-login"
-const USTBVpnWSScheme = "ws"
-
 type UstbVpn struct {
-	enable    bool
-	username  string
-	password  string
-	targetUrl string
+	enable      bool
+	username    string
+	password    string
+	targetVpn   string
 	hostEncrypt bool
 }
 
@@ -38,7 +33,7 @@ func NewUstbVpn() *UstbVpn {
 		clientCmd.FlagSet.BoolVar(&vpn.enable, "vpn-enable", false, `enable USTB vpn feature.`)
 		clientCmd.FlagSet.StringVar(&vpn.username, "vpn-username", "", `username to login vpn.`)
 		clientCmd.FlagSet.StringVar(&vpn.password, "vpn-password", "", `password to login vpn.`)
-		clientCmd.FlagSet.StringVar(&vpn.targetUrl, "vpn-login-url", USTBVpnLoginUrl, `address to login vpn.`)
+		clientCmd.FlagSet.StringVar(&vpn.targetVpn, "vpn-host", USTBVpnHost, `hostname of vpn server.`)
 		clientCmd.FlagSet.BoolVar(&vpn.hostEncrypt, "vpn-host-encrypt", true,
 			`encrypt proxy host using aes algorithm.`)
 	}
@@ -56,7 +51,7 @@ func (v *UstbVpn) BeforeRequest(dialer *websocket.Dialer, url *url.URL, header h
 		if text, err := reader.ReadString('\n'); err != nil {
 			return errors.New("Whoops! Error while reading username:" + err.Error())
 		} else {
-			v.username = strings.TrimSuffix(text,"\n")
+			v.username = strings.TrimSuffix(text, "\n")
 		}
 	}
 	if v.password == "" {
@@ -69,7 +64,7 @@ func (v *UstbVpn) BeforeRequest(dialer *websocket.Dialer, url *url.URL, header h
 	}
 
 	// change target url.
-	vpnUrl(v.hostEncrypt, USTBVpnHost, url)
+	vpnUrl(v.hostEncrypt, v.targetVpn, url)
 	fmt.Println("real url:", url.String())
 
 	// add cookie
