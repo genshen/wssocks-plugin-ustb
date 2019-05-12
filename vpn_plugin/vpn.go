@@ -2,6 +2,7 @@ package vpn_plugin
 
 import (
 	"bufio"
+	"encoding/hex"
 	"errors"
 	"fmt"
 	"github.com/genshen/cmds"
@@ -26,6 +27,7 @@ type UstbVpn struct {
 	username  string
 	password  string
 	targetUrl string
+	hostEncrypt bool
 }
 
 // create a UstbVpn instance, and add necessary command options to client sub-command.
@@ -37,6 +39,8 @@ func NewUstbVpn() *UstbVpn {
 		clientCmd.FlagSet.StringVar(&vpn.username, "vpn-username", "", `username to login vpn.`)
 		clientCmd.FlagSet.StringVar(&vpn.password, "vpn-password", "", `password to login vpn.`)
 		clientCmd.FlagSet.StringVar(&vpn.targetUrl, "vpn-login-url", USTBVpnLoginUrl, `address to login vpn.`)
+		clientCmd.FlagSet.BoolVar(&vpn.hostEncrypt, "vpn-host-encrypt", true,
+			`encrypt proxy host using aes algorithm.`)
 	}
 	return &vpn
 }
@@ -65,9 +69,11 @@ func (v *UstbVpn) BeforeRequest(dialer *websocket.Dialer, url *url.URL, header h
 	}
 
 	// change target url.
-	vpnUrl(url)
+	vpnUrl(v.hostEncrypt, USTBVpnHost, url)
+	fmt.Println("real url:", url.String())
+
 	// add cookie
-	if cookies, err := vpnLogin(v.targetUrl, v.username, v.password); err != nil {
+	if cookies, err := vpnLogin(v.targetVpn, v.username, v.password); err != nil {
 		return err
 	} else {
 		if jar, err := cookiejar.New(nil); err != nil {
@@ -83,7 +89,7 @@ func (v *UstbVpn) BeforeRequest(dialer *websocket.Dialer, url *url.URL, header h
 	}
 }
 
-func vpnUrl(u *url.URL) {
+func vpnUrl(hostEncrypt bool, vpnHost string, u *url.URL) {
 	// replace https://abc.com to "http://n.ustb.edu.cn/https/abc.com"
 	// replace https://abc.com:8080 to "http://n.ustb.edu.cn/https-8080/abc.com"
 	// ?wrdrecordrvisit=record
@@ -109,8 +115,15 @@ func vpnUrl(u *url.URL) {
 		schemeWithPort = u.Scheme + "-" + port
 	}
 
-	u.Path = schemeWithPort + "/" + u.Host + u.Path
-	u.Host = USTBVpnHost
+	if hostEncrypt {
+		const key = "wrdvpnisthebest!"
+		var aes_e = newAesEncrypt(key)
+		encryptHost, _ := aes_e.Encrypt(u.Host)
+		u.Path = schemeWithPort + "/" + hex.EncodeToString([]byte(key)) + hex.EncodeToString(encryptHost) + u.Path
+	} else {
+		u.Path = schemeWithPort + "/" + u.Host + u.Path
+	}
+	u.Host = vpnHost
 
 	// set scheme
 	if u.Scheme == "wss" || u.Scheme == "ws" {
@@ -120,6 +133,4 @@ func vpnUrl(u *url.URL) {
 	} else {
 		u.Scheme = USTBVpnHttpScheme
 	}
-
-	fmt.Println("real url:", u.String())
 }
