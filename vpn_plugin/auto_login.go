@@ -144,7 +144,7 @@ func (al *AutoLogin) logoutAccount(uname, token string, cookies []*http.Cookie) 
 	}
 
 	hc := http.Client{}
-	req, err := http.NewRequest("POST", al.LoginAddr(),
+	req, err := http.NewRequest("POST", al.LogoutAddr(),
 		strings.NewReader(form.Encode()))
 	if err != nil {
 		log.Fatal(err)
