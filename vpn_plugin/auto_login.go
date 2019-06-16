@@ -4,8 +4,8 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
+	log "github.com/sirupsen/logrus"
 	"io"
-	"log"
 	"net/http"
 	"net/http/cookiejar"
 	"net/url"
@@ -85,7 +85,7 @@ func (al *AutoLogin) testConnect(uname string, cookies []*http.Cookie) error {
 	hc := http.Client{}
 	req, err := http.NewRequest("GET", al.TestAddr(), nil) // // todo missing http.
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 
 	jar, _ := cookiejar.New(nil)
@@ -103,8 +103,8 @@ func (al *AutoLogin) testConnect(uname string, cookies []*http.Cookie) error {
 				if !al.ForceLogout { // if force logout is not enabled, just return an error.
 					return errors.New("you account have been signed in on other device")
 				}
-				log.Println("found logout token, we will logout account.\ntoken:", token)
-				log.Println("sending logout request.")
+				log.WithField("token", token).Info("found logout token, we will logout account.")
+				log.Info("sending logout request.")
 				if err := al.logoutAccount(uname, token, cookies); err != nil {
 					return err
 				}
@@ -147,7 +147,7 @@ func (al *AutoLogin) logoutAccount(uname, token string, cookies []*http.Cookie) 
 	req, err := http.NewRequest("POST", al.LogoutAddr(),
 		strings.NewReader(form.Encode()))
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")

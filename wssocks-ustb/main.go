@@ -5,7 +5,7 @@ import (
 	"github.com/genshen/wssocks-plugin-ustb/vpn_plugin"
 	"github.com/genshen/wssocks/client"
 	_ "github.com/genshen/wssocks/server"
-	"log"
+	log "github.com/sirupsen/logrus"
 	//_ "github.com/genshen/wssocks/version"
 	_ "github.com/genshen/wssocks-plugin-ustb/wssocks-ustb/version"
 )

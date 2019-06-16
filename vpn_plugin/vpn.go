@@ -9,6 +9,7 @@ import (
 	"github.com/genshen/wssocks/client"
 	"github.com/gorilla/websocket"
 	"github.com/howeyc/gopass"
+	log "github.com/sirupsen/logrus"
 	"net"
 	"net/http"
 	"net/http/cookiejar"
@@ -68,7 +69,7 @@ func (v *UstbVpn) BeforeRequest(dialer *websocket.Dialer, url *url.URL, header h
 
 	// change target url.
 	vpnUrl(v.hostEncrypt, v.targetVpn, url)
-	fmt.Println("real url:", url.String())
+	log.Infof("real url: %s", url.String())
 
 	// add cookie
 	al := AutoLogin{Host: v.targetVpn, ForceLogout: v.forceLogout}
