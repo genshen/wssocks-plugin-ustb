@@ -8,8 +8,8 @@ import (
 	"github.com/genshen/cmds"
 	"github.com/genshen/wssocks/client"
 	"github.com/gorilla/websocket"
-	"github.com/howeyc/gopass"
 	log "github.com/sirupsen/logrus"
+	"golang.org/x/crypto/ssh/terminal"
 	"net"
 	"net/http"
 	"net/http/cookiejar"
@@ -60,7 +60,7 @@ func (v *UstbVpn) BeforeRequest(dialer *websocket.Dialer, url *url.URL, header h
 	}
 	if v.password == "" {
 		fmt.Print("Enter Password: ")
-		if bytePassword, err := gopass.GetPasswd(); err != nil { // error
+		if bytePassword, err := terminal.ReadPassword(int(os.Stdin.Fd())); err != nil { // error
 			return errors.New("Whoops! Error while parsing password:" + err.Error())
 		} else {
 			v.password = string(bytePassword)
