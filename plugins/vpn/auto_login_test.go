@@ -1,4 +1,4 @@
-package vpn_plugin
+package vpn
 
 import (
 	"regexp"
