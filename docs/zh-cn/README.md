@@ -41,10 +41,12 @@
   在mac中，勾选**socks代理**选项框, 并填入代理服务器的地址及端口(即wssocks客户端本地监听地址及端口)，保存生效。  
   如果你使用的是windows, 可以使用[Proxifier](https://www.proxifier.com/)软件来设置全局代理。  
   (下图proxifier界面来自于  www.proxifier.com , 以展示添加代理方法。使用wssocks时，图中各个字段(如地址和端口)和选项会有区别。)
-  ![proxifier](https://www.proxifier.com/screenshots/proxy.png)   
-  另外，一些软件的设置中也会有socks5代理选项，也可以针对特定软件进行设置，当然这种设置只针对该软件有效。  
+  ![proxifier](https://www.proxifier.com/screenshots/proxy.png)  
+  另外，一些软件的设置中也会有socks5代理选项，也可以针对特定软件进行设置，当然这种设置只针对该软件有效。
+  例如，如果你的系统上安装有 firefox 浏览器，可以通过以下设置来启用 socks5 代理，当然这仅限在该浏览器中访问网页时会使用代理。 
+  ![socks5 in firefox](asserts/socks5-firefox.png)
 
-4. http 与 https 代理客户端设置  
+3. http 与 https 代理客户端设置  
   在 mac 的系统偏好设置或 windows 的网络设置中，可设置全局的 http 和 https 代理; 部分软件可设置针对该软件有效的http和https代理(如firefox浏览器)。  
   其中，http代理服务器地址由命令行中的`--http-addr`指定，默认为`:1086`(或`127.0.1.0:1086`)，https 代理服务器地址和socks5代理服务器地址一致。
 
