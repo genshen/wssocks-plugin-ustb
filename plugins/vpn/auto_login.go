@@ -95,7 +95,7 @@ func (al *AutoLogin) testConnect(uname string, cookies []*http.Cookie) error {
 	if resp, err := hc.Do(req); err != nil {
 		return err
 	} else {
-		defer resp.Body.Close();
+		defer resp.Body.Close()
 		if found, token, err := al.findLogoutToken(resp.Body); err != nil {
 			return err
 		} else {

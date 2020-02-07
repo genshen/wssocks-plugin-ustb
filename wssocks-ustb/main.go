@@ -13,7 +13,7 @@ import (
 
 // initialize USTB vpn (n.ustb.edu.cn) plugin
 func init() {
-	vpn := vpn.NewUstbVpn()
+	vpn := vpn.NewUstbVpnCli()
 	ver := ver.PluginVersionNeg{}
 	client.AddPluginRedirect(vpn)
 	client.AddPluginVersion(&ver)

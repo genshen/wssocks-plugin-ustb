@@ -19,61 +19,61 @@ import (
 )
 
 type UstbVpn struct {
-	enable      bool
-	username    string
-	password    string
-	targetVpn   string
-	hostEncrypt bool
-	forceLogout bool
+	Enable      bool
+	Username    string
+	Password    string
+	TargetVpn   string
+	HostEncrypt bool
+	ForceLogout bool
 }
 
 // create a UstbVpn instance, and add necessary command options to client sub-command.
-func NewUstbVpn() *UstbVpn {
+func NewUstbVpnCli() *UstbVpn {
 	vpn := UstbVpn{}
 	// add more command options for client sub-command.
 	if ok, clientCmd := cmds.Find(client.CommandNameClient); ok {
-		clientCmd.FlagSet.BoolVar(&vpn.enable, "vpn-enable", false, `enable USTB vpn feature.`)
-		clientCmd.FlagSet.StringVar(&vpn.username, "vpn-username", "", `username to login vpn.`)
-		clientCmd.FlagSet.StringVar(&vpn.password, "vpn-password", "", `password to login vpn.`)
-		clientCmd.FlagSet.StringVar(&vpn.targetVpn, "vpn-host", USTBVpnHost, `hostname of vpn server.`)
-		clientCmd.FlagSet.BoolVar(&vpn.forceLogout, "vpn-force-logout", false,
+		clientCmd.FlagSet.BoolVar(&vpn.Enable, "vpn-enable", false, `enable USTB vpn feature.`)
+		clientCmd.FlagSet.StringVar(&vpn.Username, "vpn-username", "", `username to login vpn.`)
+		clientCmd.FlagSet.StringVar(&vpn.Password, "vpn-password", "", `password to login vpn.`)
+		clientCmd.FlagSet.StringVar(&vpn.TargetVpn, "vpn-host", USTBVpnHost, `hostname of vpn server.`)
+		clientCmd.FlagSet.BoolVar(&vpn.ForceLogout, "vpn-force-logout", false,
 			`force logout account on other devices.`)
-		clientCmd.FlagSet.BoolVar(&vpn.hostEncrypt, "vpn-host-encrypt", true,
+		clientCmd.FlagSet.BoolVar(&vpn.HostEncrypt, "vpn-host-encrypt", true,
 			`encrypt proxy host using aes algorithm.`)
 	}
 	return &vpn
 }
 
 func (v *UstbVpn) BeforeRequest(dialer *websocket.Dialer, url *url.URL, header http.Header) error {
-	if !v.enable {
+	if !v.Enable {
 		return nil
 	}
 	// read username and password if they are empty.
-	if v.username == "" {
+	if v.Username == "" {
 		reader := bufio.NewReader(os.Stdin)
 		fmt.Print("Enter username: ")
 		if text, err := reader.ReadString('\n'); err != nil {
 			return errors.New("Whoops! Error while reading username:" + err.Error())
 		} else {
-			v.username = strings.TrimSuffix(text, "\n")
+			v.Username = strings.TrimSuffix(text, "\n")
 		}
 	}
-	if v.password == "" {
+	if v.Password == "" {
 		fmt.Print("Enter Password: ")
 		if bytePassword, err := terminal.ReadPassword(int(os.Stdin.Fd())); err != nil { // error
 			return errors.New("Whoops! Error while parsing password:" + err.Error())
 		} else {
-			v.password = string(bytePassword)
+			v.Password = string(bytePassword)
 		}
 	}
 
 	// change target url.
-	vpnUrl(v.hostEncrypt, v.targetVpn, url)
+	vpnUrl(v.HostEncrypt, v.TargetVpn, url)
 	log.Infof("real url: %s", url.String())
 
 	// add cookie
-	al := AutoLogin{Host: v.targetVpn, ForceLogout: v.forceLogout}
-	if cookies, err := al.vpnLogin(v.username, v.password); err != nil {
+	al := AutoLogin{Host: v.TargetVpn, ForceLogout: v.ForceLogout}
+	if cookies, err := al.vpnLogin(v.Username, v.Password); err != nil {
 		return err
 	} else {
 		if jar, err := cookiejar.New(nil); err != nil {
