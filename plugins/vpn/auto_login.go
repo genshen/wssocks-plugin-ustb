@@ -43,6 +43,11 @@ func (al *AutoLogin) LogoutAddr() string {
 // auto login vpn and get cookie
 func (al *AutoLogin) vpnLogin(uname, passwd string) ([]*http.Cookie, error) {
 	var loginAddress = al.LoginAddr()
+	loginUrl, err := url.Parse(loginAddress)
+	if err != nil {
+		return nil, err
+	}
+
 	form := url.Values{
 		"auth_type": {"local"},
 		"sms_code":  {""},
@@ -52,7 +57,13 @@ func (al *AutoLogin) vpnLogin(uname, passwd string) ([]*http.Cookie, error) {
 
 	hc := http.Client{
 		// disable redirection
+		// If login success, it will be redirected to index page
+		// and cookie would lost if we enable redirection.
 		CheckRedirect: func(req *http.Request, via []*http.Request) error {
+			// if upgrade http to https
+			if loginUrl.Scheme != req.URL.Scheme && loginUrl.Path == req.URL.Path { // is http -> https redirection
+				return nil
+			}
 			return http.ErrUseLastResponse
 		},
 	}
