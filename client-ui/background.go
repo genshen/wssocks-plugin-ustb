@@ -1,15 +1,16 @@
 package main
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"github.com/genshen/wssocks-plugin-ustb/plugins/vpn"
 	"github.com/genshen/wssocks/wss"
-	"github.com/genshen/wssocks/wss/term_view"
 	"github.com/gorilla/websocket"
 	"log"
 	"net/http"
 	"net/url"
+	"sync"
 )
 
 type Options struct {
@@ -21,7 +22,34 @@ type Options struct {
 	localHttpAddr   string
 }
 
-func startWssocks(o Options) error {
+type Handles struct {
+	wsc        *wss.WebSocketClient
+	hb         *wss.HeartBeat
+	httpServer *http.Server
+	cl         *wss.Client
+	closed     bool
+	wg         sync.WaitGroup
+}
+
+func (h *Handles) Close() {
+	if h.closed {
+		return
+	}
+	h.closed = true
+	h.cl.Close(false)
+	if h.httpServer != nil {
+		h.httpServer.Shutdown(context.TODO())
+	}
+	if h.hb != nil {
+		h.hb.Close()
+	}
+	if h.wsc != nil {
+		h.wsc.Close()
+	}
+	h.wg.Wait() // wait tasks finishing
+}
+
+func (h *Handles) startWssocks(o Options) error {
 	// check remote url
 	if o.remoteAddr == "" {
 		return errors.New("empty remote address")
@@ -42,44 +70,57 @@ func startWssocks(o Options) error {
 
 	wsc, err := wss.NewWebSocketClient(websocket.DefaultDialer, o.remoteUrl.String(), wsHeader)
 	if err != nil {
-		return fmt.Errorf("establishing connection error: %s", err.Error())
+		return fmt.Errorf("establishing connection error: %w", err)
 	}
 
 	// todo chan for wsc and tcp accept
-	//defer wsc.WSClose()
 
 	if _, err := wss.ExchangeVersion(wsc.WsConn); err != nil {
 		return err
 	}
 
+	h.wsc = wsc
 	// start websocket message listen.
+	h.wg.Add(1)
 	go func() {
+		defer h.wg.Done()
 		if err := wsc.ListenIncomeMsg(); err != nil {
 			log.Println("error websocket read:", err)
 		}
 	}()
 	// send heart beats.
+	h.hb = wss.NewHeartBeat(wsc)
+	h.wg.Add(1)
 	go func() {
-		if err := wsc.HeartBeat(); err != nil {
+		defer h.wg.Done()
+		if err := h.hb.Start(); err != nil {
 			log.Println("heartbeat ending", err)
 		}
 	}()
 
+	record := wss.NewConnRecord() // connection record
 	if o.httpEnable {
+		h.wg.Add(1)
 		go func() {
-			handle := wss.NewHttpProxy(wsc, nil)
-			if err := http.ListenAndServe(o.localHttpAddr, &handle); err != nil {
-				log.Fatalln(err)
+			defer h.wg.Done()
+			handle := wss.NewHttpProxy(wsc, record)
+			h.httpServer = &http.Server{Addr: o.localHttpAddr, Handler: &handle}
+			if err := h.httpServer.ListenAndServe(); err != nil {
+				log.Println(err)
 			}
 		}()
 	}
 
-	plog := term_view.NewPLog()
 	// start listen for socks5 and https connection.
-	if err := wss.ListenAndServe(plog, wsc, o.localSocks5Addr, o.httpEnable, func() {
-
-	}); err != nil {
-		return err
-	}
+	h.cl = wss.NewClient()
+	h.wg.Add(1)
+	go func() {
+		defer h.wg.Done()
+		if err := h.cl.ListenAndServe(record, wsc, o.localSocks5Addr, o.httpEnable, func() {
+		}); err != nil {
+			log.Println(err)
+		}
+	}()
+	h.closed = false // reopen
 	return nil
 }

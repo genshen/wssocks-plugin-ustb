@@ -2,6 +2,7 @@ package main
 
 import (
 	"fyne.io/fyne/app"
+	"fyne.io/fyne/dialog"
 	"fyne.io/fyne/theme"
 	"fyne.io/fyne/widget"
 	"github.com/genshen/wssocks-plugin-ustb/plugins/vpn"
@@ -14,6 +15,13 @@ const (
 	AppId         = "wssocks-ustb.genshen.github.com"
 	GithubRepoUrl = "https://github.com/genshen/wssocks"
 	DocumentUrl   = "https://github.com/genshen/wssocks-plugin-ustb/blob/master/docs/zh-cn/README.md"
+)
+
+const (
+	btnStopped = iota
+	btnStarting
+	btnRunning
+	btnStopping
 )
 
 func main() {
@@ -64,33 +72,42 @@ func main() {
 	}
 
 	btnStart := widget.NewButton("Start", nil)
-	uiErrText := widget.NewLabel("")
-	uiErrText.Hide()
+	btnStatus := btnStopped
+	var handles Handles
 	btnStart.OnTapped = func() {
-		options := Options{
-			localSocks5Addr: uiLocalAddr.Text,
-			remoteAddr:      uiRemoteAddr.Text,
-			httpEnable:      uiHttpEnable.Checked,
-			localHttpAddr:   uiHttpLocalAddr.Text,
-			UstbVpn: vpn.UstbVpn{
-				Enable:      uiVpnEnable.Checked,
-				ForceLogout: uiVpnForceLogout.Checked,
-				HostEncrypt: uiVpnHostEncrypt.Checked,
-				TargetVpn:   uiVpnHostInput.Text,
-				Username:    uiVpnUsername.Text,
-				Password:    uiVpnPassword.Text,
-			},
-		}
-		uiErrText.Hide()
-		btnStart.SetText("Loading")
-		if err := startWssocks(options); err != nil {
-			// log error
-			uiErrText.Show()
-			uiErrText.SetText(err.Error())
+		if btnStatus == btnRunning { // running can stop
+			btnStatus = btnStopping
+			btnStart.SetText("Stopping")
+			handles.Close()
 			btnStart.SetText("Start")
-			return
+			btnStatus = btnStopped
+		} else if btnStatus == btnStopped { // stopped can run
+			options := Options{
+				localSocks5Addr: uiLocalAddr.Text,
+				remoteAddr:      uiRemoteAddr.Text,
+				httpEnable:      uiHttpEnable.Checked,
+				localHttpAddr:   uiHttpLocalAddr.Text,
+				UstbVpn: vpn.UstbVpn{
+					Enable:      uiVpnEnable.Checked,
+					ForceLogout: uiVpnForceLogout.Checked,
+					HostEncrypt: uiVpnHostEncrypt.Checked,
+					TargetVpn:   uiVpnHostInput.Text,
+					Username:    uiVpnUsername.Text,
+					Password:    uiVpnPassword.Text,
+				},
+			}
+			btnStatus = btnStarting
+			btnStart.SetText("Loading")
+			if err := handles.startWssocks(options); err != nil {
+				// log error
+				dialog.ShowError(err, w)
+				btnStart.SetText("Start")
+				btnStatus = btnStopped
+				return
+			}
+			btnStart.SetText("Stop")
+			btnStatus = btnRunning
 		}
-		btnStart.SetText("Stop")
 	}
 
 	docUrl, err := url.Parse(DocumentUrl)
@@ -122,7 +139,6 @@ func main() {
 				{Text: "password", Widget: uiVpnPassword},
 			}},
 		), // end group
-		uiErrText,
 		btnStart,
 		widget.NewHBox(
 			widget.NewLabel("v"+version.VERSION),
