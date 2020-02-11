@@ -3,7 +3,6 @@ package vpn
 import (
 	"bufio"
 	"encoding/hex"
-	"errors"
 	"fmt"
 	"github.com/genshen/cmds"
 	"github.com/genshen/wssocks/client"
@@ -53,7 +52,7 @@ func (v *UstbVpn) BeforeRequest(dialer *websocket.Dialer, url *url.URL, header h
 		reader := bufio.NewReader(os.Stdin)
 		fmt.Print("Enter username: ")
 		if text, err := reader.ReadString('\n'); err != nil {
-			return errors.New("Whoops! Error while reading username:" + err.Error())
+			return fmt.Errorf("error while reading username, %w", err)
 		} else {
 			v.Username = strings.TrimSuffix(text, "\n")
 		}
@@ -61,7 +60,7 @@ func (v *UstbVpn) BeforeRequest(dialer *websocket.Dialer, url *url.URL, header h
 	if v.Password == "" {
 		fmt.Print("Enter Password: ")
 		if bytePassword, err := terminal.ReadPassword(int(os.Stdin.Fd())); err != nil { // error
-			return errors.New("Whoops! Error while parsing password:" + err.Error())
+			return fmt.Errorf("error while parsing password, %w", err)
 		} else {
 			v.Password = string(bytePassword)
 		}
