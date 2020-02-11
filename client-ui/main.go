@@ -38,6 +38,8 @@ func main() {
 	uiHttpEnable := &widget.Check{Checked: false}
 	uiHttpLocalAddr := &widget.Entry{Text: "127.0.0.1:1086"}
 
+	loadBasicPreference(wssApp.Preferences(), uiLocalAddr, uiRemoteAddr, uiHttpLocalAddr, uiHttpEnable)
+
 	uiHttpEnable.OnChanged = func(checked bool) {
 		if checked {
 			uiHttpLocalAddr.Enable()
@@ -45,7 +47,6 @@ func main() {
 			uiHttpLocalAddr.Disable()
 		}
 	}
-	uiHttpLocalAddr.Disable() // default, disable http proxy
 
 	// vpn input
 	uiVpnEnable := &widget.Check{Text: "enable ustb vpn", Checked: true}
@@ -54,6 +55,9 @@ func main() {
 	uiVpnHostInput := &widget.Entry{Text: "vpn4.ustb.edu.cn"}
 	uiVpnUsername := &widget.Entry{Text: ""}
 	uiVpnPassword := &widget.Entry{Text: "", Password: true}
+
+	loadVPNPreference(wssApp.Preferences(), uiVpnEnable, uiVpnForceLogout,
+		uiVpnHostEncrypt, uiVpnHostInput, uiVpnUsername, uiVpnPassword)
 
 	uiVpnEnable.OnChanged = func(checked bool) {
 		if checked {
@@ -147,6 +151,11 @@ func main() {
 		),
 	))
 
+	w.SetOnClosed(func() {
+		saveBasicPreference(wssApp.Preferences(), uiLocalAddr, uiRemoteAddr, uiHttpLocalAddr, uiHttpEnable)
+		saveVPNPreference(wssApp.Preferences(), uiVpnEnable, uiVpnForceLogout,
+			uiVpnHostEncrypt, uiVpnHostInput, uiVpnUsername, uiVpnPassword)
+	})
 	//w.SetOnClosed() todo
 	w.ShowAndRun()
 }
