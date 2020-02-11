@@ -1,6 +1,7 @@
 package vpn
 
 import (
+	"log"
 	"regexp"
 	"testing"
 )
@@ -22,5 +23,14 @@ func TestRep(t *testing.T) {
 	matched_3, err := regexp.Match(`logoutOtherToken[\s]+=[\s]+'[\w]+`, []byte(text3))
 	if matched_3 {
 		t.Error(err)
+	}
+}
+
+func TestAutoLogin(t *testing.T) {
+	al := AutoLogin{Host: "n.ustb.edu.cn", ForceLogout: true}
+	if cookies, err := al.vpnLogin("b20170328", "genshen1234"); err != nil {
+		log.Println(err.Error())
+	} else {
+		log.Println(cookies)
 	}
 }

@@ -15,7 +15,9 @@ import (
 
 const USTBVpnHost = "n.ustb.edu.cn"
 const USTBVpnHttpScheme = "http"
+const USTBVpnHttpsScheme = "https"
 const USTBVpnWSScheme = "ws"
+const USTBVpnWSSScheme = "wss"
 
 type AutoLoginInterface interface {
 	TestAddr() string
@@ -26,27 +28,43 @@ type AutoLoginInterface interface {
 type AutoLogin struct {
 	Host        string
 	ForceLogout bool
+	SSLEnabled  bool // the vpn server supports https
 }
 
-func (al *AutoLogin) TestAddr() string {
+func (al *AutoLogin) TestAddr(ssl bool) string {
+	if ssl {
+		return USTBVpnHttpsScheme + "://" + al.Host + "/"
+	}
 	return USTBVpnHttpScheme + "://" + al.Host + "/"
 }
 
-func (al *AutoLogin) LoginAddr() string {
+func (al *AutoLogin) LoginAddr(ssl bool) string {
+	if ssl {
+		return USTBVpnHttpsScheme + "://" + al.Host + "/do-login"
+	}
 	return USTBVpnHttpScheme + "://" + al.Host + "/do-login"
 }
 
-func (al *AutoLogin) LogoutAddr() string {
+func (al *AutoLogin) LogoutAddr(ssl bool) string {
+	if ssl {
+		return USTBVpnHttpsScheme + "://" + al.Host + "/do-confirm-login"
+	}
 	return USTBVpnHttpScheme + "://" + al.Host + "/do-confirm-login"
 }
 
 // auto login vpn and get cookie
 func (al *AutoLogin) vpnLogin(uname, passwd string) ([]*http.Cookie, error) {
-	var loginAddress = al.LoginAddr()
-	loginUrl, err := url.Parse(loginAddress)
-	if err != nil {
+	// send a get request and check whether it is https protocol.
+	// andd save https enable/disable flag
+	if httpsEnabled, err := testHttpsEnabled(al.Host); err != nil {
 		return nil, err
+	} else {
+		if httpsEnabled {
+			al.SSLEnabled = true
+		}
 	}
+
+	var loginAddress = al.LoginAddr(al.SSLEnabled)
 
 	form := url.Values{
 		"auth_type": {"local"},
@@ -61,9 +79,6 @@ func (al *AutoLogin) vpnLogin(uname, passwd string) ([]*http.Cookie, error) {
 		// and cookie would lost if we enable redirection.
 		CheckRedirect: func(req *http.Request, via []*http.Request) error {
 			// if upgrade http to https
-			if loginUrl.Scheme != req.URL.Scheme && loginUrl.Path == req.URL.Path { // is http -> https redirection
-				return nil
-			}
 			return http.ErrUseLastResponse
 		},
 	}
@@ -92,9 +107,43 @@ func (al *AutoLogin) vpnLogin(uname, passwd string) ([]*http.Cookie, error) {
 	}
 }
 
+func testHttpsEnabled(host string) (bool, error) {
+	testUrl, err := url.Parse(USTBVpnHttpScheme + "://" + host + "/")
+	if err != nil {
+		return false, err
+	}
+	httpsSupport := false
+
+	hc := http.Client{
+		// disable redirection
+		// f login success, it will be redirected to index page
+		// and cookie would lost if we enable redirection.
+		CheckRedirect: func(req *http.Request, via []*http.Request) error {
+			// if upgrade http to https
+			if testUrl.Scheme != req.URL.Scheme && testUrl.Path == req.URL.Path { // is http -> https redirection
+				httpsSupport = true
+				return nil
+			}
+			return http.ErrUseLastResponse
+		},
+	}
+
+	req, err := http.NewRequest("GET", testUrl.String(), nil)
+	if err != nil {
+		return false, err
+	}
+
+	if resp, err := hc.Do(req); err != nil {
+		return false, err
+	} else {
+		defer resp.Body.Close()
+		return httpsSupport, nil
+	}
+}
+
 func (al *AutoLogin) testConnect(uname string, cookies []*http.Cookie) error {
 	hc := http.Client{}
-	req, err := http.NewRequest("GET", al.TestAddr(), nil) // // todo missing http.
+	req, err := http.NewRequest("GET", al.TestAddr(al.SSLEnabled), nil) // // todo missing http.
 	if err != nil {
 		return err
 	}
@@ -155,7 +204,7 @@ func (al *AutoLogin) logoutAccount(uname, token string, cookies []*http.Cookie) 
 	}
 
 	hc := http.Client{}
-	req, err := http.NewRequest("POST", al.LogoutAddr(),
+	req, err := http.NewRequest("POST", al.LogoutAddr(al.SSLEnabled),
 		strings.NewReader(form.Encode()))
 	if err != nil {
 		return err

@@ -66,15 +66,15 @@ func (v *UstbVpn) BeforeRequest(dialer *websocket.Dialer, url *url.URL, header h
 		}
 	}
 
-	// change target url.
-	vpnUrl(v.HostEncrypt, v.TargetVpn, url)
-	log.Infof("real url: %s", url.String())
-
 	// add cookie
 	al := AutoLogin{Host: v.TargetVpn, ForceLogout: v.ForceLogout}
 	if cookies, err := al.vpnLogin(v.Username, v.Password); err != nil {
 		return err
 	} else {
+		// change target url.
+		vpnUrl(v.HostEncrypt, v.TargetVpn, al.SSLEnabled, url)
+		log.Infof("real url: %s", url.String(), ", ssl enabled:", al.SSLEnabled)
+
 		if jar, err := cookiejar.New(nil); err != nil {
 			return err
 		} else {
@@ -88,10 +88,10 @@ func (v *UstbVpn) BeforeRequest(dialer *websocket.Dialer, url *url.URL, header h
 	}
 }
 
-func vpnUrl(hostEncrypt bool, vpnHost string, u *url.URL) {
+// ssl specific the protocol(whether to use ssl) used in the real connection
+func vpnUrl(hostEncrypt bool, vpnHost string, ssl bool, u *url.URL) {
 	// replace https://abc.com to "http://n.ustb.edu.cn/https/abc.com"
 	// replace https://abc.com:8080 to "http://n.ustb.edu.cn/https-8080/abc.com"
-	// ?wrdrecordrvisit=record
 
 	// split host and port if it could
 	port := u.Port()
@@ -118,18 +118,27 @@ func vpnUrl(hostEncrypt bool, vpnHost string, u *url.URL) {
 		const key = "wrdvpnisthebest!"
 		var aes_e = newAesEncrypt(key)
 		encryptHost, _ := aes_e.Encrypt(u.Host)
-		u.Path = schemeWithPort + "/" + hex.EncodeToString([]byte(key)) + hex.EncodeToString(encryptHost) + u.Path
+		u.Path = "/" + schemeWithPort + "/" + hex.EncodeToString([]byte(key)) + hex.EncodeToString(encryptHost) + u.Path
 	} else {
-		u.Path = schemeWithPort + "/" + u.Host + u.Path
+		u.Path = "/" + schemeWithPort + "/" + u.Host + u.Path
+	}
+	if !strings.HasSuffix(u.Path, "/") {
+		u.Path = u.Path + "/"
 	}
 	u.Host = vpnHost
 
 	// set scheme
 	if u.Scheme == "wss" || u.Scheme == "ws" {
-		u.Scheme = USTBVpnWSScheme
-	} else if u.Scheme == "https" {
-		u.Scheme = USTBVpnHttpScheme
-	} else {
-		u.Scheme = USTBVpnHttpScheme
+		if ssl {
+			u.Scheme = USTBVpnWSSScheme
+		} else {
+			u.Scheme = USTBVpnWSScheme
+		}
+	} else { // http or https
+		if ssl {
+			u.Scheme = USTBVpnHttpsScheme
+		} else {
+			u.Scheme = USTBVpnHttpScheme
+		}
 	}
 }
