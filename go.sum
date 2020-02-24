@@ -8,8 +8,8 @@ github.com/fsnotify/fsnotify v1.4.7 h1:IXs+QLmnXW2CcXuY+8Mzv/fWEsPGWxqefPtCP5CnV
 github.com/fsnotify/fsnotify v1.4.7/go.mod h1:jwhsz4b93w/PPRr/qN1Yymfu8t87LnFCMoQvtojpjFo=
 github.com/genshen/cmds v0.0.0-20190410131841-986519260a65 h1:RYKhlk6k5qpQBZVaSi+azOINxxJRujYMGHVAdMstw+o=
 github.com/genshen/cmds v0.0.0-20190410131841-986519260a65/go.mod h1:Uo2P6VGNS7t++sjm8vO2AqK/AB2v/favOgOZB984Z3o=
-github.com/genshen/wssocks v0.4.0 h1:rzEoMOfCNn4IVleetrFX9yD+5KlFaxO8BD2+p/ysuBY=
-github.com/genshen/wssocks v0.4.0/go.mod h1:NC9loNEBI7xgS70fHC8U/ciDvm04WAzjmEBHkR3W/6Y=
+github.com/genshen/wssocks v0.4.1 h1:zg+ZMXyarRfrzXs2YuIadDch8PZTcQp5GOnkzogWm08=
+github.com/genshen/wssocks v0.4.1/go.mod h1:NC9loNEBI7xgS70fHC8U/ciDvm04WAzjmEBHkR3W/6Y=
 github.com/go-gl/gl v0.0.0-20190320180904-bf2b1f2f34d7 h1:SCYMcCJ89LjRGwEa0tRluNRiMjZHalQZrVrvTbPh+qw=
 github.com/go-gl/gl v0.0.0-20190320180904-bf2b1f2f34d7/go.mod h1:482civXOzJJCPzJ4ZOX/pwvXBWSnzD4OKMdH4ClKGbk=
 github.com/go-gl/glfw v0.0.0-20181213070059-819e8ce5125f h1:7MsFMbSn8Lcw0blK4+NEOf8DuHoOBDhJsHz04yh13pM=
