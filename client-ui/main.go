@@ -152,6 +152,12 @@ func main() {
 	))
 
 	w.SetOnClosed(func() {
+		// todo close all and stop if network lost
+		if btnStatus == btnRunning { // running can stop
+			btnStatus = btnStopping
+			btnStart.SetText("Stopping")
+			handles.Close()
+		}
 		saveBasicPreference(wssApp.Preferences(), uiLocalAddr, uiRemoteAddr, uiHttpLocalAddr, uiHttpEnable)
 		saveVPNPreference(wssApp.Preferences(), uiVpnEnable, uiVpnForceLogout,
 			uiVpnHostEncrypt, uiVpnHostInput, uiVpnUsername, uiVpnPassword)
