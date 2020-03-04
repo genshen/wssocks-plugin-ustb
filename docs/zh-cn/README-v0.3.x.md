@@ -20,7 +20,7 @@
    wssocks-ustb client --remote=ws://proxy.gensh.me --vpn-enable   --vpn-host=vpn4.ustb.edu.cn --vpn-force-logout --vpn-host-encrypt
    ```
    以上命令通过启用`--vpn-enable`选项启用通过vpn连接校内到网络。
-   随后, 要求输入vpn的用户名和密码登录`n.ustb.edu.cn`以获取其cookie (用户名和密码也可以在命令中通过`--vpn-usernam`和`--vpn-password`选项指定)。  
+   随后, 要求输入vpn的用户名和密码登录`vpn4.ustb.edu.cn`以获取其cookie (用户名和密码也可以在命令中通过`--vpn-usernam`和`--vpn-password`选项指定)。  
    此外，客户端默认本地监听地址为`:1080`(即0.0.0.0:1080), 服务器端地址为`ws://proxy.gensh.me`。
 
    也可以通过`wssocks-ustb client --help`查看更多参数的使用。 其中, 几个主要命令参数如下:
@@ -56,10 +56,3 @@
    GIT_SSH_COMMAND="ssh -o ProxyCommand='nc -x 127.0.0.1:1080 %h %p' " git clone repo_address
    ```
    windows和linux中可直接使用类似的`git clone repo_address`命令。
-
-6. 其他终端操作(仅macOS)
-   ```bash
-   export all_proxy=socks5://127.0.0.1:1080
-   git clone repo_address # git clone, 效果同 7.
-   ssh ssh.hpc.gensh.me # ssh 连接, 效果同6.
-   ```

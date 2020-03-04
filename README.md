@@ -13,7 +13,7 @@ go get -u github.com/genshen/wssocks-plugin-ustb/wssocks-ustb
 wssocks-ustb --help
 ```
 
-Or download from [release](https://github.com/genshen/wssocks-plugin-ustb/release) page.
+Or download from [releases](https://github.com/genshen/wssocks-plugin-ustb/releases) page.
 
 Note: this binary contains **wssocks** and wssocks-plugin-ustb plugin.
 
