@@ -51,11 +51,28 @@ wssocks 客户端分为 cli 版本和 gui 版本，根据需求选择其中一�
    以上两部分均是配置全局的代理，另外，一些软件的设置中也会有单独socks5代理选项(如firefox浏览器及ssh、curl、git 命令行工具等)，
    可以针对特定软件进行设置，当然这种设置只针对该软件有效。  
 
-   例如，如果你的系统上安装有 firefox 浏览器，可以通过以下设置来启用 socks5 代理，当然这仅限在该浏览器中访问网页时会启用代理。 
-   ![socks5 in firefox](asserts/socks5-firefox.png)
-  
    对于浏览器应用，如果你已经设置好了 http、 https 代理，或者设置了 socks5 代理
-   (全局的代理或者类似 firefox 中应用级的代理)，可直接在浏览器地址栏输入对应的地址即可访问，不用任何特殊设置。
+   (全局的代理或者类似 firefox 中应用级的代理)，可直接在浏览器地址栏输入对应的地址即可访问，不用任何特殊设置。  
+   其中，firefox 和 chrome 设置应用级的代理方式如下:
+   - **Firefox**  
+    如果你的系统上安装有 firefox 浏览器，可以通过以下设置来启用 socks5 代理，当然这仅限在该浏览器中访问网页时会启用代理。 
+      ![socks5 in firefox](asserts/socks5-firefox.png)
+   - **Chrome、新版Edge**  
+     对于基于 chromium 的浏览器(如 Chrome, 新版Edge),可以在命令行中启动浏览器以使用socks5代理:
+     ```bash
+     # chrome on windows
+     # tips: windows 用户可以将这一启动命令设置为快捷方式.
+     "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --show-app-list --proxy-server="socks5://127.0.0.1:1080" --host-resolver-rules="MAP * 0.0.0.0 , EXCLUDE localhost"
+     ```
+     ```bash
+     # chrome on macOS
+     /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --show-app-list --proxy-server="socks5://127.0.0.1:1080" --host-resolver-rules="MAP * 0.0.0.0 , EXCLUDE localhost"
+     ```
+     ```bash
+     # new Edge on macOS
+     /Applications/Microsoft\ Edge.app/Contents/MacOS/Microsoft\ Edge --show-app-list --proxy-server="socks5://127.0.0.1:1080" --host-resolver-rules="MAP * 0.0.0.0 , EXCLUDE localhost"
+     ```
+     参考: https://github.com/shadowsocks/shadowsocks/wiki/Forcing-Chrome-to-Use-Socks5-Proxy
 
 ## 命令行代理使用示例
 1. ssh 连接  
