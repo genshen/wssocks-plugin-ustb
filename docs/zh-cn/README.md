@@ -104,7 +104,7 @@ wssocks 客户端分为 cli 版本和 gui 版本，根据需求选择其中一�
       设置 http(s) 代理:
       ```bash
       git config --global http.proxy http://127.0.0.1:1086
-      git config --global https.proxy https://127.0.0.1:1080
+      git config --global https.proxy http://127.0.0.1:1080
       ```
       设置 socks5 代理:
       ```bash
