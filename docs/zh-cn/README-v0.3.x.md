@@ -17,10 +17,10 @@
 1. 打开命令行,执行如下命令,运行客户端:
    > 下面命令中, `wssocks-ustb`可执行程序均指代包含`wssocks-plugin-ustb`插件功能的`wssocks`程序.
    ```bash
-   wssocks-ustb client --remote=ws://proxy.gensh.me --vpn-enable   --vpn-host=vpn4.ustb.edu.cn --vpn-force-logout --vpn-host-encrypt
+   wssocks-ustb client --remote=ws://proxy.gensh.me --vpn-enable   --vpn-host=n.ustb.edu.cn --vpn-force-logout --vpn-host-encrypt
    ```
    以上命令通过启用`--vpn-enable`选项启用通过vpn连接校内到网络。
-   随后, 要求输入vpn的用户名和密码登录`vpn4.ustb.edu.cn`以获取其cookie (用户名和密码也可以在命令中通过`--vpn-usernam`和`--vpn-password`选项指定)。  
+   随后, 要求输入vpn的用户名和密码登录`n.ustb.edu.cn`以获取其cookie (用户名和密码也可以在命令中通过`--vpn-usernam`和`--vpn-password`选项指定)。  
    此外，客户端默认本地监听地址为`:1080`(即0.0.0.0:1080), 服务器端地址为`ws://proxy.gensh.me`。
 
    也可以通过`wssocks-ustb client --help`查看更多参数的使用。 其中, 几个主要命令参数如下:
