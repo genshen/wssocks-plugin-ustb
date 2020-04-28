@@ -74,6 +74,10 @@ wssocks 客户端分为 cli 版本和 gui 版本，根据需求选择其中一�
      ```
      参考: https://github.com/shadowsocks/shadowsocks/wiki/Forcing-Chrome-to-Use-Socks5-Proxy
 
+     Tips: 对于基于 chromium 的浏览器，除了命令行启动外，还可以通过 [SwitchyOmega插件](https://github.com/FelisCatus/SwitchyOmega/releases) 来实现代理的访问。
+     用户可以从 [github](https://github.com/FelisCatus/SwitchyOmega) 下载安装，
+     或者在[Microsoft Store](https://microsoftedge.microsoft.com/addons/detail/dijmmgblneagkcdganednabkbgjmceoe) (Edge) 或 [Chrome Web Store](https://chrome.google.com/webstore/detail/proxy-switchyomega/padekgcemlokbadohgkifijomclgjgif) (Chrome) 中安装。
+
 ## 命令行代理使用示例
 1. ssh 连接  
    注: 对于 windows 平台,如果使用了 proxifier 配置了全局代理, 可以直接 ssh (`ssh ssh.hpc.gensh.me`)。
