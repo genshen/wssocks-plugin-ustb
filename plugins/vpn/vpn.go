@@ -73,7 +73,7 @@ func (v *UstbVpn) BeforeRequest(dialer *websocket.Dialer, url *url.URL, header h
 	} else {
 		// change target url.
 		vpnUrl(v.HostEncrypt, v.TargetVpn, al.SSLEnabled, url)
-		log.Infof("real url: %s", url.String(), ", ssl enabled:", al.SSLEnabled)
+		log.Infof("real url: %s, ssl enabled:%t", url.String(), al.SSLEnabled)
 
 		if jar, err := cookiejar.New(nil); err != nil {
 			return err
