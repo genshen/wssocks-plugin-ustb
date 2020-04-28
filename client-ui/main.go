@@ -52,7 +52,7 @@ func main() {
 	uiVpnEnable := &widget.Check{Text: "enable ustb vpn", Checked: true}
 	uiVpnForceLogout := &widget.Check{Text: "", Checked: true}
 	uiVpnHostEncrypt := &widget.Check{Text: "", Checked: true}
-	uiVpnHostInput := &widget.Entry{Text: "vpn4.ustb.edu.cn"}
+	uiVpnHostInput := &widget.Entry{Text: "n.ustb.edu.cn"}
 	uiVpnUsername := &widget.Entry{Text: ""}
 	uiVpnPassword := &widget.Entry{Text: "", Password: true}
 
