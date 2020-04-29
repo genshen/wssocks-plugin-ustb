@@ -24,6 +24,18 @@ const (
 	btnStopping
 )
 
+func newEntryWithText(text string) *widget.Entry {
+	entry := widget.NewEntry()
+	entry.SetText(text)
+	return entry
+}
+
+func newCheckbox(text string, checked bool, onChanged func(bool)) *widget.Check {
+	checkbox := widget.NewCheck(text, onChanged)
+	checkbox.SetChecked(checked)
+	return checkbox
+}
+
 func main() {
 	wssApp := app.NewWithID(AppId)
 	wssApp.Settings().SetTheme(theme.LightTheme())
@@ -33,10 +45,10 @@ func main() {
 	//w.Resize(fyne.NewSize(100, 100))
 
 	// basic input
-	uiLocalAddr := &widget.Entry{Text: "127.0.0.1:1080"}
-	uiRemoteAddr := &widget.Entry{Text: "ws://proxy.gensh.me"}
-	uiHttpEnable := &widget.Check{Checked: false}
-	uiHttpLocalAddr := &widget.Entry{Text: "127.0.0.1:1086"}
+	uiLocalAddr := newEntryWithText("127.0.0.1:1080")
+	uiRemoteAddr := newEntryWithText("ws://proxy.gensh.me")
+	uiHttpEnable := newCheckbox("", false, nil)
+	uiHttpLocalAddr := newEntryWithText("127.0.0.1:1086")
 
 	loadBasicPreference(wssApp.Preferences(), uiLocalAddr, uiRemoteAddr, uiHttpLocalAddr, uiHttpEnable)
 
@@ -49,12 +61,13 @@ func main() {
 	}
 
 	// vpn input
-	uiVpnEnable := &widget.Check{Text: "enable ustb vpn", Checked: true}
-	uiVpnForceLogout := &widget.Check{Text: "", Checked: true}
-	uiVpnHostEncrypt := &widget.Check{Text: "", Checked: true}
-	uiVpnHostInput := &widget.Entry{Text: "n.ustb.edu.cn"}
-	uiVpnUsername := &widget.Entry{Text: ""}
-	uiVpnPassword := &widget.Entry{Text: "", Password: true}
+	uiVpnEnable := newCheckbox("enable ustb vpn", true, nil)
+	uiVpnForceLogout := newCheckbox("", true, nil)
+	uiVpnHostEncrypt := newCheckbox("", true, nil)
+	uiVpnHostInput := newEntryWithText("n.ustb.edu.cn")
+	uiVpnUsername := newEntryWithText("")
+	uiVpnPassword := newEntryWithText("")
+	uiVpnPassword.Password = true
 
 	loadVPNPreference(wssApp.Preferences(), uiVpnEnable, uiVpnForceLogout,
 		uiVpnHostEncrypt, uiVpnHostInput, uiVpnUsername, uiVpnPassword)
