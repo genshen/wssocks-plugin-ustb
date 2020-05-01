@@ -9,7 +9,15 @@
 import Foundation
 import WssocksGoApi
 
+typealias UintPtr = UInt
+
 struct WssocksClient {
+    private var handle: UintPtr
+
+    init() {
+        handle = NewClientHandles()
+    }
+
     public func startClient(config: Configs) -> String? {
         let CStrSocks5Addr = config.uiSocks5Addr.cString(using: String.Encoding.utf8)
         let CStrRemoteAddr = config.uiRemoteAddr.cString(using: String.Encoding.utf8)
@@ -27,7 +35,7 @@ struct WssocksClient {
         let vpnUsernamePtr = UnsafeMutablePointer(mutating: CStrVPNUsername)
         let vpnPasswdPtr = UnsafeMutablePointer(mutating: CStrVPNPasswd)
     
-        guard let v = StartClientWrapper(socks5AddrPtr, remoteAddrPtr, httpAddrPtr,
+        guard let v = StartClientWrapper(self.handle, socks5AddrPtr, remoteAddrPtr, httpAddrPtr,
                                          config.uiEnableHttpProxy, config.uiVPNEnable,
                                          config.uiVPNForceLogout, config.uiVPNHostEncrypt,
                                          vpnHostPtr, vpnUsernamePtr, vpnPasswdPtr) else { return nil }
@@ -35,7 +43,7 @@ struct WssocksClient {
     }
 
     public func stopClient() -> String? {
-        guard let v = StopClientWrapper() else { return nil }
+        guard let v = StopClientWrapper(self.handle) else { return nil }
         return String(bytesNoCopy: v, length: strlen(v), encoding: .utf8, freeWhenDone: true)
     }
 }

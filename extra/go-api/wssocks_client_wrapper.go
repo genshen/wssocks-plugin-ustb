@@ -4,10 +4,25 @@ import "C"
 import (
 	"github.com/genshen/wssocks-plugin-ustb/extra"
 	"github.com/genshen/wssocks-plugin-ustb/plugins/vpn"
+	"unsafe"
 )
 
+// so it would not be destroyed by garbage collection
+var handleInstances map[uintptr]*extra.Handles
+
+//export NewClientHandles
+func NewClientHandles() uintptr {
+	hd := new(extra.Handles)
+	ptr := uintptr(unsafe.Pointer(hd))
+	if handleInstances == nil {
+		handleInstances = make(map[uintptr]*extra.Handles)
+	}
+	handleInstances[ptr] = hd
+	return ptr
+}
+
 //export StartClientWrapper
-func StartClientWrapper(localAddr, remoteAddr, httpLocalAddr *C.char,
+func StartClientWrapper(handlesPtr uintptr, localAddr, remoteAddr, httpLocalAddr *C.char,
 	httpEnable, vpnEnable, vpnForceLogout, vpnHostEncrypt C._Bool,
 	vpnHostInput, vpnUsername, vpnPassword *C.char) (err *C.char) {
 	options := extra.Options{
@@ -24,15 +39,17 @@ func StartClientWrapper(localAddr, remoteAddr, httpLocalAddr *C.char,
 			Password:    C.GoString(vpnPassword),
 		},
 	}
-	var handles extra.Handles
-	if err := handles.StartWssocks(options); err != nil {
+	var hp = (*extra.Handles)(unsafe.Pointer(handlesPtr))
+	if err := hp.StartWssocks(options); err != nil {
 		return C.CString(err.Error())
 	}
 	return C.CString("")
 }
 
 //export StopClientWrapper
-func StopClientWrapper() *C.char {
+func StopClientWrapper(handlesPtr uintptr) *C.char {
+	var hp = (*extra.Handles)(unsafe.Pointer(handlesPtr))
+	hp.Close()
 	return C.CString("")
 }
 
