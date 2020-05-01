@@ -45,8 +45,8 @@ func main() {
 	//w.Resize(fyne.NewSize(100, 100))
 
 	// basic input
-	uiLocalAddr := newEntryWithText("127.0.0.1:1080")
-	uiRemoteAddr := newEntryWithText("ws://proxy.gensh.me")
+	uiLocalAddr := &widget.Entry{Text: "127.0.0.1:1080"}
+	uiRemoteAddr := &widget.Entry{Text: "ws://proxy.gensh.me"}
 	uiHttpEnable := newCheckbox("", false, nil)
 	uiHttpLocalAddr := newEntryWithText("127.0.0.1:1086")
 
@@ -64,10 +64,9 @@ func main() {
 	uiVpnEnable := newCheckbox("enable ustb vpn", true, nil)
 	uiVpnForceLogout := newCheckbox("", true, nil)
 	uiVpnHostEncrypt := newCheckbox("", true, nil)
-	uiVpnHostInput := newEntryWithText("n.ustb.edu.cn")
-	uiVpnUsername := newEntryWithText("")
-	uiVpnPassword := newEntryWithText("")
-	uiVpnPassword.Password = true
+	uiVpnHostInput := &widget.Entry{Text: "n.ustb.edu.cn"}
+	uiVpnUsername := &widget.Entry{Text: ""}
+	uiVpnPassword := &widget.Entry{Text: "", Password: true}
 
 	loadVPNPreference(wssApp.Preferences(), uiVpnEnable, uiVpnForceLogout,
 		uiVpnHostEncrypt, uiVpnHostInput, uiVpnUsername, uiVpnPassword)
