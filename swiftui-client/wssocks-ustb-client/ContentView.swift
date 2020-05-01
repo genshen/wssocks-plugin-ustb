@@ -36,6 +36,9 @@ class Configs : ObservableObject{
 struct ContentView: View {
     @ObservedObject var config = Configs()
 
+    @State private var uiEnableSubmitBtn = true
+    @State private var uiSubmitBtnLabel = "Start"
+
     @State private var showingAlert = false
     @State private var alertMessage: String = ""
 
@@ -88,15 +91,9 @@ struct ContentView: View {
             }
             HStack (alignment: .center, spacing: 20) {
                 Spacer()
-                Button(action: {
-                    let msg = self.client.startClient(config: self.config) ?? ""
-                    if msg != "" {
-                        self.alertMessage = msg
-                        self.showingAlert = true
-                    }
-                }) {
-                    Text("Start")
-                }.buttonStyle(DefaultButtonStyle())
+                Button(action: { self.onSubmit() }) {
+                    Text("\(uiSubmitBtnLabel)")
+                    }.buttonStyle(DefaultButtonStyle()).disabled(!uiEnableSubmitBtn)
                 .alert(isPresented: $showingAlert) {
                     Alert(title: Text("Error"), message: Text("\(alertMessage)"), dismissButton: .default(Text("OK")))
                 }
@@ -105,6 +102,39 @@ struct ContentView: View {
         .padding(EdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8))
     }
 
+    func onSubmit() {
+        if !uiEnableSubmitBtn {
+            return
+        }
+        let queue = DispatchQueue.main
+
+        if uiSubmitBtnLabel == "Start" {
+            uiEnableSubmitBtn = false
+            uiSubmitBtnLabel = "Launching..."
+            queue.async {
+                let msg = self.client.startClient(config: self.config) ?? ""
+                if msg != "" {
+                    self.alertMessage = msg
+                    self.showingAlert = true
+                }
+                self.uiEnableSubmitBtn = true
+                self.uiSubmitBtnLabel = "Stop"
+            }
+        } else {
+            uiEnableSubmitBtn = false
+            uiSubmitBtnLabel = "Stopping..."
+            queue.async {
+                let msg = self.client.stopClient() ?? ""
+                if msg != "" {
+                    self.alertMessage = msg
+                    self.showingAlert = true
+                }
+                self.uiEnableSubmitBtn = true
+                self.uiSubmitBtnLabel = "Start"
+            }
+        }
+        
+    }
     func StoreUserDefaults() {
         defaults.set(true, forKey: "has_preference")
 
