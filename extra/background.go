@@ -1,4 +1,6 @@
-package main
+// this file provide api for launching and stopping client
+
+package extra
 
 import (
 	"context"
@@ -16,10 +18,10 @@ import (
 type Options struct {
 	vpn.UstbVpn
 	remoteUrl       *url.URL
-	localSocks5Addr string
-	remoteAddr      string
-	httpEnable      bool
-	localHttpAddr   string
+	LocalSocks5Addr string
+	RemoteAddr      string
+	HttpEnable      bool
+	LocalHttpAddr   string
 }
 
 type Handles struct {
@@ -49,12 +51,12 @@ func (h *Handles) Close() {
 	h.wg.Wait() // wait tasks finishing
 }
 
-func (h *Handles) startWssocks(o Options) error {
+func (h *Handles) StartWssocks(o Options) error {
 	// check remote url
-	if o.remoteAddr == "" {
+	if o.RemoteAddr == "" {
 		return errors.New("empty remote address")
 	}
-	if u, err := url.Parse(o.remoteAddr); err != nil {
+	if u, err := url.Parse(o.RemoteAddr); err != nil {
 		return err
 	} else {
 		o.remoteUrl = u
@@ -99,12 +101,12 @@ func (h *Handles) startWssocks(o Options) error {
 	}()
 
 	record := wss.NewConnRecord() // connection record
-	if o.httpEnable {
+	if o.HttpEnable {
 		h.wg.Add(1)
 		go func() {
 			defer h.wg.Done()
 			handle := wss.NewHttpProxy(wsc, record)
-			h.httpServer = &http.Server{Addr: o.localHttpAddr, Handler: &handle}
+			h.httpServer = &http.Server{Addr: o.LocalHttpAddr, Handler: &handle}
 			if err := h.httpServer.ListenAndServe(); err != nil {
 				log.Println(err)
 			}
@@ -116,7 +118,7 @@ func (h *Handles) startWssocks(o Options) error {
 	h.wg.Add(1)
 	go func() {
 		defer h.wg.Done()
-		if err := h.cl.ListenAndServe(record, wsc, o.localSocks5Addr, o.httpEnable, func() {
+		if err := h.cl.ListenAndServe(record, wsc, o.LocalSocks5Addr, o.HttpEnable, func() {
 		}); err != nil {
 			log.Println(err)
 		}

@@ -1,0 +1,5 @@
+module WssocksGoApi {
+    header "../extra/go-api/libwssocks_go_api.h"
+    link "wssocks_go_api"
+    export *
+}
