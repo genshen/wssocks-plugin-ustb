@@ -1,4 +1,29 @@
 
+<a name="v0.5.1"></a>
+## [v0.5.1](https://github.com/genshen/wssocks-plugin-ustb/compare/v0.5.0...v0.5.1)
+
+> 2020-05-01
+
+### Docs
+
+* change default vpn host to n.ustb.edu.cn, rather than vpn4.ustb.edu.cn
+* add document of using SwitchyOmega extension as proxy client in Chrome or new Edge
+* update document to use socks5 proxy on chromium based browser
+* update usage document, add gui document and correct document errors
+* **changelog:** add CHANGELOG.md file and git-chglog config
+* **readme:** add document of available clients to README.md
+
+### Feat
+
+* **go-module:** update websocket to v1.4.2 and fyne to 1.2.4
+
+### Fix
+
+* **gui:** create some of widgets by function (not struct) to fix bug of "initial ui is not freshed"
+* **gui:** change default value of vpn host to n.ustb.edu.cn
+* **logs:** fix incorrect log format of printing `https(ssl) enabled` information
+
+
 <a name="v0.5.0"></a>
 ## [v0.5.0](https://github.com/genshen/wssocks-plugin-ustb/compare/v0.4.0...v0.5.0)
 
