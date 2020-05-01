@@ -37,8 +37,10 @@ struct ContentView: View {
     @ObservedObject var config = Configs()
 
     @State private var showingAlert = false
+    @State private var alertMessage: String = ""
 
     private let defaults = UserDefaults.standard
+    var client = WssocksClient()
 
     var body: some View {
         Form {
@@ -86,9 +88,18 @@ struct ContentView: View {
             }
             HStack (alignment: .center, spacing: 20) {
                 Spacer()
-                Button(action: {}) {
+                Button(action: {
+                    let msg = self.client.startClient(config: self.config) ?? ""
+                    if msg != "" {
+                        self.alertMessage = msg
+                        self.showingAlert = true
+                    }
+                }) {
                     Text("Start")
                 }.buttonStyle(DefaultButtonStyle())
+                .alert(isPresented: $showingAlert) {
+                    Alert(title: Text("Error"), message: Text("\(alertMessage)"), dismissButton: .default(Text("OK")))
+                }
             }
         }
         .padding(EdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8))
