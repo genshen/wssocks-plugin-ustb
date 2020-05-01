@@ -5,6 +5,7 @@ import (
 	"fyne.io/fyne/dialog"
 	"fyne.io/fyne/theme"
 	"fyne.io/fyne/widget"
+	"github.com/genshen/wssocks-plugin-ustb/extra"
 	"github.com/genshen/wssocks-plugin-ustb/plugins/vpn"
 	"github.com/genshen/wssocks/version"
 	"net/url"
@@ -90,7 +91,7 @@ func main() {
 
 	btnStart := widget.NewButton("Start", nil)
 	btnStatus := btnStopped
-	var handles Handles
+	var handles extra.Handles
 	btnStart.OnTapped = func() {
 		if btnStatus == btnRunning { // running can stop
 			btnStatus = btnStopping
@@ -99,11 +100,11 @@ func main() {
 			btnStart.SetText("Start")
 			btnStatus = btnStopped
 		} else if btnStatus == btnStopped { // stopped can run
-			options := Options{
-				localSocks5Addr: uiLocalAddr.Text,
-				remoteAddr:      uiRemoteAddr.Text,
-				httpEnable:      uiHttpEnable.Checked,
-				localHttpAddr:   uiHttpLocalAddr.Text,
+			options := extra.Options{
+				LocalSocks5Addr: uiLocalAddr.Text,
+				RemoteAddr:      uiRemoteAddr.Text,
+				HttpEnable:      uiHttpEnable.Checked,
+				LocalHttpAddr:   uiHttpLocalAddr.Text,
 				UstbVpn: vpn.UstbVpn{
 					Enable:      uiVpnEnable.Checked,
 					ForceLogout: uiVpnForceLogout.Checked,
@@ -115,7 +116,7 @@ func main() {
 			}
 			btnStatus = btnStarting
 			btnStart.SetText("Loading")
-			if err := handles.startWssocks(options); err != nil {
+			if err := handles.StartWssocks(options); err != nil {
 				// log error
 				dialog.ShowError(err, w)
 				btnStart.SetText("Start")
