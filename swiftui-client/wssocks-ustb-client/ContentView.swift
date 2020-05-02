@@ -106,37 +106,40 @@ struct ContentView: View {
         if !uiEnableSubmitBtn {
             return
         }
-        let queue = DispatchQueue.main
 
         if uiSubmitBtnLabel == "Start" {
             uiEnableSubmitBtn = false
             uiSubmitBtnLabel = "Launching..."
-            queue.async {
+            DispatchQueue.global().async {
                 let msg = self.client.startClient(config: self.config) ?? ""
-                if msg != "" {
-                    self.alertMessage = msg
-                    self.showingAlert = true
-                    self.uiSubmitBtnLabel = "Start"
-                } else {
-                    self.uiSubmitBtnLabel = "Stop"
+                DispatchQueue.main.sync {
+                    if msg != "" {
+                        self.alertMessage = msg
+                        self.showingAlert = true
+                        self.uiSubmitBtnLabel = "Start"
+                    } else {
+                        self.uiSubmitBtnLabel = "Stop"
+                    }
+                    self.uiEnableSubmitBtn = true
                 }
-                self.uiEnableSubmitBtn = true
             }
         } else {
             uiEnableSubmitBtn = false
             uiSubmitBtnLabel = "Stopping..."
-            queue.async {
+            DispatchQueue.global().async {
                 let msg = self.client.stopClient() ?? ""
-                if msg != "" {
-                    self.alertMessage = msg
-                    self.showingAlert = true
+                DispatchQueue.main.sync {
+                    if msg != "" {
+                        self.alertMessage = msg
+                        self.showingAlert = true
+                    }
+                    self.uiEnableSubmitBtn = true
+                    self.uiSubmitBtnLabel = "Start"
                 }
-                self.uiEnableSubmitBtn = true
-                self.uiSubmitBtnLabel = "Start"
             }
         }
-        
     }
+
     func StoreUserDefaults() {
         defaults.set(true, forKey: "has_preference")
 
