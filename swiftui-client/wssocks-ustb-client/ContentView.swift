@@ -116,9 +116,11 @@ struct ContentView: View {
                 if msg != "" {
                     self.alertMessage = msg
                     self.showingAlert = true
+                    self.uiSubmitBtnLabel = "Start"
+                } else {
+                    self.uiSubmitBtnLabel = "Stop"
                 }
                 self.uiEnableSubmitBtn = true
-                self.uiSubmitBtnLabel = "Stop"
             }
         } else {
             uiEnableSubmitBtn = false
