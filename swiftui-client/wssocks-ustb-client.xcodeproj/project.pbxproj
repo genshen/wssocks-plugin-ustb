@@ -1,0 +1,608 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8068F1C3245BD9D000EAE70C /* wssocksClientApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8068F1C2245BD9D000EAE70C /* wssocksClientApi.swift */; };
+		80DDD90D245A5E2900DCC97D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80DDD90C245A5E2900DCC97D /* AppDelegate.swift */; };
+		80DDD90F245A5E2900DCC97D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80DDD90E245A5E2900DCC97D /* ContentView.swift */; };
+		80DDD911245A5E2B00DCC97D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 80DDD910245A5E2B00DCC97D /* Assets.xcassets */; };
+		80DDD914245A5E2B00DCC97D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 80DDD913245A5E2B00DCC97D /* Preview Assets.xcassets */; };
+		80DDD917245A5E2B00DCC97D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 80DDD915245A5E2B00DCC97D /* Main.storyboard */; };
+		80DDD923245A5E2C00DCC97D /* wssocks_ustb_clientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80DDD922245A5E2C00DCC97D /* wssocks_ustb_clientTests.swift */; };
+		80DDD92E245A5E2C00DCC97D /* wssocks_ustb_clientUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80DDD92D245A5E2C00DCC97D /* wssocks_ustb_clientUITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		80DDD91F245A5E2C00DCC97D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 80DDD901245A5E2900DCC97D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 80DDD908245A5E2900DCC97D;
+			remoteInfo = "wssocks-ustb-client";
+		};
+		80DDD92A245A5E2C00DCC97D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 80DDD901245A5E2900DCC97D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 80DDD908245A5E2900DCC97D;
+			remoteInfo = "wssocks-ustb-client";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		8068F1C2245BD9D000EAE70C /* wssocksClientApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = wssocksClientApi.swift; sourceTree = "<group>"; };
+		80DDD909245A5E2900DCC97D /* wssocks-ustb-client.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "wssocks-ustb-client.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		80DDD90C245A5E2900DCC97D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		80DDD90E245A5E2900DCC97D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		80DDD910245A5E2B00DCC97D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		80DDD913245A5E2B00DCC97D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		80DDD916245A5E2B00DCC97D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		80DDD918245A5E2B00DCC97D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		80DDD919245A5E2B00DCC97D /* wssocks_ustb_client.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = wssocks_ustb_client.entitlements; sourceTree = "<group>"; };
+		80DDD91E245A5E2C00DCC97D /* wssocks-ustb-clientTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "wssocks-ustb-clientTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		80DDD922245A5E2C00DCC97D /* wssocks_ustb_clientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = wssocks_ustb_clientTests.swift; sourceTree = "<group>"; };
+		80DDD924245A5E2C00DCC97D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		80DDD929245A5E2C00DCC97D /* wssocks-ustb-clientUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "wssocks-ustb-clientUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		80DDD92D245A5E2C00DCC97D /* wssocks_ustb_clientUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = wssocks_ustb_clientUITests.swift; sourceTree = "<group>"; };
+		80DDD92F245A5E2C00DCC97D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		80DDD906245A5E2900DCC97D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		80DDD91B245A5E2C00DCC97D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		80DDD926245A5E2C00DCC97D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		80DDD900245A5E2900DCC97D = {
+			isa = PBXGroup;
+			children = (
+				80DDD90B245A5E2900DCC97D /* wssocks-ustb-client */,
+				80DDD921245A5E2C00DCC97D /* wssocks-ustb-clientTests */,
+				80DDD92C245A5E2C00DCC97D /* wssocks-ustb-clientUITests */,
+				80DDD90A245A5E2900DCC97D /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		80DDD90A245A5E2900DCC97D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				80DDD909245A5E2900DCC97D /* wssocks-ustb-client.app */,
+				80DDD91E245A5E2C00DCC97D /* wssocks-ustb-clientTests.xctest */,
+				80DDD929245A5E2C00DCC97D /* wssocks-ustb-clientUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		80DDD90B245A5E2900DCC97D /* wssocks-ustb-client */ = {
+			isa = PBXGroup;
+			children = (
+				80DDD90C245A5E2900DCC97D /* AppDelegate.swift */,
+				80DDD90E245A5E2900DCC97D /* ContentView.swift */,
+				80DDD910245A5E2B00DCC97D /* Assets.xcassets */,
+				80DDD915245A5E2B00DCC97D /* Main.storyboard */,
+				80DDD918245A5E2B00DCC97D /* Info.plist */,
+				80DDD919245A5E2B00DCC97D /* wssocks_ustb_client.entitlements */,
+				8068F1C2245BD9D000EAE70C /* wssocksClientApi.swift */,
+				80DDD912245A5E2B00DCC97D /* Preview Content */,
+			);
+			path = "wssocks-ustb-client";
+			sourceTree = "<group>";
+		};
+		80DDD912245A5E2B00DCC97D /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				80DDD913245A5E2B00DCC97D /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		80DDD921245A5E2C00DCC97D /* wssocks-ustb-clientTests */ = {
+			isa = PBXGroup;
+			children = (
+				80DDD922245A5E2C00DCC97D /* wssocks_ustb_clientTests.swift */,
+				80DDD924245A5E2C00DCC97D /* Info.plist */,
+			);
+			path = "wssocks-ustb-clientTests";
+			sourceTree = "<group>";
+		};
+		80DDD92C245A5E2C00DCC97D /* wssocks-ustb-clientUITests */ = {
+			isa = PBXGroup;
+			children = (
+				80DDD92D245A5E2C00DCC97D /* wssocks_ustb_clientUITests.swift */,
+				80DDD92F245A5E2C00DCC97D /* Info.plist */,
+			);
+			path = "wssocks-ustb-clientUITests";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		80DDD908245A5E2900DCC97D /* wssocks-ustb-client */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 80DDD932245A5E2C00DCC97D /* Build configuration list for PBXNativeTarget "wssocks-ustb-client" */;
+			buildPhases = (
+				80DDD905245A5E2900DCC97D /* Sources */,
+				80DDD906245A5E2900DCC97D /* Frameworks */,
+				80DDD907245A5E2900DCC97D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "wssocks-ustb-client";
+			productName = "wssocks-ustb-client";
+			productReference = 80DDD909245A5E2900DCC97D /* wssocks-ustb-client.app */;
+			productType = "com.apple.product-type.application";
+		};
+		80DDD91D245A5E2C00DCC97D /* wssocks-ustb-clientTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 80DDD935245A5E2C00DCC97D /* Build configuration list for PBXNativeTarget "wssocks-ustb-clientTests" */;
+			buildPhases = (
+				80DDD91A245A5E2C00DCC97D /* Sources */,
+				80DDD91B245A5E2C00DCC97D /* Frameworks */,
+				80DDD91C245A5E2C00DCC97D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				80DDD920245A5E2C00DCC97D /* PBXTargetDependency */,
+			);
+			name = "wssocks-ustb-clientTests";
+			productName = "wssocks-ustb-clientTests";
+			productReference = 80DDD91E245A5E2C00DCC97D /* wssocks-ustb-clientTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		80DDD928245A5E2C00DCC97D /* wssocks-ustb-clientUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 80DDD938245A5E2C00DCC97D /* Build configuration list for PBXNativeTarget "wssocks-ustb-clientUITests" */;
+			buildPhases = (
+				80DDD925245A5E2C00DCC97D /* Sources */,
+				80DDD926245A5E2C00DCC97D /* Frameworks */,
+				80DDD927245A5E2C00DCC97D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				80DDD92B245A5E2C00DCC97D /* PBXTargetDependency */,
+			);
+			name = "wssocks-ustb-clientUITests";
+			productName = "wssocks-ustb-clientUITests";
+			productReference = 80DDD929245A5E2C00DCC97D /* wssocks-ustb-clientUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		80DDD901245A5E2900DCC97D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1140;
+				LastUpgradeCheck = 1140;
+				ORGANIZATIONNAME = genshen;
+				TargetAttributes = {
+					80DDD908245A5E2900DCC97D = {
+						CreatedOnToolsVersion = 11.4.1;
+					};
+					80DDD91D245A5E2C00DCC97D = {
+						CreatedOnToolsVersion = 11.4.1;
+						TestTargetID = 80DDD908245A5E2900DCC97D;
+					};
+					80DDD928245A5E2C00DCC97D = {
+						CreatedOnToolsVersion = 11.4.1;
+						TestTargetID = 80DDD908245A5E2900DCC97D;
+					};
+				};
+			};
+			buildConfigurationList = 80DDD904245A5E2900DCC97D /* Build configuration list for PBXProject "wssocks-ustb-client" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 80DDD900245A5E2900DCC97D;
+			productRefGroup = 80DDD90A245A5E2900DCC97D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				80DDD908245A5E2900DCC97D /* wssocks-ustb-client */,
+				80DDD91D245A5E2C00DCC97D /* wssocks-ustb-clientTests */,
+				80DDD928245A5E2C00DCC97D /* wssocks-ustb-clientUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		80DDD907245A5E2900DCC97D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				80DDD917245A5E2B00DCC97D /* Main.storyboard in Resources */,
+				80DDD914245A5E2B00DCC97D /* Preview Assets.xcassets in Resources */,
+				80DDD911245A5E2B00DCC97D /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		80DDD91C245A5E2C00DCC97D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		80DDD927245A5E2C00DCC97D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		80DDD905245A5E2900DCC97D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8068F1C3245BD9D000EAE70C /* wssocksClientApi.swift in Sources */,
+				80DDD90F245A5E2900DCC97D /* ContentView.swift in Sources */,
+				80DDD90D245A5E2900DCC97D /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		80DDD91A245A5E2C00DCC97D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				80DDD923245A5E2C00DCC97D /* wssocks_ustb_clientTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		80DDD925245A5E2C00DCC97D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				80DDD92E245A5E2C00DCC97D /* wssocks_ustb_clientUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		80DDD920245A5E2C00DCC97D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 80DDD908245A5E2900DCC97D /* wssocks-ustb-client */;
+			targetProxy = 80DDD91F245A5E2C00DCC97D /* PBXContainerItemProxy */;
+		};
+		80DDD92B245A5E2C00DCC97D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 80DDD908245A5E2900DCC97D /* wssocks-ustb-client */;
+			targetProxy = 80DDD92A245A5E2C00DCC97D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		80DDD915245A5E2B00DCC97D /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				80DDD916245A5E2B00DCC97D /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		80DDD930245A5E2C00DCC97D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		80DDD931245A5E2C00DCC97D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		80DDD933245A5E2C00DCC97D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "wssocks-ustb-client/wssocks_ustb_client.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_ASSET_PATHS = "\"wssocks-ustb-client/Preview Content\"";
+				DEVELOPMENT_TEAM = 225G88CH2L;
+				ENABLE_PREVIEWS = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)";
+				INFOPLIST_FILE = "wssocks-ustb-client/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/../extra/go-api";
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.github.genshen.wssocks-ustb-client";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		80DDD934245A5E2C00DCC97D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "wssocks-ustb-client/wssocks_ustb_client.entitlements";
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_ASSET_PATHS = "\"wssocks-ustb-client/Preview Content\"";
+				DEVELOPMENT_TEAM = 225G88CH2L;
+				ENABLE_PREVIEWS = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)";
+				INFOPLIST_FILE = "wssocks-ustb-client/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/../extra/go-api";
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.github.genshen.wssocks-ustb-client";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		80DDD936245A5E2C00DCC97D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "wssocks-ustb-clientTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.github.genshen.wssocks-ustb-clientTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/wssocks-ustb-client.app/Contents/MacOS/wssocks-ustb-client";
+			};
+			name = Debug;
+		};
+		80DDD937245A5E2C00DCC97D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "wssocks-ustb-clientTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.github.genshen.wssocks-ustb-clientTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/wssocks-ustb-client.app/Contents/MacOS/wssocks-ustb-client";
+			};
+			name = Release;
+		};
+		80DDD939245A5E2C00DCC97D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "wssocks-ustb-clientUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.github.genshen.wssocks-ustb-clientUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = "wssocks-ustb-client";
+			};
+			name = Debug;
+		};
+		80DDD93A245A5E2C00DCC97D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "wssocks-ustb-clientUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.github.genshen.wssocks-ustb-clientUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = "wssocks-ustb-client";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		80DDD904245A5E2900DCC97D /* Build configuration list for PBXProject "wssocks-ustb-client" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				80DDD930245A5E2C00DCC97D /* Debug */,
+				80DDD931245A5E2C00DCC97D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		80DDD932245A5E2C00DCC97D /* Build configuration list for PBXNativeTarget "wssocks-ustb-client" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				80DDD933245A5E2C00DCC97D /* Debug */,
+				80DDD934245A5E2C00DCC97D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		80DDD935245A5E2C00DCC97D /* Build configuration list for PBXNativeTarget "wssocks-ustb-clientTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				80DDD936245A5E2C00DCC97D /* Debug */,
+				80DDD937245A5E2C00DCC97D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		80DDD938245A5E2C00DCC97D /* Build configuration list for PBXNativeTarget "wssocks-ustb-clientUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				80DDD939245A5E2C00DCC97D /* Debug */,
+				80DDD93A245A5E2C00DCC97D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 80DDD901245A5E2900DCC97D /* Project object */;
+}
