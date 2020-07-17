@@ -24,6 +24,7 @@ package: client-ui-macOS-amd64.app client-ui-windows-amd64.exe # client-ui-linux
 client-ui-macOS-amd64.app: wssocks-ustb-ui-macOS-amd64
 	cp -r wssocks-ustb-ui-macOS-amd64 wssocks-ustb-client
 	CC=clang CGO_ENABLED=1 GOOS=darwin GOARCH=amd64 fyne package -os darwin -icon app-512.png -appID ${appID} -executable wssocks-ustb-client -name ${appName}
+	cp mac-Info.plist ${appName}.app/Contents/Info.plist
 	rm -rf client-ui-macOS-amd64.app; mv ${appName}.app client-ui-macOS-amd64.app
 
 client-ui-windows-amd64.exe: wssocks-ustb-ui-windows-amd64.exe
