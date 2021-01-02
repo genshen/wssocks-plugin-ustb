@@ -5,7 +5,8 @@ import (
 	"github.com/genshen/wssocks-plugin-ustb/plugins/ver"
 	"github.com/genshen/wssocks-plugin-ustb/plugins/vpn"
 	"github.com/genshen/wssocks/client"
-	_ "github.com/genshen/wssocks/server"
+	_ "github.com/genshen/wssocks/cmd/client"
+	_ "github.com/genshen/wssocks/cmd/server"
 	log "github.com/sirupsen/logrus"
 	//_ "github.com/genshen/wssocks/version"
 	_ "github.com/genshen/wssocks-plugin-ustb/wssocks-ustb/version"
@@ -15,7 +16,7 @@ import (
 func init() {
 	vpn := vpn.NewUstbVpnCli()
 	ver := ver.PluginVersionNeg{}
-	client.AddPluginRedirect(vpn)
+	client.AddPluginRequest(vpn)
 	client.AddPluginVersion(&ver)
 }
 
