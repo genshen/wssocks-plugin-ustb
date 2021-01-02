@@ -5,124 +5,69 @@ package extra
 import (
 	"context"
 	"errors"
-	"fmt"
-	"github.com/genshen/wssocks-plugin-ustb/plugins/vpn"
-	"github.com/genshen/wssocks/wss"
-	"github.com/gorilla/websocket"
-	"log"
 	"net/http"
 	"net/url"
 	"sync"
+	"time"
+
+	"github.com/genshen/wssocks-plugin-ustb/plugins/ver"
+	"github.com/genshen/wssocks-plugin-ustb/plugins/vpn"
+	"github.com/genshen/wssocks/client"
 )
 
 type Options struct {
+	client.Options
 	vpn.UstbVpn
-	remoteUrl       *url.URL
-	LocalSocks5Addr string
-	RemoteAddr      string
-	HttpEnable      bool
-	LocalHttpAddr   string
+	RemoteAddr string
 }
 
-type Handles struct {
-	wsc        *wss.WebSocketClient
-	hb         *wss.HeartBeat
-	httpServer *http.Server
-	cl         *wss.Client
-	closed     bool
-	wg         sync.WaitGroup
+type TaskHandles struct {
+	client.Handles
+	once *sync.Once
 }
 
-func (h *Handles) Close() {
-	if h.closed {
-		return
-	}
-	h.closed = true
-	h.cl.Close(false)
-	if h.httpServer != nil {
-		h.httpServer.Shutdown(context.TODO())
-	}
-	if h.hb != nil {
-		h.hb.Close()
-	}
-	if h.wsc != nil {
-		h.wsc.Close()
-	}
-	h.wg.Wait() // wait tasks finishing
+func (h *TaskHandles) NotifyCloseWrapper() {
+	h.NotifyClose(h.once, false)
 }
 
-func (h *Handles) StartWssocks(o Options) error {
+var pluginRegistered = false
+
+func (h *TaskHandles) StartWssocks(options Options) error {
+	if !pluginRegistered {
+		client.AddPluginRequest(&options.UstbVpn)
+		client.AddPluginVersion(&ver.PluginVersionNeg{})
+		pluginRegistered = true
+	}
+
 	// check remote url
-	if o.RemoteAddr == "" {
+	if options.RemoteAddr == "" {
 		return errors.New("empty remote address")
 	}
-	if u, err := url.Parse(o.RemoteAddr); err != nil {
+	u, err := url.Parse(options.RemoteAddr)
+	if err != nil {
 		return err
 	} else {
-		o.remoteUrl = u
+		options.RemoteUrl = u
 	}
 
-	dialer := websocket.DefaultDialer
-	wsHeader := make(http.Header)
+	options.RemoteHeaders = make(http.Header)
 
-	// we don't register redirect plugin, just call vpn plugin directly.
-	if err := o.UstbVpn.BeforeRequest(dialer, o.remoteUrl, wsHeader); err != nil {
-		return err
-	}
+	h.Handles = *client.NewClientHandles()
+	ctx, cancel := context.WithTimeout(context.Background(), time.Minute) // fixme
+	defer cancel()
 
-	wsc, err := wss.NewWebSocketClient(websocket.DefaultDialer, o.remoteUrl.String(), wsHeader)
+	_, err = h.CreateServerConn(&options.Options, ctx)
 	if err != nil {
-		return fmt.Errorf("establishing connection error: %w", err)
+		return err
 	}
+	// server connect successfully
 
-	// todo chan for wsc and tcp accept
-
-	if _, err := wss.ExchangeVersion(wsc.WsConn); err != nil {
+	if err := h.NegotiateVersion(ctx, options.RemoteAddr); err != nil {
 		return err
 	}
 
-	h.wsc = wsc
-	// start websocket message listen.
-	h.wg.Add(1)
-	go func() {
-		defer h.wg.Done()
-		if err := wsc.ListenIncomeMsg(); err != nil {
-			log.Println("error websocket read:", err)
-		}
-	}()
-	// send heart beats.
-	h.hb = wss.NewHeartBeat(wsc)
-	h.wg.Add(1)
-	go func() {
-		defer h.wg.Done()
-		if err := h.hb.Start(); err != nil {
-			log.Println("heartbeat ending", err)
-		}
-	}()
-
-	record := wss.NewConnRecord() // connection record
-	if o.HttpEnable {
-		h.wg.Add(1)
-		go func() {
-			defer h.wg.Done()
-			handle := wss.NewHttpProxy(wsc, record)
-			h.httpServer = &http.Server{Addr: o.LocalHttpAddr, Handler: &handle}
-			if err := h.httpServer.ListenAndServe(); err != nil {
-				log.Println(err)
-			}
-		}()
-	}
-
-	// start listen for socks5 and https connection.
-	h.cl = wss.NewClient()
-	h.wg.Add(1)
-	go func() {
-		defer h.wg.Done()
-		if err := h.cl.ListenAndServe(record, wsc, o.LocalSocks5Addr, o.HttpEnable, func() {
-		}); err != nil {
-			log.Println(err)
-		}
-	}()
-	h.closed = false // reopen
+	var once sync.Once
+	h.once = &once
+	h.StartClient(&options.Options, &once)
 	return nil
 }

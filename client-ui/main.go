@@ -8,6 +8,7 @@ import (
 	"fyne.io/fyne/widget"
 	"github.com/genshen/wssocks-plugin-ustb/extra"
 	"github.com/genshen/wssocks-plugin-ustb/plugins/vpn"
+	"github.com/genshen/wssocks/client"
 	"github.com/genshen/wssocks/version"
 	"net/url"
 )
@@ -91,20 +92,21 @@ func main() {
 
 	btnStart := widget.NewButtonWithIcon("Start", theme.MailSendIcon(),nil)
 	btnStatus := btnStopped
-	var handles extra.Handles
+	var handles extra.TaskHandles
 	btnStart.OnTapped = func() {
 		if btnStatus == btnRunning { // running can stop
 			btnStatus = btnStopping
 			btnStart.SetText("Stopping")
-			handles.Close()
+			handles.NotifyCloseWrapper()
 			btnStart.SetText("Start")
 			btnStatus = btnStopped
 		} else if btnStatus == btnStopped { // stopped can run
 			options := extra.Options{
-				LocalSocks5Addr: uiLocalAddr.Text,
-				RemoteAddr:      uiRemoteAddr.Text,
-				HttpEnable:      uiHttpEnable.Checked,
-				LocalHttpAddr:   uiHttpLocalAddr.Text,
+				Options: client.Options{
+					LocalSocks5Addr:  uiLocalAddr.Text,
+					HttpEnabled:     uiHttpEnable.Checked,
+					LocalHttpAddr: uiHttpLocalAddr.Text,
+				},
 				UstbVpn: vpn.UstbVpn{
 					Enable:      uiVpnEnable.Checked,
 					ForceLogout: uiVpnForceLogout.Checked,
@@ -113,6 +115,7 @@ func main() {
 					Username:    uiVpnUsername.Text,
 					Password:    uiVpnPassword.Text,
 				},
+				RemoteAddr:      uiRemoteAddr.Text,
 			}
 			btnStatus = btnStarting
 			btnStart.SetText("Loading")
@@ -170,7 +173,7 @@ func main() {
 		if btnStatus == btnRunning { // running can stop
 			btnStatus = btnStopping
 			btnStart.SetText("Stopping")
-			handles.Close()
+			handles.NotifyCloseWrapper()
 		}
 		saveBasicPreference(wssApp.Preferences(), uiLocalAddr, uiRemoteAddr, uiHttpLocalAddr, uiHttpEnable)
 		saveVPNPreference(wssApp.Preferences(), uiVpnEnable, uiVpnForceLogout,
