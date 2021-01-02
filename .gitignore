@@ -1,3 +1,6 @@
+extra/go-api/libwssocks_go_api.a
+extra/go-api/libwssocks_go_api.h
+
 .DS_Store
 
 # Gradle
