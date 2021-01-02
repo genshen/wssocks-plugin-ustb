@@ -2,6 +2,7 @@ package main
 
 import (
 	"fyne.io/fyne/app"
+	"fyne.io/fyne/container"
 	"fyne.io/fyne/dialog"
 	"fyne.io/fyne/theme"
 	"fyne.io/fyne/widget"
@@ -88,7 +89,7 @@ func main() {
 		}
 	}
 
-	btnStart := widget.NewButton("Start", nil)
+	btnStart := widget.NewButtonWithIcon("Start", theme.MailSendIcon(),nil)
 	btnStatus := btnStopped
 	var handles extra.Handles
 	btnStart.OnTapped = func() {
@@ -137,8 +138,8 @@ func main() {
 		return
 	}
 
-	w.SetContent(widget.NewVBox(
-		widget.NewGroup("basic",
+	w.SetContent(container.NewVBox(
+		widget.NewCard("","Basic",
 			&widget.Form{Items: []*widget.FormItem{
 				{Text: "socks5 address", Widget: uiLocalAddr},
 				{Text: "remote address", Widget: uiRemoteAddr},
@@ -146,7 +147,7 @@ func main() {
 				{Text: "http(s) address", Widget: uiHttpLocalAddr},
 			}},
 		), // end group
-		widget.NewGroup("vpn",
+		widget.NewCard("","USTB VPN",
 			&widget.Form{Items: []*widget.FormItem{
 				{Text: "enable", Widget: uiVpnEnable},
 				{Text: "force logout", Widget: uiVpnForceLogout},
@@ -157,7 +158,7 @@ func main() {
 			}},
 		), // end group
 		btnStart,
-		widget.NewHBox(
+		container.NewHBox(
 			widget.NewLabel("v"+version.VERSION),
 			widget.NewHyperlink("Github", repoUrl),
 			widget.NewHyperlink("Document", docUrl),
