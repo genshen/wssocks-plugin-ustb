@@ -5,8 +5,7 @@ import (
 	"encoding/hex"
 	"fmt"
 	"github.com/genshen/cmds"
-	"github.com/genshen/wssocks/client"
-	"github.com/gorilla/websocket"
+	"github.com/genshen/wssocks/cmd/client"
 	log "github.com/sirupsen/logrus"
 	"golang.org/x/crypto/ssh/terminal"
 	"net"
@@ -43,7 +42,7 @@ func NewUstbVpnCli() *UstbVpn {
 	return &vpn
 }
 
-func (v *UstbVpn) BeforeRequest(dialer *websocket.Dialer, url *url.URL, header http.Header) error {
+func (v *UstbVpn) BeforeRequest(hc *http.Client, transport *http.Transport, url *url.URL, header *http.Header) error {
 	if !v.Enable {
 		return nil
 	}
@@ -78,11 +77,11 @@ func (v *UstbVpn) BeforeRequest(dialer *websocket.Dialer, url *url.URL, header h
 		if jar, err := cookiejar.New(nil); err != nil {
 			return err
 		} else {
-			dialer.Jar = jar
 			cookieUrl := *url
 			// replace url scheme "wss" to "https" and "ws"to "http"
 			cookieUrl.Scheme = strings.Replace(cookieUrl.Scheme, "ws", "http", 1)
-			dialer.Jar.SetCookies(&cookieUrl, cookies)
+			jar.SetCookies(&cookieUrl, cookies)
+			hc.Jar = jar
 			return nil
 		}
 	}
