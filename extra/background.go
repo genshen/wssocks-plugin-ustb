@@ -30,13 +30,27 @@ func (h *TaskHandles) NotifyCloseWrapper() {
 	h.NotifyClose(h.once, false)
 }
 
-var pluginRegistered = false
+var vpnPlugin *vpn.UstbVpn = nil
+
+func loadPlugins(v vpn.UstbVpn) error {
+	if vpnPlugin == nil {
+		vpnPlugin = &v
+		if err := client.AddPluginRequest(vpnPlugin); err != nil {
+			return err
+		}
+		if err := client.AddPluginVersion(&ver.PluginVersionNeg{}); err != nil {
+			return err
+		}
+	} else {
+		// apply changed vpn config to plugin
+		*vpnPlugin = v
+	}
+	return nil
+}
 
 func (h *TaskHandles) StartWssocks(options Options) error {
-	if !pluginRegistered {
-		client.AddPluginRequest(&options.UstbVpn)
-		client.AddPluginVersion(&ver.PluginVersionNeg{})
-		pluginRegistered = true
+	if err := loadPlugins(options.UstbVpn); err != nil {
+		return err
 	}
 
 	// check remote url
