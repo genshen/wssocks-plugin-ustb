@@ -4,16 +4,17 @@
 PHONY: package all clean
 
 PACKAGE=github.com/genshen/wssocks-plugin-ustb/client-ui
+FLAGS=-gcflags="all=-trimpath=${GOPATH}" -asmflags "all=-trimpath=${GOPATH}"
 appID=wssocks-ustb-client-ui.genshen.github.com
 appName="wssocks-ustb client"
 
 all: wssocks-ustb-ui-macOS-amd64 wssocks-ustb-ui-windows-amd64.exe # wssocks-ustb-ui-linux-amd64
 
 wssocks-ustb-ui-macOS-amd64:
-	CC=clang CGO_ENABLED=1 GOOS=darwin GOARCH=amd64 go build -o wssocks-ustb-ui-macOS-amd64 ${PACKAGE}
+	CC=clang CGO_ENABLED=1 GOOS=darwin GOARCH=amd64 go build ${FLAGS} -o wssocks-ustb-ui-macOS-amd64 ${PACKAGE}
 
 wssocks-ustb-ui-windows-amd64.exe:
-	CC=x86_64-w64-mingw32-gcc CGO_ENABLED=1 GOOS=windows GOARCH=amd64 go build -ldflags -H=windowsgui -o wssocks-ustb-ui-windows-amd64.exe ${PACKAGE}
+	CC=x86_64-w64-mingw32-gcc CGO_ENABLED=1 GOOS=windows GOARCH=amd64 go build ${FLAGS} -ldflags -H=windowsgui -o wssocks-ustb-ui-windows-amd64.exe ${PACKAGE}
 
 # wssocks-ustb-ui-linux-amd64:
 # 	CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -o wssocks-ustb-ui-linux-amd64 ${PACKAGE}
