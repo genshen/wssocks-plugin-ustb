@@ -88,7 +88,7 @@ wssocks 客户端分为 cli 版本和 gui 版本，根据需求选择其中一�
    ![](asserts/ssh-example.png)  
    - Git Bash  
    ```bash
-   ssh -o ProxyCommand='connect -x 127.0.0.1:1080 %h %p' ssh.hpc.gensh.me
+   ssh -o ProxyCommand='connect -S 127.0.0.1:1080 %h %p' ssh.hpc.gensh.me
    ```
    - shell 客户端  
    其他平台上的一些shell客户端(如xshell)，可对ssh连接进行 socks5 代理配置.
