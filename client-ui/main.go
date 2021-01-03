@@ -41,7 +41,7 @@ func newCheckbox(text string, checked bool, onChanged func(bool)) *widget.Check 
 
 func main() {
 	wssApp := app.NewWithID(AppId)
-	wssApp.Settings().SetTheme(theme.LightTheme())
+	wssApp.Settings().SetTheme(myTheme{})
 
 	w := wssApp.NewWindow(AppName)
 	//w.SetFixedSize(true)
@@ -91,6 +91,8 @@ func main() {
 	}
 
 	btnStart := widget.NewButtonWithIcon("Start", theme.MailSendIcon(),nil)
+	btnStart.Importance = widget.HighImportance
+
 	btnStatus := btnStopped
 	var handles extra.TaskHandles
 	btnStart.OnTapped = func() {
