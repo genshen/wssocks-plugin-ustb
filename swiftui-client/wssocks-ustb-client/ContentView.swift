@@ -90,6 +90,9 @@ struct ContentView: View {
                 }
             }
             HStack (alignment: .center, spacing: 20) {
+                Button(action: { self.openNetworkProxyPreferences() }) {
+                Text("Network Preferences")
+                }.buttonStyle(DefaultButtonStyle())
                 Spacer()
                 Button(action: { self.onSubmit() }) {
                     Text("\(uiSubmitBtnLabel)")
@@ -102,6 +105,23 @@ struct ContentView: View {
         .padding(EdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8))
     }
 
+    func openNetworkProxyPreferences() {
+//        let url = URL(string:"x-apple.systempreferences:com.apple.preference.network?Proxies")!
+//        NSWorkspace.shared.open(url)
+        let script = """
+tell application "System Preferences"
+    reveal anchor "Proxies" of pane "com.apple.preference.network"
+    activate
+end tell
+"""
+        var err: NSDictionary?
+        let scriptObject = NSAppleScript(source: script)
+        if let output = scriptObject?.executeAndReturnError(&err) {
+            print(output.stringValue ?? "")
+        } else {
+            // something's wrong
+        }
+    }
     func onSubmit() {
         if !uiEnableSubmitBtn {
             return
