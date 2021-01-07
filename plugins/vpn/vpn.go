@@ -2,6 +2,7 @@ package vpn
 
 import (
 	"bufio"
+	"crypto/tls"
 	"encoding/hex"
 	"fmt"
 	"github.com/genshen/cmds"
@@ -68,8 +69,14 @@ func (v *UstbVpn) BeforeRequest(hc *http.Client, transport *http.Transport, url 
 	// add cookie
 	al := AutoLogin{Host: v.TargetVpn, ForceLogout: v.ForceLogout}
 	if cookies, err := al.vpnLogin(v.Username, v.Password); err != nil {
-		return err
+		return fmt.Errorf("error vpn login: %w", err)
 	} else {
+		// In vpnLogin, we can test https support.
+		// If the vpn support https, we can set transport.SkipTLSVerify if necessary.
+		if al.SSLEnabled {
+			transport.TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
+		}
+
 		// change target url.
 		vpnUrl(v.HostEncrypt, v.TargetVpn, al.SSLEnabled, url)
 		log.Infof("real url: %s, ssl enabled:%t", url.String(), al.SSLEnabled)

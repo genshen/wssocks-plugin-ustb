@@ -2,6 +2,7 @@ package vpn
 
 import (
 	"bufio"
+	"crypto/tls"
 	"errors"
 	"fmt"
 	log "github.com/sirupsen/logrus"
@@ -81,6 +82,9 @@ func (al *AutoLogin) vpnLogin(uname, passwd string) ([]*http.Cookie, error) {
 			// if upgrade http to https
 			return http.ErrUseLastResponse
 		},
+		Transport: &http.Transport{
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+		},
 	}
 	req, err := http.NewRequest("POST", loginAddress, strings.NewReader(form.Encode())) // todo missing http.
 	if err != nil {
@@ -126,6 +130,9 @@ func testHttpsEnabled(host string) (bool, error) {
 			}
 			return http.ErrUseLastResponse
 		},
+		Transport: &http.Transport{
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+		},
 	}
 
 	req, err := http.NewRequest("GET", testUrl.String(), nil)
@@ -142,7 +149,11 @@ func testHttpsEnabled(host string) (bool, error) {
 }
 
 func (al *AutoLogin) testConnect(uname string, cookies []*http.Cookie) error {
-	hc := http.Client{}
+	hc := http.Client{
+		Transport: &http.Transport{
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+		},
+	}
 	req, err := http.NewRequest("GET", al.TestAddr(al.SSLEnabled), nil) // // todo missing http.
 	if err != nil {
 		return err
@@ -203,7 +214,11 @@ func (al *AutoLogin) logoutAccount(uname, token string, cookies []*http.Cookie) 
 		"username":         {uname},
 	}
 
-	hc := http.Client{}
+	hc := http.Client{
+		Transport: &http.Transport{
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+		},
+	}
 	req, err := http.NewRequest("POST", al.LogoutAddr(al.SSLEnabled),
 		strings.NewReader(form.Encode()))
 	if err != nil {
