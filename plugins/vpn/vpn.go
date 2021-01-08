@@ -5,16 +5,18 @@ import (
 	"crypto/tls"
 	"encoding/hex"
 	"fmt"
-	"github.com/genshen/cmds"
-	"github.com/genshen/wssocks/cmd/client"
-	log "github.com/sirupsen/logrus"
-	"golang.org/x/crypto/ssh/terminal"
 	"net"
 	"net/http"
 	"net/http/cookiejar"
 	"net/url"
 	"os"
 	"strings"
+
+	"github.com/genshen/cmds"
+	plugin "github.com/genshen/wssocks/client"
+	"github.com/genshen/wssocks/cmd/client"
+	log "github.com/sirupsen/logrus"
+	"golang.org/x/crypto/ssh/terminal"
 )
 
 type UstbVpn struct {
@@ -24,6 +26,7 @@ type UstbVpn struct {
 	TargetVpn   string
 	HostEncrypt bool
 	ForceLogout bool
+	ConnOptions plugin.Options // normal connection options
 }
 
 // create a UstbVpn instance, and add necessary command options to client sub-command.
@@ -43,6 +46,7 @@ func NewUstbVpnCli() *UstbVpn {
 	return &vpn
 }
 
+// implementation of interface RequestPlugin
 func (v *UstbVpn) BeforeRequest(hc *http.Client, transport *http.Transport, url *url.URL, header *http.Header) error {
 	if !v.Enable {
 		return nil

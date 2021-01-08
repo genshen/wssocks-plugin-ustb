@@ -35,6 +35,10 @@ var vpnPlugin *vpn.UstbVpn = nil
 func loadPlugins(v vpn.UstbVpn) error {
 	if vpnPlugin == nil {
 		vpnPlugin = &v
+		// vpn.UstbVpn has implementations of both option plugin and request plugin
+		if err := client.AddPluginOption(vpnPlugin); err != nil {
+			return err
+		}
 		if err := client.AddPluginRequest(vpnPlugin); err != nil {
 			return err
 		}

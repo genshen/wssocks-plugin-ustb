@@ -16,6 +16,7 @@ import (
 func init() {
 	vpn := vpn.NewUstbVpnCli()
 	ver := ver.PluginVersionNeg{}
+	client.AddPluginOption(vpn)
 	client.AddPluginRequest(vpn)
 	client.AddPluginVersion(&ver)
 }
