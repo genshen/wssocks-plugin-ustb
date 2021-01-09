@@ -71,13 +71,13 @@ func (v *UstbVpn) BeforeRequest(hc *http.Client, transport *http.Transport, url 
 	}
 
 	// add cookie
-	al := AutoLogin{Host: v.TargetVpn, ForceLogout: v.ForceLogout}
+	al := AutoLogin{Host: v.TargetVpn, ForceLogout: v.ForceLogout, skipTLSVerify: v.ConnOptions.SkipTLSVerify}
 	if cookies, err := al.vpnLogin(v.Username, v.Password); err != nil {
 		return fmt.Errorf("error vpn login: %w", err)
 	} else {
 		// In vpnLogin, we can test https support.
 		// If the vpn support https, we can set transport.SkipTLSVerify if necessary.
-		if al.SSLEnabled {
+		if al.SSLEnabled && v.ConnOptions.SkipTLSVerify {
 			transport.TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
 		}
 

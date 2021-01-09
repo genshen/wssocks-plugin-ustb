@@ -27,9 +27,10 @@ type AutoLoginInterface interface {
 }
 
 type AutoLogin struct {
-	Host        string
-	ForceLogout bool
-	SSLEnabled  bool // the vpn server supports https
+	Host          string
+	ForceLogout   bool
+	SSLEnabled    bool // the vpn server supports https
+	skipTLSVerify bool // skip tsl verify when setting https connectioon
 }
 
 func (al *AutoLogin) TestAddr(ssl bool) string {
@@ -53,11 +54,28 @@ func (al *AutoLogin) LogoutAddr(ssl bool) string {
 	return USTBVpnHttpScheme + "://" + al.Host + "/do-confirm-login"
 }
 
+// create http request client with SSLEnabled and skipTLSVerify as config
+// checkRedirect will be passed into http.Client as CheckRedirect func if it is specified.
+// If force is true, it will enable "InsecureSkipVerify" forcely 
+// even if current connection is under http (may be redirected to https)
+func (al *AutoLogin) NewHttpClient(force bool, checkRedirect func(req *http.Request, via []*http.Request) error) *http.Client {
+	hc := http.Client{}
+	if (force || al.SSLEnabled) && al.skipTLSVerify {
+		hc.Transport = &http.Transport{
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+		}
+	}
+	if checkRedirect != nil {
+		hc.CheckRedirect = checkRedirect
+	}
+	return &hc
+}
+
 // auto login vpn and get cookie
 func (al *AutoLogin) vpnLogin(uname, passwd string) ([]*http.Cookie, error) {
 	// send a get request and check whether it is https protocol.
-	// andd save https enable/disable flag
-	if httpsEnabled, err := testHttpsEnabled(al.Host); err != nil {
+	// and save https enable/disable flag
+	if httpsEnabled, err := al.testHttpsEnabled(al.Host); err != nil {
 		return nil, err
 	} else {
 		if httpsEnabled {
@@ -74,18 +92,15 @@ func (al *AutoLogin) vpnLogin(uname, passwd string) ([]*http.Cookie, error) {
 		"password":  {passwd},
 	}
 
-	hc := http.Client{
-		// disable redirection
-		// If login success, it will be redirected to index page
-		// and cookie would lost if we enable redirection.
-		CheckRedirect: func(req *http.Request, via []*http.Request) error {
-			// if upgrade http to https
-			return http.ErrUseLastResponse
-		},
-		Transport: &http.Transport{
-			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-		},
+	// disable redirection here
+	// If login success, it will be redirected to index page
+	// and cookie would lost if we enable redirection.
+	redirect := func(req *http.Request, via []*http.Request) error {
+		// if upgrade http to https
+		return http.ErrUseLastResponse
 	}
+	hc := al.NewHttpClient(false, redirect)
+
 	req, err := http.NewRequest("POST", loginAddress, strings.NewReader(form.Encode())) // todo missing http.
 	if err != nil {
 		return nil, err
@@ -111,29 +126,25 @@ func (al *AutoLogin) vpnLogin(uname, passwd string) ([]*http.Cookie, error) {
 	}
 }
 
-func testHttpsEnabled(host string) (bool, error) {
+func (al *AutoLogin) testHttpsEnabled(host string) (bool, error) {
 	testUrl, err := url.Parse(USTBVpnHttpScheme + "://" + host + "/")
 	if err != nil {
 		return false, err
 	}
 	httpsSupport := false
 
-	hc := http.Client{
-		// disable redirection
-		// f login success, it will be redirected to index page
-		// and cookie would lost if we enable redirection.
-		CheckRedirect: func(req *http.Request, via []*http.Request) error {
-			// if upgrade http to https
-			if testUrl.Scheme != req.URL.Scheme && testUrl.Path == req.URL.Path { // is http -> https redirection
-				httpsSupport = true
-				return nil
-			}
-			return http.ErrUseLastResponse
-		},
-		Transport: &http.Transport{
-			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-		},
+	// disable redirection
+	// if login success, it will be redirected to index page
+	// and cookie would lost if we enable redirection.
+	redirect := func(req *http.Request, via []*http.Request) error {
+		// if upgrade http to https
+		if testUrl.Scheme != req.URL.Scheme && testUrl.Path == req.URL.Path { // is http -> https redirection
+			httpsSupport = true
+			return nil
+		}
+		return http.ErrUseLastResponse
 	}
+	hc := al.NewHttpClient(true, redirect)
 
 	req, err := http.NewRequest("GET", testUrl.String(), nil)
 	if err != nil {
@@ -149,11 +160,8 @@ func testHttpsEnabled(host string) (bool, error) {
 }
 
 func (al *AutoLogin) testConnect(uname string, cookies []*http.Cookie) error {
-	hc := http.Client{
-		Transport: &http.Transport{
-			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-		},
-	}
+	hc := al.NewHttpClient(false, nil)
+
 	req, err := http.NewRequest("GET", al.TestAddr(al.SSLEnabled), nil) // // todo missing http.
 	if err != nil {
 		return err
@@ -214,11 +222,8 @@ func (al *AutoLogin) logoutAccount(uname, token string, cookies []*http.Cookie) 
 		"username":         {uname},
 	}
 
-	hc := http.Client{
-		Transport: &http.Transport{
-			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-		},
-	}
+	hc := al.NewHttpClient(false,nil)
+
 	req, err := http.NewRequest("POST", al.LogoutAddr(al.SSLEnabled),
 		strings.NewReader(form.Encode()))
 	if err != nil {
