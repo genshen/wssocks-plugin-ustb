@@ -32,7 +32,7 @@ You can obtain GUI client from [github releases](https://github.com/genshen/wsso
 
 ## Night release clients
 If you would like to try new features, you can download wssocks-ustb night release from
-[OSDN](https://osdn.net/rel/wssocks-ustb/Night%20release).
+[OSDN](https://osdn.net/pkg/wssocks-ustb/wssocks-ustb).
 
 ## Document
 - [zh-cn](docs/zh-cn/README.md)
