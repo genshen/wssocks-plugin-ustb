@@ -89,9 +89,12 @@ struct ContentView: View {
                             .disabled(!config.uiVPNEnable)
                         Toggle("", isOn: $config.uiVPNHostEncrypt)
                             .disabled(!config.uiVPNEnable).frame(height:24)
-                        TextField("vpn hostname", text: $config.uiVPNHost).frame(height:24)
-                        TextField("vpn username", text: $config.uiVPNUsername).frame(height:24)
-                        SecureField("vpn password", text: $config.uiVPNPassword).frame(height:24)
+                        TextField("vpn hostname", text: $config.uiVPNHost)
+                            .disabled(!config.uiVPNEnable).frame(height:24)
+                        TextField("vpn username", text: $config.uiVPNUsername)
+                            .disabled(!config.uiVPNEnable).frame(height:24)
+                        SecureField("vpn password", text: $config.uiVPNPassword)
+                            .disabled(!config.uiVPNEnable).frame(height:24)
                     }
                 }
             }
