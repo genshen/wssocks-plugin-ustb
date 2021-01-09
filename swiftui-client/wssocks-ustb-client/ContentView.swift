@@ -19,11 +19,12 @@ extension VerticalAlignment {
     static let custom = VerticalAlignment(CustomAlignment.self)
 }
 
-class Configs : ObservableObject{
+class Configs : ObservableObject {
     @Published var uiSocks5Addr: String = "127.0.0.1:1080"
     @Published var uiRemoteAddr: String = "ws://proxy.gensh.me"
     @Published var uiHttpAddr: String = "127.0.0.1:1086"
     @Published var uiEnableHttpProxy: Bool = false
+    @Published var uiSkipTSLerify: Bool = false
 
     @Published var uiVPNEnable: Bool = true
     @Published var uiVPNForceLogout: Bool = true
@@ -54,6 +55,7 @@ struct ContentView: View {
                         Text("remote address").labelStyle()
                         Text("http(s) proxy").labelStyle()
                         Text("http(s) address").labelStyle()
+                        Text("skip TSL verify").labelStyle()
                     }
                     VStack (alignment: .leading, spacing: 12) {
                         TextField("Placeholder", text: $config.uiSocks5Addr).frame(height: 24)
@@ -64,6 +66,10 @@ struct ContentView: View {
                         }.frame(height:24)
                         TextField(/*@START_MENU_TOKEN@*/"Placeholder"/*@END_MENU_TOKEN@*/, text: $config.uiHttpAddr)
                             .disableInput(isDisabled: !config.uiEnableHttpProxy).frame(height:24)
+                        Toggle(isOn: $config.uiSkipTSLerify) {
+                            Text("Skip TSL verify")
+                          .multilineTextAlignment(.leading)
+                        }.frame(height:24)
                     }
                 }
             }

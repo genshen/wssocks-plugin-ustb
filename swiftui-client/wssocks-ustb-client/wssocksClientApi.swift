@@ -36,8 +36,8 @@ struct WssocksClient {
         let vpnPasswdPtr = UnsafeMutablePointer(mutating: CStrVPNPasswd)
     
         guard let v = StartClientWrapper(self.handle, socks5AddrPtr, remoteAddrPtr, httpAddrPtr,
-                                         config.uiEnableHttpProxy, config.uiVPNEnable,
-                                         config.uiVPNForceLogout, config.uiVPNHostEncrypt,
+                                         config.uiEnableHttpProxy, config.uiSkipTSLerify,
+                                         config.uiVPNEnable, config.uiVPNForceLogout, config.uiVPNHostEncrypt,
                                          vpnHostPtr, vpnUsernamePtr, vpnPasswdPtr) else { return nil }
         return String(bytesNoCopy: v, length: strlen(v), encoding: .utf8, freeWhenDone: true)
     }
