@@ -1,6 +1,8 @@
 package main
 
 import (
+	"errors"
+	"flag"
 	"github.com/genshen/cmds"
 	"github.com/genshen/wssocks-plugin-ustb/plugins/ver"
 	"github.com/genshen/wssocks-plugin-ustb/plugins/vpn"
@@ -24,6 +26,8 @@ func init() {
 func main() {
 	cmds.SetProgramName("wssocks-ustb")
 	if err := cmds.Parse(); err != nil {
-		log.Fatal(err)
+		if !errors.Is(err, flag.ErrHelp) && !errors.Is(err, &cmds.SubCommandParseError{}) {
+			log.Fatal(err)
+		}
 	}
 }
