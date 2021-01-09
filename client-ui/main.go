@@ -52,8 +52,9 @@ func main() {
 	uiRemoteAddr := &widget.Entry{Text: "ws://proxy.gensh.me"}
 	uiHttpEnable := newCheckbox("", false, nil)
 	uiHttpLocalAddr := newEntryWithText("127.0.0.1:1086")
+	uiSkipTSLVerify := newCheckbox("", false, nil)
 
-	loadBasicPreference(wssApp.Preferences(), uiLocalAddr, uiRemoteAddr, uiHttpLocalAddr, uiHttpEnable)
+	loadBasicPreference(wssApp.Preferences(), uiLocalAddr, uiRemoteAddr, uiHttpLocalAddr, uiHttpEnable, uiSkipTSLVerify)
 
 	uiHttpEnable.OnChanged = func(checked bool) {
 		if checked {
@@ -90,7 +91,7 @@ func main() {
 		}
 	}
 
-	btnStart := widget.NewButtonWithIcon("Start", theme.MailSendIcon(),nil)
+	btnStart := widget.NewButtonWithIcon("Start", theme.MailSendIcon(), nil)
 	btnStart.Importance = widget.HighImportance
 
 	btnStatus := btnStopped
@@ -105,9 +106,10 @@ func main() {
 		} else if btnStatus == btnStopped { // stopped can run
 			options := extra.Options{
 				Options: client.Options{
-					LocalSocks5Addr:  uiLocalAddr.Text,
+					LocalSocks5Addr: uiLocalAddr.Text,
 					HttpEnabled:     uiHttpEnable.Checked,
-					LocalHttpAddr: uiHttpLocalAddr.Text,
+					LocalHttpAddr:   uiHttpLocalAddr.Text,
+					SkipTLSVerify:   uiSkipTSLVerify.Checked,
 				},
 				UstbVpn: vpn.UstbVpn{
 					Enable:      uiVpnEnable.Checked,
@@ -117,7 +119,7 @@ func main() {
 					Username:    uiVpnUsername.Text,
 					Password:    uiVpnPassword.Text,
 				},
-				RemoteAddr:      uiRemoteAddr.Text,
+				RemoteAddr: uiRemoteAddr.Text,
 			}
 			btnStatus = btnStarting
 			btnStart.SetText("Loading")
@@ -144,15 +146,16 @@ func main() {
 	}
 
 	w.SetContent(container.NewVBox(
-		widget.NewCard("","Basic",
+		widget.NewCard("", "Basic",
 			&widget.Form{Items: []*widget.FormItem{
 				{Text: "socks5 address", Widget: uiLocalAddr},
 				{Text: "remote address", Widget: uiRemoteAddr},
 				{Text: "http(s) proxy", Widget: uiHttpEnable},
 				{Text: "http(s) address", Widget: uiHttpLocalAddr},
+				{Text: "skip TSL verify", Widget: uiSkipTSLVerify},
 			}},
 		), // end group
-		widget.NewCard("","USTB VPN",
+		widget.NewCard("", "USTB VPN",
 			&widget.Form{Items: []*widget.FormItem{
 				{Text: "enable", Widget: uiVpnEnable},
 				{Text: "force logout", Widget: uiVpnForceLogout},
@@ -164,7 +167,7 @@ func main() {
 		), // end group
 		btnStart,
 		container.NewHBox(
-			widget.NewLabel("v"+version.VERSION),
+			widget.NewLabel("core: v"+version.VERSION),
 			widget.NewHyperlink("Github", repoUrl),
 			widget.NewHyperlink("Document", docUrl),
 		),
@@ -177,7 +180,7 @@ func main() {
 			btnStart.SetText("Stopping")
 			handles.NotifyCloseWrapper()
 		}
-		saveBasicPreference(wssApp.Preferences(), uiLocalAddr, uiRemoteAddr, uiHttpLocalAddr, uiHttpEnable)
+		saveBasicPreference(wssApp.Preferences(), uiLocalAddr, uiRemoteAddr, uiHttpLocalAddr, uiHttpEnable, uiSkipTSLVerify)
 		saveVPNPreference(wssApp.Preferences(), uiVpnEnable, uiVpnForceLogout,
 			uiVpnHostEncrypt, uiVpnHostInput, uiVpnUsername, uiVpnPassword)
 	})

@@ -12,6 +12,7 @@ const (
 	PrefRemoteAddr     = "remote_addr"
 	PrefHttpEnable     = "http_enable"
 	PrefHttpLocalAddr  = "http_local_addr"
+	PrefSkipTSLVerify  = "skip_TSL_verify"
 	PrefVpnEnable      = "vpn_enable"
 	PrefVpnForceLogout = "vpn_force_logout"
 	PrefVpnHostEncrypt = "vpn_host_encrypt"
@@ -21,13 +22,15 @@ const (
 )
 
 func saveBasicPreference(pref fyne.Preferences, uiLocalAddr, uiRemoteAddr,
-	uiHttpLocalAddr *widget.Entry, uiHttpEnable *widget.Check, ) {
+	uiHttpLocalAddr *widget.Entry, uiHttpEnable *widget.Check,
+	uiSkipTSLVerify *widget.Check) {
 	pref.SetBool(PrefHasPreference, true)
 	pref.SetString(PrefLocalAddr, uiLocalAddr.Text)
 	pref.SetString(PrefRemoteAddr, uiRemoteAddr.Text)
 
 	pref.SetBool(PrefHttpEnable, uiHttpEnable.Checked)
 	pref.SetString(PrefHttpLocalAddr, uiHttpLocalAddr.Text)
+	pref.SetBool(PrefSkipTSLVerify, uiSkipTSLVerify.Checked)
 }
 
 func saveVPNPreference(pref fyne.Preferences,
@@ -42,7 +45,8 @@ func saveVPNPreference(pref fyne.Preferences,
 }
 
 func loadBasicPreference(pref fyne.Preferences, uiLocalAddr, uiRemoteAddr,
-	uiHttpLocalAddr *widget.Entry, uiHttpEnable *widget.Check) {
+	uiHttpLocalAddr *widget.Entry, uiHttpEnable *widget.Check,
+	uiSkipTSLVerify *widget.Check) {
 	if !pref.Bool(PrefHasPreference) {
 		uiHttpLocalAddr.Disable()
 		return
@@ -63,6 +67,10 @@ func loadBasicPreference(pref fyne.Preferences, uiLocalAddr, uiRemoteAddr,
 	// http local address
 	if httpAddr := pref.String(PrefHttpLocalAddr); strings.TrimSpace(httpAddr) != "" {
 		uiHttpLocalAddr.SetText(strings.TrimSpace(httpAddr))
+	}
+	// skip TSL verify
+	if pref.Bool(PrefSkipTSLVerify) {
+		uiSkipTSLVerify.SetChecked(true)
 	}
 
 	if !uiHttpEnable.Checked {
