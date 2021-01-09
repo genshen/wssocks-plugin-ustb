@@ -1,7 +1,7 @@
 # makefile for crossing building on macOS
 # supported os: windows, macOS
 
-PHONY: package all clean
+PHONY: clean all package
 
 PACKAGE=github.com/genshen/wssocks-plugin-ustb/client-ui
 FLAGS=-gcflags="all=-trimpath=${GOPATH}" -asmflags "all=-trimpath=${GOPATH}"
@@ -24,11 +24,11 @@ package: client-ui-macOS-amd64.app client-ui-windows-amd64.exe # client-ui-linux
 
 client-ui-macOS-amd64.app: wssocks-ustb-ui-macOS-amd64
 	cp -r wssocks-ustb-ui-macOS-amd64 wssocks-ustb-client
-	CC=clang CGO_ENABLED=1 GOOS=darwin GOARCH=amd64 fyne package -os darwin -icon app-512.png -appID ${appID} -executable wssocks-ustb-client -name ${appName}
+	CC=clang CGO_ENABLED=1 GOOS=darwin GOARCH=amd64 fyne package -os darwin -icon app-512.png -appID ${appID} -executable wssocks-ustb-client -name ${appName} -release
 	rm -rf client-ui-macOS-amd64.app; mv ${appName}.app client-ui-macOS-amd64.app
 
 client-ui-windows-amd64.exe: wssocks-ustb-ui-windows-amd64.exe
-	CC=x86_64-w64-mingw32-gcc CGO_ENABLED=1 GOOS=windows GOARCH=amd64 fyne package -os windows -icon app-512.png -appID ${appID} -executable wssocks-ustb-ui-windows-amd64.exe -name ${appName}.exe
+	CC=x86_64-w64-mingw32-gcc CGO_ENABLED=1 GOOS=windows GOARCH=amd64 fyne package -os windows -icon app-512.png -appID ${appID} -executable wssocks-ustb-ui-windows-amd64.exe -name ${appName}.exe -release
 	mv client-ui.exe client-ui-windows-amd64.exe
 
 # export CGO_CFLAGS='-D _POSIX'
@@ -36,4 +36,4 @@ client-ui-windows-amd64.exe: wssocks-ustb-ui-windows-amd64.exe
 # client-ui-linux-amd64:
 
 clean:
-	rm -rf wssocks-ustb-ui-macOS-amd64 wssocks-ustb-ui-windows-amd64.exe client-ui-macOS-amd64 client-ui-windows-amd64.exe
+	rm -rf wssocks-ustb-ui-macOS-amd64 wssocks-ustb-ui-windows-amd64.exe client-ui-macOS-amd64.app client-ui-windows-amd64.exe
