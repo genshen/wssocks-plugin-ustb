@@ -6,18 +6,21 @@ import (
 	"fyne.io/fyne/dialog"
 	"fyne.io/fyne/theme"
 	"fyne.io/fyne/widget"
+	resource "github.com/genshen/wssocks-plugin-ustb/client-ui/resources"
 	"github.com/genshen/wssocks-plugin-ustb/extra"
 	"github.com/genshen/wssocks-plugin-ustb/plugins/vpn"
+	pluginversion "github.com/genshen/wssocks-plugin-ustb/wssocks-ustb/version"
 	"github.com/genshen/wssocks/client"
 	"github.com/genshen/wssocks/version"
 	"net/url"
 )
 
 const (
-	AppName       = "wssocks Client"
-	AppId         = "wssocks-ustb.genshen.github.com"
-	GithubRepoUrl = "https://github.com/genshen/wssocks"
-	DocumentUrl   = "https://github.com/genshen/wssocks-plugin-ustb/blob/master/docs/zh-cn/README.md"
+	AppName           = "wssocks Client"
+	AppId             = "wssocks-ustb.genshen.github.com"
+	CoreGithubRepoUrl = "https://github.com/genshen/wssocks"
+	GithubRepoUrl     = "https://github.com/genshen/wssocks-plugin-ustb"
+	DocumentUrl       = "https://github.com/genshen/wssocks-plugin-ustb/blob/master/docs/zh-cn/README.md"
 )
 
 const (
@@ -145,6 +148,11 @@ func main() {
 		return
 	}
 
+	coreRepoUrl, err := url.Parse(CoreGithubRepoUrl)
+	if err != nil {
+		return
+	}
+
 	w.SetContent(container.NewVBox(
 		widget.NewCard("", "Basic",
 			&widget.Form{Items: []*widget.FormItem{
@@ -166,10 +174,22 @@ func main() {
 			}},
 		), // end group
 		btnStart,
-		container.NewHBox(
-			widget.NewLabel("core: v"+version.VERSION),
-			widget.NewHyperlink("Github", repoUrl),
-			widget.NewHyperlink("Document", docUrl),
+		container.NewGridWithColumns(2,
+			container.NewHBox(
+				NewHyperlinkIcon(resource.GithubIcon(), coreRepoUrl),
+				widget.NewHyperlink("wssocks core: ", coreRepoUrl),
+			),
+			widget.NewLabel("v"+version.VERSION),
+		),
+		container.NewGridWithColumns(2,
+			container.NewHBox(
+				NewHyperlinkIcon(resource.GithubIcon(), repoUrl),
+				widget.NewHyperlink("USTB vpn plugin: ", repoUrl),
+			),
+			container.NewGridWithColumns(2,
+				widget.NewLabel("v"+pluginversion.VERSION),
+				NewHyperlinkIcon(theme.HelpIcon(), docUrl),
+			),
 		),
 	))
 
