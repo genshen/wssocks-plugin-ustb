@@ -176,6 +176,7 @@ end tell
         defaults.set(config.uiRemoteAddr, forKey: "remote_addr")
         defaults.set(config.uiHttpAddr, forKey: "http_addr")
         defaults.set(config.uiEnableHttpProxy, forKey: "enable_http_proxy")
+        defaults.set(config.uiSkipTSLerify, forKey: "skip_tsl_verify")
 
         defaults.set(config.uiVPNEnable, forKey: "vpn_enable")
         defaults.set(config.uiVPNForceLogout, forKey: "vpn_force_logout")
@@ -195,6 +196,7 @@ end tell
         let _remote_addr = defaults.string(forKey: "remote_addr") ?? ""
         let _http_addr = defaults.string(forKey: "http_addr") ?? ""
         config.uiEnableHttpProxy = defaults.bool(forKey: "enable_http_proxy")
+        config.uiSkipTSLerify = defaults.bool(forKey: "skip_tsl_verify")
 
         config.uiVPNEnable = defaults.bool(forKey: "vpn_enable")
         config.uiVPNForceLogout = defaults.bool(forKey: "vpn_force_logout")
