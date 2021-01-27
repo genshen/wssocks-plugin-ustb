@@ -1,11 +1,11 @@
 package main
 
 import (
-	"fyne.io/fyne/app"
-	"fyne.io/fyne/container"
-	"fyne.io/fyne/dialog"
-	"fyne.io/fyne/theme"
-	"fyne.io/fyne/widget"
+	"fyne.io/fyne/v2/app"
+	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/dialog"
+	"fyne.io/fyne/v2/theme"
+	"fyne.io/fyne/v2/widget"
 	resource "github.com/genshen/wssocks-plugin-ustb/client-ui/resources"
 	"github.com/genshen/wssocks-plugin-ustb/extra"
 	"github.com/genshen/wssocks-plugin-ustb/plugins/vpn"
@@ -44,7 +44,7 @@ func newCheckbox(text string, checked bool, onChanged func(bool)) *widget.Check 
 
 func main() {
 	wssApp := app.NewWithID(AppId)
-	wssApp.Settings().SetTheme(myTheme{})
+	wssApp.Settings().SetTheme(&myTheme{})
 
 	w := wssApp.NewWindow(AppName)
 	//w.SetFixedSize(true)

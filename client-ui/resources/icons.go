@@ -2,7 +2,7 @@
 
 package resource
 
-import "fyne.io/fyne"
+import "fyne.io/fyne/v2"
 
 var resourceIconGithubSvg = &fyne.StaticResource{
 	StaticName: "icon-github.svg",
