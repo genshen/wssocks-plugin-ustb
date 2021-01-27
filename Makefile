@@ -2,7 +2,7 @@ PACKAGE=github.com/genshen/wssocks-plugin-ustb/wssocks-ustb
 
 .PHONY: clean all
 
-FLAGS=-gcflags="all=-trimpath=${GOPATH}" -asmflags "all=-trimpath=${GOPATH}"
+FLAGS=--trimpath
 
 # wssocks-ustb:
 #	go build -o wssocks-ustb

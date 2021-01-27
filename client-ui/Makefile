@@ -1,10 +1,12 @@
 # makefile for crossing building on macOS
 # supported os: windows, macOS
 
+# make sure fyne is installed before packaging (see: https://developer.fyne.io/started/packaging).
+
 PHONY: clean all package
 
 PACKAGE=github.com/genshen/wssocks-plugin-ustb/client-ui
-FLAGS=-gcflags="all=-trimpath=${GOPATH}" -asmflags "all=-trimpath=${GOPATH}"
+FLAGS=--trimpath
 appID=wssocks-ustb-client-ui.genshen.github.com
 appName="wssocks-ustb client"
 APP_VERSION=0.5.1
@@ -39,3 +41,4 @@ client-ui-windows-amd64.exe: wssocks-ustb-ui-windows-amd64.exe
 
 clean:
 	rm -rf wssocks-ustb-ui-macOS-amd64 wssocks-ustb-ui-windows-amd64.exe client-ui-macOS-amd64.app client-ui-windows-amd64.exe
+	rm -rf wssocks-ustb-client fyne.syso
