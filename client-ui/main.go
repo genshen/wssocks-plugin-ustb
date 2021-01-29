@@ -52,7 +52,7 @@ func main() {
 
 	// basic input
 	uiLocalAddr := &widget.Entry{Text: "127.0.0.1:1080"}
-	uiRemoteAddr := &widget.Entry{Text: "ws://proxy.gensh.me"}
+	uiRemoteAddr := &widget.Entry{}
 	uiHttpEnable := newCheckbox("", false, nil)
 	uiHttpLocalAddr := newEntryWithText("127.0.0.1:1086")
 	uiSkipTSLVerify := newCheckbox("", false, nil)

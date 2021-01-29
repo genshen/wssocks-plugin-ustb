@@ -21,7 +21,7 @@ extension VerticalAlignment {
 
 class Configs : ObservableObject {
     @Published var uiSocks5Addr: String = "127.0.0.1:1080"
-    @Published var uiRemoteAddr: String = "ws://proxy.gensh.me"
+    @Published var uiRemoteAddr: String = ""
     @Published var uiHttpAddr: String = "127.0.0.1:1086"
     @Published var uiEnableHttpProxy: Bool = false
     @Published var uiSkipTSLerify: Bool = false
