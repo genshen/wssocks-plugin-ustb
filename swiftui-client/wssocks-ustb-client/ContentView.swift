@@ -58,13 +58,13 @@ struct ContentView: View {
                         Text("skip TSL verify").labelStyle()
                     }
                     VStack (alignment: .leading, spacing: 12) {
-                        TextField("Placeholder", text: $config.uiSocks5Addr).frame(height: 24)
-                        TextField(/*@START_MENU_TOKEN@*/"Placeholder"/*@END_MENU_TOKEN@*/, text: $config.uiRemoteAddr).frame(height: 24)
+                        TextField("local socks5 listen address", text: $config.uiSocks5Addr).frame(height: 24)
+                        TextField("wssocks server address", text: $config.uiRemoteAddr).frame(height: 24)
                         Toggle(isOn: $config.uiEnableHttpProxy) {
                             Text("Enable http(s) proxy")
                           .multilineTextAlignment(.leading)
                         }.frame(height:24)
-                        TextField(/*@START_MENU_TOKEN@*/"Placeholder"/*@END_MENU_TOKEN@*/, text: $config.uiHttpAddr)
+                        TextField("http proxy listen address", text: $config.uiHttpAddr)
                             .disableInput(isDisabled: !config.uiEnableHttpProxy).frame(height:24)
                         Toggle(isOn: $config.uiSkipTSLerify) {
                             Text("Skip TSL verify")

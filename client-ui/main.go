@@ -51,10 +51,10 @@ func main() {
 	//w.Resize(fyne.NewSize(100, 100))
 
 	// basic input
-	uiLocalAddr := &widget.Entry{Text: "127.0.0.1:1080"}
-	uiRemoteAddr := &widget.Entry{}
+	uiLocalAddr := &widget.Entry{PlaceHolder: "socks5 listen address", Text: "127.0.0.1:1080"}
+	uiRemoteAddr := &widget.Entry{PlaceHolder: "wssocks server address"}
 	uiHttpEnable := newCheckbox("", false, nil)
-	uiHttpLocalAddr := newEntryWithText("127.0.0.1:1086")
+	uiHttpLocalAddr := &widget.Entry{PlaceHolder: "http listen address", Text: "127.0.0.1:1086"}
 	uiSkipTSLVerify := newCheckbox("", false, nil)
 
 	loadBasicPreference(wssApp.Preferences(), uiLocalAddr, uiRemoteAddr, uiHttpLocalAddr, uiHttpEnable, uiSkipTSLVerify)
@@ -71,9 +71,9 @@ func main() {
 	uiVpnEnable := newCheckbox("enable ustb vpn", true, nil)
 	uiVpnForceLogout := newCheckbox("", true, nil)
 	uiVpnHostEncrypt := newCheckbox("", true, nil)
-	uiVpnHostInput := &widget.Entry{Text: "n.ustb.edu.cn"}
-	uiVpnUsername := &widget.Entry{Text: ""}
-	uiVpnPassword := &widget.Entry{Text: "", Password: true}
+	uiVpnHostInput := &widget.Entry{PlaceHolder: "vpn hostname", Text: "n.ustb.edu.cn"}
+	uiVpnUsername := &widget.Entry{PlaceHolder: "vpn username", Text: ""}
+	uiVpnPassword := &widget.Entry{PlaceHolder: "vpn password", Text: "", Password: true}
 
 	loadVPNPreference(wssApp.Preferences(), uiVpnEnable, uiVpnForceLogout,
 		uiVpnHostEncrypt, uiVpnHostInput, uiVpnUsername, uiVpnPassword)
