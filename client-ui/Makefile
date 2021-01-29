@@ -9,7 +9,7 @@ PACKAGE=github.com/genshen/wssocks-plugin-ustb/client-ui
 FLAGS=--trimpath
 appID=wssocks-ustb-client-ui.genshen.github.com
 appName="wssocks-ustb client"
-APP_VERSION=0.5.1
+APP_VERSION=0.6.0
 PACKAGE_FLAG=-icon app-512.png -appID ${appID} --appVersion ${APP_VERSION} -release -appBuild 4
 
 all: wssocks-ustb-ui-macOS-amd64 wssocks-ustb-ui-windows-amd64.exe # wssocks-ustb-ui-linux-amd64

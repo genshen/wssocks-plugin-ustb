@@ -5,7 +5,7 @@
 
 appBuildNumber=2
 appID="wssocks-ustb-client-ui.genshen.github.com"
-appVersion=0.5.1
+appVersion=0.6.0
 appIcon=./client-ui/app-512.png
 buildEnv="GOPROXY=https://goproxy.cn"
 buildFlags="--app-build ${appBuildNumber} --app-id ${appID} --app-version ${appVersion} --icon ${appIcon} --env ${buildEnv}"

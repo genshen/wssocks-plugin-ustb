@@ -7,7 +7,8 @@ import (
 	"github.com/genshen/wssocks/wss"
 )
 
-const VERSION = "0.5.1"
+// also change version in client-ui and swift-ui if  release
+const VERSION = "0.6.0"
 
 var versionCommand = &cmds.Command{
 	Name:        "version",
