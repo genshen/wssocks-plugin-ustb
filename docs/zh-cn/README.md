@@ -107,18 +107,15 @@ wssocks 客户端分为 cli 版本和 gui 版本，根据需求选择其中一�
    - 通用设置, http(s)协议 (macOS、windows、linux)  
       设置 http(s) 代理:
       ```bash
-      git config --global http.proxy http://127.0.0.1:1086
-      git config --global https.proxy http://127.0.0.1:1080
+      git config --global http.proxy http://127.0.0.1:1080
       ```
       设置 socks5 代理:
       ```bash
       git config --global http.proxy socks5://127.0.0.1:1080
-      git config --global https.proxy socks5://127.0.0.1:1080
       ```
       Git 取消代理设置:
       ```bash
       git config --global --unset http.proxy
-      git config --global --unset https.proxy
       ```
       具体可参考:
       - https://git-scm.com/docs/git-config  
