@@ -103,11 +103,22 @@ struct ContentView: View {
                 Text("Network Preferences")
                 }.buttonStyle(DefaultButtonStyle())
                 Spacer()
-                Button(action: { self.onSubmit() }) {
-                    Text("\(uiSubmitBtnLabel)")
-                    }.buttonStyle(DefaultButtonStyle()).disabled(!uiEnableSubmitBtn)
-                .alert(isPresented: $showingAlert) {
-                    Alert(title: Text("Error"), message: Text("\(alertMessage)"), dismissButton: .default(Text("OK")))
+                if #available(OSX 11.0, *) {
+                    Button(action: { self.onSubmit() }) {
+                        Text("\(uiSubmitBtnLabel)")
+                    }.buttonStyle(BorderedButtonStyle()).disabled(!uiEnableSubmitBtn)
+                    .keyboardShortcut(.defaultAction) // see https://stackoverflow.com/a/62727585
+                    .alert(isPresented: $showingAlert) {
+                        Alert(title: Text("Error"), message: Text("\(alertMessage)"), dismissButton: .default(Text("OK")))
+                    }
+                } else {
+                    // Fallback on earlier versions
+                    Button(action: { self.onSubmit() }) {
+                        Text("\(uiSubmitBtnLabel)")
+                    }.buttonStyle(BorderedButtonStyle()).disabled(!uiEnableSubmitBtn)
+                    .alert(isPresented: $showingAlert) {
+                        Alert(title: Text("Error"), message: Text("\(alertMessage)"), dismissButton: .default(Text("OK")))
+                    }
                 }
             }
         }
