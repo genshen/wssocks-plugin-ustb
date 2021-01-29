@@ -1,4 +1,58 @@
 
+<a name="v0.6.0"></a>
+## [v0.6.0](https://github.com/genshen/wssocks-plugin-ustb/compare/v0.5.1...v0.6.0)
+
+> 2021-01-30
+
+### Docs
+
+* correct ssh ProxyCommand when using wssocks on windows Git Bash
+* **changelog:** add changelog for version 0.6.0
+* **git-proxy:** correct git http proxy document
+* **readme:** update OSDN night release url
+* **readme:** update cli/gui installation document and night release installation document
+* **swiftui:** add document for building swiftui client
+
+### Feat
+
+* update client and vpn-plugin code to make it compatible with wssocks v0.5.x
+* **cli:** better exit code for cli client: Help will not exit with code 1
+* **gui:** apply customized fyne theme to client app
+* **gui:** bump fyne version to v2.0.0
+* **gui:** redesign version display ui and also show plugin version in client ui
+* **gui:** add ability of reconfiguring vpn plugin (e.g vpn host) with new input fields under fyne-ui and swiftui
+* **gui:** ability to set `SkipTSLVerify` option in client-ui
+* **plugin-option:** add option plugin to gui/swiftui and cli client
+* **plugin-vpn:** use `SkipTLSVerify` core option to control vpn connection with/without tsl verify
+* **swiftui:** add ui for macOS client which is built by swiftui
+* **swiftui:** add a button to open network proxies preference on mac
+* **swiftui:** ability to set `SkipTSLVerify` option in swiftui
+* **swiftui:** migrate go api used by swiftui to wssocks v0.5
+* **swiftui:** show primary style "Start" button on OSX 11.0
+* **swiftui:** now we can pass client handles pointer between swift side and Go side
+* **swiftui:** add submit button action to start or stop client task
+* **swiftui:** add app icon, version. And disable window resizing
+* **swiftui:** add swift-go binding to enable to estabilish connections with server
+* **version:** bump version to v0.6.0
+
+### Fix
+
+* **plugin-vpn:** fix "x509: certificate signed by unknown authority" when connecting
+* **swiftui:** set/load preference for "skip tsl verify"
+* **swiftui:** also disable username/password/vpn-host input box if vpn is disabled
+* **swiftui:** go to status of 'Start' (not status of 'Stop') if error occurs when starting client
+
+### Merge
+
+* Merge pull request [#6](https://github.com/genshen/wssocks-plugin-ustb/issues/6) from genshen/gh-action-build-release
+* Merge pull request [#5](https://github.com/genshen/wssocks-plugin-ustb/issues/5) from genshen/migrate-wssocks-v0.5
+* Merge pull request [#3](https://github.com/genshen/wssocks-plugin-ustb/issues/3) from genshen/feature-swift-ui-client
+
+### Refactor
+
+* **gui:** move client-ui/background.go to extra/ to provide api for client-ui and swiftui-client
+
+
 <a name="v0.5.1"></a>
 ## [v0.5.1](https://github.com/genshen/wssocks-plugin-ustb/compare/v0.5.0...v0.5.1)
 
@@ -6,19 +60,22 @@
 
 ### Docs
 
+* update usage document, add gui document and correct document errors
 * change default vpn host to n.ustb.edu.cn, rather than vpn4.ustb.edu.cn
 * add document of using SwitchyOmega extension as proxy client in Chrome or new Edge
 * update document to use socks5 proxy on chromium based browser
-* update usage document, add gui document and correct document errors
 * **changelog:** add CHANGELOG.md file and git-chglog config
+* **changelog:** update changelog for release v0.5.1
 * **readme:** add document of available clients to README.md
 
 ### Feat
 
 * **go-module:** update websocket to v1.4.2 and fyne to 1.2.4
+* **version:** update version to 0.5.1
 
 ### Fix
 
+* **gui:** create Entry and password Entry from struct, thus there is option to show password as plain text
 * **gui:** create some of widgets by function (not struct) to fix bug of "initial ui is not freshed"
 * **gui:** change default value of vpn host to n.ustb.edu.cn
 * **logs:** fix incorrect log format of printing `https(ssl) enabled` information
