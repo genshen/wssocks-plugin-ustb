@@ -60,3 +60,34 @@ jobs:
         with:
           name: build-artifact-${{ matrix.os }}
           path: ${{ matrix.artifact_files }}
+
+  release:
+    name: On Release
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: build-artifact-ubuntu-latest
+      - uses: actions/download-artifact@v2
+        with:
+          name: build-artifact-windows-latest
+      - uses: actions/download-artifact@v2
+        with:
+          name: build-artifact-macos-latest
+      - run: ls -R
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            client-ui-windows-amd64.exe
+            client-ui-macOS-amd64.app.zip
+            wssocks-ustb-client-macOS-amd64.app.zip
+            wssocks-ustb-darwin-amd64
+            wssocks-ustb-linux-arm64
+            wssocks-ustb-linux-amd64
+            wssocks-ustb-windows-amd64.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
