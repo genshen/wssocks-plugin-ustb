@@ -41,12 +41,14 @@ jobs:
         run: |
           cd client-ui
           make client-ui-macOS-amd64.app -f Makefile-ci
+          zip -r client-ui-macOS-amd64.app.zip client-ui-macOS-amd64.app
+          mv client-ui-macOS-amd64.app.zip ../
           cd ../
-          zip -r client-ui-macOS-amd64.app.zip client-ui/client-ui-macOS-amd64.app
-          echo "build swiftui-client"
+          echo "building swiftui-client"
           cd extra/go-api && ./build_archive.sh && cd ../../
-          cd swiftui-client && xcodebuild -arch "x86_64" && cd ../
-          zip -r wssocks-ustb-client-macOS-amd64.app.zip swiftui-client/build/Release/wssocks-ustb-client.app
+          cd swiftui-client && xcodebuild -arch "x86_64"
+          cd build/Release/ && zip -r wssocks-ustb-client-macOS-amd64.app.zip wssocks-ustb-client.app && cd ../../../
+          mv swiftui-client/build/Release/wssocks-ustb-client-macOS-amd64.app.zip ./
 
       - name: Build Windows
         if: matrix.os == 'windows-latest'
