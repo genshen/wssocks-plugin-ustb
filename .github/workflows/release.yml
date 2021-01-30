@@ -1,0 +1,62 @@
+# on:
+#   push:
+    # tags:
+    #   - 'v*'
+on: [push]
+
+name: Release
+
+jobs:
+  build:
+    name: Build release
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        include:
+          - os: ubuntu-latest
+            artifact_files: wssocks-ustb-*
+          - os: macos-latest
+            artifact_files: |
+              wssocks-ustb-client-macOS-amd64.app.zip
+              client-ui-macOS-amd64.app.zip
+          - os: windows-latest
+            artifact_files: client-ui-windows-amd64.exe
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Setup Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: ^1.15
+      - run: go get fyne.io/fyne/v2/cmd/fyne   
+
+      - name: Build Cli
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          make
+
+      - name: Build macOS
+        if: matrix.os == 'macos-latest'
+        run: |
+          cd client-ui
+          make client-ui-macOS-amd64.app -f Makefile-ci
+          cd ../
+          zip -r client-ui-macOS-amd64.app.zip client-ui/client-ui-macOS-amd64.app
+          echo "build swiftui-client"
+          cd extra/go-api && ./build_archive.sh && cd ../../
+          cd swiftui-client && xcodebuild -arch "x86_64" && cd ../
+          zip -r wssocks-ustb-client-macOS-amd64.app.zip swiftui-client/build/Release/wssocks-ustb-client.app
+
+      - name: Build Windows
+        if: matrix.os == 'windows-latest'
+        run: |
+          cd client-ui
+          make client-ui-windows-amd64.exe -f Makefile-ci
+          cd ../
+          mv client-ui/client-ui-windows-amd64.exe client-ui-windows-amd64.exe
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: build-artifact-${{ matrix.os }}
+          path: ${{ matrix.artifact_files }}
