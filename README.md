@@ -1,5 +1,6 @@
 # wssocks-plugin-ustb
-![github release](https://badgen.net/github/release/genshen/wssocks-plugin-ustb/stable?label=github-release)
+[![GitHub all releases](https://img.shields.io/github/downloads/genshen/wssocks-plugin-ustb/total?color=brightgreen)](https://github.com/genshen/wssocks-plugin-ustb/releases)
+[![Release](https://github.com/genshen/wssocks-plugin-ustb/actions/workflows/release.yml/badge.svg)](https://github.com/genshen/wssocks-plugin-ustb/actions/workflows/release.yml)
 ![OSDN](https://img.shields.io/badge/OSDN-night%20release-red?link=https://osdn.net/projects/wssocks-ustb/releases/)
 ![license](https://badgen.net/github/license/genshen/wssocks-plugin-ustb)
 
@@ -35,4 +36,4 @@ If you would like to try new features, you can download wssocks-ustb night relea
 [OSDN](https://osdn.net/pkg/wssocks-ustb/wssocks-ustb).
 
 ## Document
-- [zh-cn](docs/zh-cn/README.md)
+- [zh-cn](https://genshen.github.io/wssocks-plugin-ustb)
