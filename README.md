@@ -35,4 +35,4 @@ If you would like to try new features, you can download wssocks-ustb night relea
 [OSDN](https://osdn.net/pkg/wssocks-ustb/wssocks-ustb).
 
 ## Document
-- [zh-cn](docs/zh-cn/README.md)
+- [zh-cn](https://genshen.github.io/wssocks-plugin-ustb)
