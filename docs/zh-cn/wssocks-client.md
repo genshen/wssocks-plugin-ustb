@@ -10,7 +10,7 @@
 - **socks5 address** 是本机监听 SOCKS5 的本地地址。
 - **http(s) proxy** 表示是否开启 http/https 代理，可不勾选；如果勾选则可以使用 http/https 代理。
 - **http(s) address** 是开启 http/https 代理时，监听的 http/https 代理服务器的地址和端口。
-- vpn **enable** 选中表示，数据包需要通过 USTB vpn 进入校内网络，如果你是在校外，一般需要勾选。如果你在校内，可以不勾选(似乎在校外，就没必要用 wssocks 了吧 😅)。
+- vpn **enable** 选中表示，数据包需要通过 USTB vpn 进入校内网络，如果你是在校外，一般需要勾选。如果你在校内，可以不勾选(似乎在校内，就没必要用 wssocks 了吧 😅)。
 - **vpn host** 可用的有："elib.ustb.edu.cn" 和 "n.ustb.edu.cn"。如果用的是 "n.ustb.edu.cn"，需要勾选 "skip TSL verify"，
   因为似乎"n.ustb.edu.cn"网站的签名有点问题。
 - **force-logout** 是指如果你的 vpn 账号在别处登录了，这里会强制先登出。一般勾选上。
