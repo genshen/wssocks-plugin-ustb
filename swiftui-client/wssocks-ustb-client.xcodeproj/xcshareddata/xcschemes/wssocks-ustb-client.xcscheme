@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1140"
+   LastUpgradeVersion = "1250"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "80DDD908245A5E2900DCC97D"
+               BlueprintIdentifier = "80F570D026CD534200E5A552"
                BuildableName = "wssocks-ustb-client.app"
                BlueprintName = "wssocks-ustb-client"
                ReferencedContainer = "container:wssocks-ustb-client.xcodeproj">
@@ -32,7 +32,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "80DDD91D245A5E2C00DCC97D"
+               BlueprintIdentifier = "80F570E526CD534600E5A552"
                BuildableName = "wssocks-ustb-clientTests.xctest"
                BlueprintName = "wssocks-ustb-clientTests"
                ReferencedContainer = "container:wssocks-ustb-client.xcodeproj">
@@ -42,7 +42,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "80DDD928245A5E2C00DCC97D"
+               BlueprintIdentifier = "80F570F026CD534600E5A552"
                BuildableName = "wssocks-ustb-clientUITests.xctest"
                BlueprintName = "wssocks-ustb-clientUITests"
                ReferencedContainer = "container:wssocks-ustb-client.xcodeproj">
@@ -64,7 +64,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "80DDD908245A5E2900DCC97D"
+            BlueprintIdentifier = "80F570D026CD534200E5A552"
             BuildableName = "wssocks-ustb-client.app"
             BlueprintName = "wssocks-ustb-client"
             ReferencedContainer = "container:wssocks-ustb-client.xcodeproj">
@@ -81,7 +81,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "80DDD908245A5E2900DCC97D"
+            BlueprintIdentifier = "80F570D026CD534200E5A552"
             BuildableName = "wssocks-ustb-client.app"
             BlueprintName = "wssocks-ustb-client"
             ReferencedContainer = "container:wssocks-ustb-client.xcodeproj">

@@ -4,49 +4,49 @@
 //
 //  Created by genshen on 2020/4/30.
 //  Copyright © 2020 genshen. All rights reserved.
+//  Updated by genshen on 2021/8/19.
 //
 
 import Cocoa
 import SwiftUI
 
-@NSApplicationMain
+@main
 class AppDelegate: NSObject, NSApplicationDelegate {
+
+    private var menuExtrasConfigurator: MacExtrasConfigurator?
 
     var window: NSWindow!
     var contentView: ContentView!
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Create the SwiftUI view that provides the window contents.
+        menuExtrasConfigurator = .init()
+        
         contentView = ContentView()
-        contentView.LoadUserDefaults()
-        let rootView = contentView.frame(minWidth: 300)
 
-        // Create the window and set the content view. 
+        // Create the window and set the content view.
         window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 320, height: 480),
-            styleMask: [.titled, .closable, .miniaturizable, /*.resizable,*/ .fullSizeContentView],
+            contentRect: NSRect(x: 0, y: 0, width: 480, height: 300),
+            styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
             backing: .buffered, defer: false)
-        window.title = "wssocks Client"
+        menuExtrasConfigurator?.window = window
+        menuExtrasConfigurator?.configsInView = contentView.config
+
+        window.title = "Preference"
+        window.isReleasedWhenClosed = false
         window.center()
-        window.setFrameAutosaveName("Main Window")
-        window.contentView = NSHostingView(rootView: rootView)
-        window.makeKeyAndOrderFront(nil)
+        window.setFrameAutosaveName("Preference")
+        window.contentView = NSHostingView(rootView: contentView)
+        // window.makeKeyAndOrderFront(nil)
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
         // Insert code here to tear down your application
-        contentView.StoreUserDefaults()
+        contentView.config.StoreUserDefaults(defaults: UserDefaults.standard)
     }
 
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
-        true
+        false
     }
-
-}
-
-
-struct AppDelegate_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
+    
 }

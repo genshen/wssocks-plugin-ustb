@@ -7,67 +7,69 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8068F1C3245BD9D000EAE70C /* wssocksClientApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8068F1C2245BD9D000EAE70C /* wssocksClientApi.swift */; };
-		80DDD90D245A5E2900DCC97D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80DDD90C245A5E2900DCC97D /* AppDelegate.swift */; };
-		80DDD90F245A5E2900DCC97D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80DDD90E245A5E2900DCC97D /* ContentView.swift */; };
-		80DDD911245A5E2B00DCC97D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 80DDD910245A5E2B00DCC97D /* Assets.xcassets */; };
-		80DDD914245A5E2B00DCC97D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 80DDD913245A5E2B00DCC97D /* Preview Assets.xcassets */; };
-		80DDD917245A5E2B00DCC97D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 80DDD915245A5E2B00DCC97D /* Main.storyboard */; };
-		80DDD923245A5E2C00DCC97D /* wssocks_ustb_clientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80DDD922245A5E2C00DCC97D /* wssocks_ustb_clientTests.swift */; };
-		80DDD92E245A5E2C00DCC97D /* wssocks_ustb_clientUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80DDD92D245A5E2C00DCC97D /* wssocks_ustb_clientUITests.swift */; };
+		80F570D526CD534200E5A552 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F570D426CD534200E5A552 /* AppDelegate.swift */; };
+		80F570D726CD534200E5A552 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F570D626CD534200E5A552 /* ContentView.swift */; };
+		80F570D926CD534500E5A552 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 80F570D826CD534500E5A552 /* Assets.xcassets */; };
+		80F570DC26CD534500E5A552 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 80F570DB26CD534500E5A552 /* Preview Assets.xcassets */; };
+		80F570DF26CD534500E5A552 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 80F570DD26CD534500E5A552 /* Main.storyboard */; };
+		80F570EB26CD534600E5A552 /* wssocks_ustb_clientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F570EA26CD534600E5A552 /* wssocks_ustb_clientTests.swift */; };
+		80F570F626CD534600E5A552 /* wssocks_ustb_clientUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F570F526CD534600E5A552 /* wssocks_ustb_clientUITests.swift */; };
+		80F5710426CD55BE00E5A552 /* MacExtrasConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F5710326CD55BE00E5A552 /* MacExtrasConfigurator.swift */; };
+		80F5710626CE252400E5A552 /* wssocksClientApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F5710526CE252400E5A552 /* wssocksClientApi.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		80DDD91F245A5E2C00DCC97D /* PBXContainerItemProxy */ = {
+		80F570E726CD534600E5A552 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 80DDD901245A5E2900DCC97D /* Project object */;
+			containerPortal = 80F570C926CD534200E5A552 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 80DDD908245A5E2900DCC97D;
+			remoteGlobalIDString = 80F570D026CD534200E5A552;
 			remoteInfo = "wssocks-ustb-client";
 		};
-		80DDD92A245A5E2C00DCC97D /* PBXContainerItemProxy */ = {
+		80F570F226CD534600E5A552 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 80DDD901245A5E2900DCC97D /* Project object */;
+			containerPortal = 80F570C926CD534200E5A552 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 80DDD908245A5E2900DCC97D;
+			remoteGlobalIDString = 80F570D026CD534200E5A552;
 			remoteInfo = "wssocks-ustb-client";
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		8068F1C2245BD9D000EAE70C /* wssocksClientApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = wssocksClientApi.swift; sourceTree = "<group>"; };
-		80DDD909245A5E2900DCC97D /* wssocks-ustb-client.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "wssocks-ustb-client.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		80DDD90C245A5E2900DCC97D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		80DDD90E245A5E2900DCC97D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		80DDD910245A5E2B00DCC97D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		80DDD913245A5E2B00DCC97D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		80DDD916245A5E2B00DCC97D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		80DDD918245A5E2B00DCC97D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		80DDD919245A5E2B00DCC97D /* wssocks_ustb_client.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = wssocks_ustb_client.entitlements; sourceTree = "<group>"; };
-		80DDD91E245A5E2C00DCC97D /* wssocks-ustb-clientTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "wssocks-ustb-clientTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		80DDD922245A5E2C00DCC97D /* wssocks_ustb_clientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = wssocks_ustb_clientTests.swift; sourceTree = "<group>"; };
-		80DDD924245A5E2C00DCC97D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		80DDD929245A5E2C00DCC97D /* wssocks-ustb-clientUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "wssocks-ustb-clientUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		80DDD92D245A5E2C00DCC97D /* wssocks_ustb_clientUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = wssocks_ustb_clientUITests.swift; sourceTree = "<group>"; };
-		80DDD92F245A5E2C00DCC97D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		80F570D126CD534200E5A552 /* wssocks-ustb-client.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "wssocks-ustb-client.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		80F570D426CD534200E5A552 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		80F570D626CD534200E5A552 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		80F570D826CD534500E5A552 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		80F570DB26CD534500E5A552 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		80F570DE26CD534500E5A552 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		80F570E026CD534500E5A552 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		80F570E126CD534500E5A552 /* wssocks_ustb_client.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = wssocks_ustb_client.entitlements; sourceTree = "<group>"; };
+		80F570E626CD534600E5A552 /* wssocks-ustb-clientTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "wssocks-ustb-clientTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		80F570EA26CD534600E5A552 /* wssocks_ustb_clientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = wssocks_ustb_clientTests.swift; sourceTree = "<group>"; };
+		80F570EC26CD534600E5A552 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		80F570F126CD534600E5A552 /* wssocks-ustb-clientUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "wssocks-ustb-clientUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		80F570F526CD534600E5A552 /* wssocks_ustb_clientUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = wssocks_ustb_clientUITests.swift; sourceTree = "<group>"; };
+		80F570F726CD534600E5A552 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		80F5710326CD55BE00E5A552 /* MacExtrasConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacExtrasConfigurator.swift; sourceTree = "<group>"; };
+		80F5710526CE252400E5A552 /* wssocksClientApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = wssocksClientApi.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		80DDD906245A5E2900DCC97D /* Frameworks */ = {
+		80F570CE26CD534200E5A552 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		80DDD91B245A5E2C00DCC97D /* Frameworks */ = {
+		80F570E326CD534600E5A552 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		80DDD926245A5E2C00DCC97D /* Frameworks */ = {
+		80F570EE26CD534600E5A552 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -77,63 +79,64 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		80DDD900245A5E2900DCC97D = {
+		80F570C826CD534200E5A552 = {
 			isa = PBXGroup;
 			children = (
-				80DDD90B245A5E2900DCC97D /* wssocks-ustb-client */,
-				80DDD921245A5E2C00DCC97D /* wssocks-ustb-clientTests */,
-				80DDD92C245A5E2C00DCC97D /* wssocks-ustb-clientUITests */,
-				80DDD90A245A5E2900DCC97D /* Products */,
+				80F570D326CD534200E5A552 /* wssocks-ustb-client */,
+				80F570E926CD534600E5A552 /* wssocks-ustb-clientTests */,
+				80F570F426CD534600E5A552 /* wssocks-ustb-clientUITests */,
+				80F570D226CD534200E5A552 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		80DDD90A245A5E2900DCC97D /* Products */ = {
+		80F570D226CD534200E5A552 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				80DDD909245A5E2900DCC97D /* wssocks-ustb-client.app */,
-				80DDD91E245A5E2C00DCC97D /* wssocks-ustb-clientTests.xctest */,
-				80DDD929245A5E2C00DCC97D /* wssocks-ustb-clientUITests.xctest */,
+				80F570D126CD534200E5A552 /* wssocks-ustb-client.app */,
+				80F570E626CD534600E5A552 /* wssocks-ustb-clientTests.xctest */,
+				80F570F126CD534600E5A552 /* wssocks-ustb-clientUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		80DDD90B245A5E2900DCC97D /* wssocks-ustb-client */ = {
+		80F570D326CD534200E5A552 /* wssocks-ustb-client */ = {
 			isa = PBXGroup;
 			children = (
-				80DDD90C245A5E2900DCC97D /* AppDelegate.swift */,
-				80DDD90E245A5E2900DCC97D /* ContentView.swift */,
-				80DDD910245A5E2B00DCC97D /* Assets.xcassets */,
-				80DDD915245A5E2B00DCC97D /* Main.storyboard */,
-				80DDD918245A5E2B00DCC97D /* Info.plist */,
-				80DDD919245A5E2B00DCC97D /* wssocks_ustb_client.entitlements */,
-				8068F1C2245BD9D000EAE70C /* wssocksClientApi.swift */,
-				80DDD912245A5E2B00DCC97D /* Preview Content */,
+				80F570D426CD534200E5A552 /* AppDelegate.swift */,
+				80F570D626CD534200E5A552 /* ContentView.swift */,
+				80F570D826CD534500E5A552 /* Assets.xcassets */,
+				80F570DD26CD534500E5A552 /* Main.storyboard */,
+				80F570E026CD534500E5A552 /* Info.plist */,
+				80F570E126CD534500E5A552 /* wssocks_ustb_client.entitlements */,
+				80F570DA26CD534500E5A552 /* Preview Content */,
+				80F5710326CD55BE00E5A552 /* MacExtrasConfigurator.swift */,
+				80F5710526CE252400E5A552 /* wssocksClientApi.swift */,
 			);
 			path = "wssocks-ustb-client";
 			sourceTree = "<group>";
 		};
-		80DDD912245A5E2B00DCC97D /* Preview Content */ = {
+		80F570DA26CD534500E5A552 /* Preview Content */ = {
 			isa = PBXGroup;
 			children = (
-				80DDD913245A5E2B00DCC97D /* Preview Assets.xcassets */,
+				80F570DB26CD534500E5A552 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		80DDD921245A5E2C00DCC97D /* wssocks-ustb-clientTests */ = {
+		80F570E926CD534600E5A552 /* wssocks-ustb-clientTests */ = {
 			isa = PBXGroup;
 			children = (
-				80DDD922245A5E2C00DCC97D /* wssocks_ustb_clientTests.swift */,
-				80DDD924245A5E2C00DCC97D /* Info.plist */,
+				80F570EA26CD534600E5A552 /* wssocks_ustb_clientTests.swift */,
+				80F570EC26CD534600E5A552 /* Info.plist */,
 			);
 			path = "wssocks-ustb-clientTests";
 			sourceTree = "<group>";
 		};
-		80DDD92C245A5E2C00DCC97D /* wssocks-ustb-clientUITests */ = {
+		80F570F426CD534600E5A552 /* wssocks-ustb-clientUITests */ = {
 			isa = PBXGroup;
 			children = (
-				80DDD92D245A5E2C00DCC97D /* wssocks_ustb_clientUITests.swift */,
-				80DDD92F245A5E2C00DCC97D /* Info.plist */,
+				80F570F526CD534600E5A552 /* wssocks_ustb_clientUITests.swift */,
+				80F570F726CD534600E5A552 /* Info.plist */,
 			);
 			path = "wssocks-ustb-clientUITests";
 			sourceTree = "<group>";
@@ -141,13 +144,13 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		80DDD908245A5E2900DCC97D /* wssocks-ustb-client */ = {
+		80F570D026CD534200E5A552 /* wssocks-ustb-client */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 80DDD932245A5E2C00DCC97D /* Build configuration list for PBXNativeTarget "wssocks-ustb-client" */;
+			buildConfigurationList = 80F570FA26CD534600E5A552 /* Build configuration list for PBXNativeTarget "wssocks-ustb-client" */;
 			buildPhases = (
-				80DDD905245A5E2900DCC97D /* Sources */,
-				80DDD906245A5E2900DCC97D /* Frameworks */,
-				80DDD907245A5E2900DCC97D /* Resources */,
+				80F570CD26CD534200E5A552 /* Sources */,
+				80F570CE26CD534200E5A552 /* Frameworks */,
+				80F570CF26CD534200E5A552 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -155,69 +158,68 @@
 			);
 			name = "wssocks-ustb-client";
 			productName = "wssocks-ustb-client";
-			productReference = 80DDD909245A5E2900DCC97D /* wssocks-ustb-client.app */;
+			productReference = 80F570D126CD534200E5A552 /* wssocks-ustb-client.app */;
 			productType = "com.apple.product-type.application";
 		};
-		80DDD91D245A5E2C00DCC97D /* wssocks-ustb-clientTests */ = {
+		80F570E526CD534600E5A552 /* wssocks-ustb-clientTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 80DDD935245A5E2C00DCC97D /* Build configuration list for PBXNativeTarget "wssocks-ustb-clientTests" */;
+			buildConfigurationList = 80F570FD26CD534600E5A552 /* Build configuration list for PBXNativeTarget "wssocks-ustb-clientTests" */;
 			buildPhases = (
-				80DDD91A245A5E2C00DCC97D /* Sources */,
-				80DDD91B245A5E2C00DCC97D /* Frameworks */,
-				80DDD91C245A5E2C00DCC97D /* Resources */,
+				80F570E226CD534600E5A552 /* Sources */,
+				80F570E326CD534600E5A552 /* Frameworks */,
+				80F570E426CD534600E5A552 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				80DDD920245A5E2C00DCC97D /* PBXTargetDependency */,
+				80F570E826CD534600E5A552 /* PBXTargetDependency */,
 			);
 			name = "wssocks-ustb-clientTests";
 			productName = "wssocks-ustb-clientTests";
-			productReference = 80DDD91E245A5E2C00DCC97D /* wssocks-ustb-clientTests.xctest */;
+			productReference = 80F570E626CD534600E5A552 /* wssocks-ustb-clientTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		80DDD928245A5E2C00DCC97D /* wssocks-ustb-clientUITests */ = {
+		80F570F026CD534600E5A552 /* wssocks-ustb-clientUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 80DDD938245A5E2C00DCC97D /* Build configuration list for PBXNativeTarget "wssocks-ustb-clientUITests" */;
+			buildConfigurationList = 80F5710026CD534600E5A552 /* Build configuration list for PBXNativeTarget "wssocks-ustb-clientUITests" */;
 			buildPhases = (
-				80DDD925245A5E2C00DCC97D /* Sources */,
-				80DDD926245A5E2C00DCC97D /* Frameworks */,
-				80DDD927245A5E2C00DCC97D /* Resources */,
+				80F570ED26CD534600E5A552 /* Sources */,
+				80F570EE26CD534600E5A552 /* Frameworks */,
+				80F570EF26CD534600E5A552 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				80DDD92B245A5E2C00DCC97D /* PBXTargetDependency */,
+				80F570F326CD534600E5A552 /* PBXTargetDependency */,
 			);
 			name = "wssocks-ustb-clientUITests";
 			productName = "wssocks-ustb-clientUITests";
-			productReference = 80DDD929245A5E2C00DCC97D /* wssocks-ustb-clientUITests.xctest */;
+			productReference = 80F570F126CD534600E5A552 /* wssocks-ustb-clientUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		80DDD901245A5E2900DCC97D /* Project object */ = {
+		80F570C926CD534200E5A552 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1140;
-				LastUpgradeCheck = 1140;
-				ORGANIZATIONNAME = genshen;
+				LastSwiftUpdateCheck = 1250;
+				LastUpgradeCheck = 1250;
 				TargetAttributes = {
-					80DDD908245A5E2900DCC97D = {
-						CreatedOnToolsVersion = 11.4.1;
+					80F570D026CD534200E5A552 = {
+						CreatedOnToolsVersion = 12.5.1;
 					};
-					80DDD91D245A5E2C00DCC97D = {
-						CreatedOnToolsVersion = 11.4.1;
-						TestTargetID = 80DDD908245A5E2900DCC97D;
+					80F570E526CD534600E5A552 = {
+						CreatedOnToolsVersion = 12.5.1;
+						TestTargetID = 80F570D026CD534200E5A552;
 					};
-					80DDD928245A5E2C00DCC97D = {
-						CreatedOnToolsVersion = 11.4.1;
-						TestTargetID = 80DDD908245A5E2900DCC97D;
+					80F570F026CD534600E5A552 = {
+						CreatedOnToolsVersion = 12.5.1;
+						TestTargetID = 80F570D026CD534200E5A552;
 					};
 				};
 			};
-			buildConfigurationList = 80DDD904245A5E2900DCC97D /* Build configuration list for PBXProject "wssocks-ustb-client" */;
+			buildConfigurationList = 80F570CC26CD534200E5A552 /* Build configuration list for PBXProject "wssocks-ustb-client" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -225,37 +227,37 @@
 				en,
 				Base,
 			);
-			mainGroup = 80DDD900245A5E2900DCC97D;
-			productRefGroup = 80DDD90A245A5E2900DCC97D /* Products */;
+			mainGroup = 80F570C826CD534200E5A552;
+			productRefGroup = 80F570D226CD534200E5A552 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				80DDD908245A5E2900DCC97D /* wssocks-ustb-client */,
-				80DDD91D245A5E2C00DCC97D /* wssocks-ustb-clientTests */,
-				80DDD928245A5E2C00DCC97D /* wssocks-ustb-clientUITests */,
+				80F570D026CD534200E5A552 /* wssocks-ustb-client */,
+				80F570E526CD534600E5A552 /* wssocks-ustb-clientTests */,
+				80F570F026CD534600E5A552 /* wssocks-ustb-clientUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		80DDD907245A5E2900DCC97D /* Resources */ = {
+		80F570CF26CD534200E5A552 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				80DDD917245A5E2B00DCC97D /* Main.storyboard in Resources */,
-				80DDD914245A5E2B00DCC97D /* Preview Assets.xcassets in Resources */,
-				80DDD911245A5E2B00DCC97D /* Assets.xcassets in Resources */,
+				80F570DF26CD534500E5A552 /* Main.storyboard in Resources */,
+				80F570DC26CD534500E5A552 /* Preview Assets.xcassets in Resources */,
+				80F570D926CD534500E5A552 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		80DDD91C245A5E2C00DCC97D /* Resources */ = {
+		80F570E426CD534600E5A552 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		80DDD927245A5E2C00DCC97D /* Resources */ = {
+		80F570EF26CD534600E5A552 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -265,52 +267,53 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		80DDD905245A5E2900DCC97D /* Sources */ = {
+		80F570CD26CD534200E5A552 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8068F1C3245BD9D000EAE70C /* wssocksClientApi.swift in Sources */,
-				80DDD90F245A5E2900DCC97D /* ContentView.swift in Sources */,
-				80DDD90D245A5E2900DCC97D /* AppDelegate.swift in Sources */,
+				80F570D726CD534200E5A552 /* ContentView.swift in Sources */,
+				80F5710426CD55BE00E5A552 /* MacExtrasConfigurator.swift in Sources */,
+				80F570D526CD534200E5A552 /* AppDelegate.swift in Sources */,
+				80F5710626CE252400E5A552 /* wssocksClientApi.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		80DDD91A245A5E2C00DCC97D /* Sources */ = {
+		80F570E226CD534600E5A552 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				80DDD923245A5E2C00DCC97D /* wssocks_ustb_clientTests.swift in Sources */,
+				80F570EB26CD534600E5A552 /* wssocks_ustb_clientTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		80DDD925245A5E2C00DCC97D /* Sources */ = {
+		80F570ED26CD534600E5A552 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				80DDD92E245A5E2C00DCC97D /* wssocks_ustb_clientUITests.swift in Sources */,
+				80F570F626CD534600E5A552 /* wssocks_ustb_clientUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		80DDD920245A5E2C00DCC97D /* PBXTargetDependency */ = {
+		80F570E826CD534600E5A552 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 80DDD908245A5E2900DCC97D /* wssocks-ustb-client */;
-			targetProxy = 80DDD91F245A5E2C00DCC97D /* PBXContainerItemProxy */;
+			target = 80F570D026CD534200E5A552 /* wssocks-ustb-client */;
+			targetProxy = 80F570E726CD534600E5A552 /* PBXContainerItemProxy */;
 		};
-		80DDD92B245A5E2C00DCC97D /* PBXTargetDependency */ = {
+		80F570F326CD534600E5A552 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 80DDD908245A5E2900DCC97D /* wssocks-ustb-client */;
-			targetProxy = 80DDD92A245A5E2C00DCC97D /* PBXContainerItemProxy */;
+			target = 80F570D026CD534200E5A552 /* wssocks-ustb-client */;
+			targetProxy = 80F570F226CD534600E5A552 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		80DDD915245A5E2B00DCC97D /* Main.storyboard */ = {
+		80F570DD26CD534500E5A552 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				80DDD916245A5E2B00DCC97D /* Base */,
+				80F570DE26CD534500E5A552 /* Base */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -318,7 +321,7 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		80DDD930245A5E2C00DCC97D /* Debug */ = {
+		80F570F826CD534600E5A552 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -344,6 +347,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -368,7 +372,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 11.3;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -378,7 +382,7 @@
 			};
 			name = Debug;
 		};
-		80DDD931245A5E2C00DCC97D /* Release */ = {
+		80F570F926CD534600E5A552 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -404,6 +408,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -422,7 +427,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 11.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
@@ -431,17 +436,19 @@
 			};
 			name = Release;
 		};
-		80DDD933245A5E2C00DCC97D /* Debug */ = {
+		80F570FB26CD534600E5A552 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "wssocks-ustb-client/wssocks_ustb_client.entitlements";
-				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"wssocks-ustb-client/Preview Content\"";
 				DEVELOPMENT_TEAM = 225G88CH2L;
+				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
+				EXCLUDED_ARCHS = arm64;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)";
 				INFOPLIST_FILE = "wssocks-ustb-client/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -452,22 +459,23 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.github.genshen.wssocks-ustb-client";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
-		80DDD934245A5E2C00DCC97D /* Release */ = {
+		80F570FC26CD534600E5A552 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "wssocks-ustb-client/wssocks_ustb_client.entitlements";
-				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"wssocks-ustb-client/Preview Content\"";
 				DEVELOPMENT_TEAM = 225G88CH2L;
+				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
+				EXCLUDED_ARCHS = arm64;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)";
 				INFOPLIST_FILE = "wssocks-ustb-client/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -478,18 +486,18 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.github.genshen.wssocks-ustb-client";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
-		80DDD936245A5E2C00DCC97D /* Debug */ = {
+		80F570FE26CD534600E5A552 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 225G88CH2L;
 				INFOPLIST_FILE = "wssocks-ustb-clientTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -504,13 +512,14 @@
 			};
 			name = Debug;
 		};
-		80DDD937245A5E2C00DCC97D /* Release */ = {
+		80F570FF26CD534600E5A552 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 225G88CH2L;
 				INFOPLIST_FILE = "wssocks-ustb-clientTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -525,12 +534,13 @@
 			};
 			name = Release;
 		};
-		80DDD939245A5E2C00DCC97D /* Debug */ = {
+		80F5710126CD534600E5A552 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 225G88CH2L;
 				INFOPLIST_FILE = "wssocks-ustb-clientUITests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -544,12 +554,13 @@
 			};
 			name = Debug;
 		};
-		80DDD93A245A5E2C00DCC97D /* Release */ = {
+		80F5710226CD534600E5A552 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 225G88CH2L;
 				INFOPLIST_FILE = "wssocks-ustb-clientUITests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -566,43 +577,43 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		80DDD904245A5E2900DCC97D /* Build configuration list for PBXProject "wssocks-ustb-client" */ = {
+		80F570CC26CD534200E5A552 /* Build configuration list for PBXProject "wssocks-ustb-client" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				80DDD930245A5E2C00DCC97D /* Debug */,
-				80DDD931245A5E2C00DCC97D /* Release */,
+				80F570F826CD534600E5A552 /* Debug */,
+				80F570F926CD534600E5A552 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		80DDD932245A5E2C00DCC97D /* Build configuration list for PBXNativeTarget "wssocks-ustb-client" */ = {
+		80F570FA26CD534600E5A552 /* Build configuration list for PBXNativeTarget "wssocks-ustb-client" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				80DDD933245A5E2C00DCC97D /* Debug */,
-				80DDD934245A5E2C00DCC97D /* Release */,
+				80F570FB26CD534600E5A552 /* Debug */,
+				80F570FC26CD534600E5A552 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		80DDD935245A5E2C00DCC97D /* Build configuration list for PBXNativeTarget "wssocks-ustb-clientTests" */ = {
+		80F570FD26CD534600E5A552 /* Build configuration list for PBXNativeTarget "wssocks-ustb-clientTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				80DDD936245A5E2C00DCC97D /* Debug */,
-				80DDD937245A5E2C00DCC97D /* Release */,
+				80F570FE26CD534600E5A552 /* Debug */,
+				80F570FF26CD534600E5A552 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		80DDD938245A5E2C00DCC97D /* Build configuration list for PBXNativeTarget "wssocks-ustb-clientUITests" */ = {
+		80F5710026CD534600E5A552 /* Build configuration list for PBXNativeTarget "wssocks-ustb-clientUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				80DDD939245A5E2C00DCC97D /* Debug */,
-				80DDD93A245A5E2C00DCC97D /* Release */,
+				80F5710126CD534600E5A552 /* Debug */,
+				80F5710226CD534600E5A552 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 80DDD901245A5E2900DCC97D /* Project object */;
+	rootObject = 80F570C926CD534200E5A552 /* Project object */;
 }
