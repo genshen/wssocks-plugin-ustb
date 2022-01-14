@@ -7,8 +7,9 @@
 
 ## wssocks-ustb 下载安装
 wssocks-ustb 客户端及其插件的源码可在 [github](https://github.com/genshen/wssocks-plugin-ustb) 获取。  
-同时，也提供了预编译好的多种客户端，可在 [https://osdn.net/projects/wssocks-ustb/](https://osdn.net/projects/wssocks-ustb/) 或者 github release 下载。  
-注：前者是 night-release，后者是稳定版，如果最新的稳定版还未释放出来，可使用 night-release 版本。
+同时，也提供了预编译好的多种客户端，可在 [github release](https://github.com/genshen/wssocks-plugin-ustb/releases) 
+或者 [https://osdn.net/projects/wssocks-ustb/](https://osdn.net/projects/wssocks-ustb/) 下载。  
+注：前者是稳定版，后者是 night-release，如果最新的稳定版还未释放出来，可使用 night-release 版本。
 
 其中：
 - client-ui-macOS-amd64.zip 和 client-ui-windows-amd64.exe 分别是 macOS 和 windows 上通用的 GUI wssocks-ustb 客户端，

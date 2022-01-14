@@ -1,6 +1,7 @@
 > 从校外网络访问USTB校内网络
 
-![wssocks-ustb v0.4.0](https://img.shields.io/badge/wssocks--ustb-v0.4.0-orange.svg)
+![wssocks-ustb version](https://img.shields.io/github/v/release/genshen/wssocks-plugin-ustb?include_prereleases)
+[![GitHub all releases](https://img.shields.io/github/downloads/genshen/wssocks-plugin-ustb/total?color=brightgreen)](https://github.com/genshen/wssocks-plugin-ustb/releases)
 
 ## 使用示例: wssocks 服务端  
  在内网的服务端的主机(如地址为`proxy.gensh.me`的主机)上执行:
