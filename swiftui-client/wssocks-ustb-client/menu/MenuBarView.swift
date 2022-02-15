@@ -1,0 +1,281 @@
+//
+//  MenuBarView.swift
+//  wssocks-ustb-client
+//
+//  Created by genshen on 2022/2/1.
+//
+
+import SwiftUI
+
+struct MenuBarView: View {
+    @Namespace var animation
+    @State private var showingAlert = false
+    @State private var alertMessage: String = ""
+    @State private var btnInProgress = false
+
+    @State private var statusImage: String = "bolt.slash"
+    @State private var statusDesc: String = ""
+
+    var statusItem: NSStatusItem! // ref of status item
+    var configsInView: Configs! // ref of config values in ContentView
+    
+    private let defaults = UserDefaults.standard
+    @State var wssocksStatus = 0
+    var client = WssocksClient()
+
+    var body: some View {
+        VStack{
+            HStack{
+                Button (action:{
+                    showPref()
+                }, label: {
+                    if #available(macOS 11.0, *) {
+                        Image(systemName: "gear.circle.fill")
+                    } else {
+                        Text("偏好设置")
+                    }
+                })
+                Button (action:{
+                    openNetworkProxyPreferences()
+                }, label: {
+                    if #available(macOS 11.0, *) {
+                        Image(systemName: "network")
+                    } else {
+                        Text("系统代理设置")
+                    }
+                })
+                Spacer()
+                Button (action:{
+                        showAboutAction(nil)
+                }, label: {
+                    if #available(macOS 11.0, *) {
+                        Image(systemName: "info.circle")
+                    } else {
+                        Text("关于")
+                    }
+                }) // .disabled(!uiEnableSubmitBtn)
+//                .keyboardShortcut(.defaultAction) // see https://stackoverflow.com/a/62727585
+            }
+            .padding(.top, 8)
+            .padding(.horizontal, 8)
+            Divider()//.padding(.top, 4)
+
+            HStack{
+                Button(action: toggleWssocks, label: {
+                    Text(wssocksStatus == 0 ? "Start": "Stop")
+                        .font(.callout)
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
+                        .padding(.vertical, 4)
+                        .frame(maxWidth: .infinity)
+                }).buttonStyle(.borderedProminent)
+                    .controlSize(.large)
+                    .background(ZStack{
+                        if !btnInProgress {
+                            RoundedRectangle(cornerRadius: 4)
+                                .fill(Color.accentColor)
+                                .matchedGeometryEffect(id: "Start", in: animation)
+                        }
+                    })
+                    .buttonBorderShape(.roundedRectangle)
+                    .disabled(btnInProgress)
+                    .alert(isPresented: $showingAlert) {
+                            Alert(title: Text("Error"), message: Text("\(alertMessage)"), dismissButton: .default(Text("OK")))
+                    }
+            }
+            .padding(.horizontal)
+           // .padding(.top)
+
+           // Divider().padding(.top, 4)
+
+            if #available(macOS 11.0, *) {
+                Image(systemName: statusImage)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .foregroundColor(wssocksStatus==0 ? Color.primary: Color.accentColor)
+                    .padding(24)
+            } else {
+                // Fallback on earlier versions
+            }
+
+            // quit button
+            if #available(macOS 11.0, *) {
+                Button(action: quitApp) {
+                    Label("Quit App", systemImage: "xmark.circle.fill")
+                        //.foregroundColor(Color.accentColor)
+                }.buttonStyle(BorderlessButtonStyle())
+            } else {
+                // Fallback on earlier versions
+            }
+
+            Divider().padding(.top, 4)
+
+            // bottom view
+            HStack{
+                Button (action:{
+                    showGithubAction(nil)
+                }, label: {
+                    if #available(macOS 11.0, *) {
+                        Label("Github", systemImage: "heart.circle.fill")
+                            .symbolRenderingMode(.multicolor)
+                    } else {
+                        Text("Github")
+                    }
+                })
+                Spacer()
+                Button (action:{
+                    showHelpAction(nil)
+                }, label: {
+                    if #available(macOS 11.0, *) {
+                        Label("帮助", systemImage: "questionmark.circle")
+                    } else {
+                        Text("帮助")
+                    }
+                })
+            }
+            .padding(.bottom, 4)
+            .padding(.horizontal, 8)
+        }
+        .frame(width: 250, height: 250)
+    }
+
+    func checkPref() -> Bool {
+        if self.configsInView.uiVPNPassword == "" {
+            return false
+        }
+        return true
+    }
+
+    private func openNetworkProxyPreferences() {
+//        let url = URL(string:"x-apple.systempreferences:com.apple.preference.network?Proxies")!
+//        NSWorkspace.shared.open(url)
+       let script = """
+tell application "System Preferences"
+   reveal anchor "Proxies" of pane "com.apple.preference.network"
+   activate
+end tell
+"""
+       var err: NSDictionary?
+       let scriptObject = NSAppleScript(source: script)
+       if let output = scriptObject?.executeAndReturnError(&err) {
+           print(output.stringValue ?? "")
+       } else {
+           // something's wrong
+       }
+   }
+
+    private func showGithubAction(_ sender: Any?) {
+       guard let url = URL(string: "https://github.com/genshen/wssocks-plugin-ustb") else {
+           return
+       }
+       NSWorkspace.shared.open(url)
+   }
+
+    private func noticeFailed(message: String) {
+        showingAlert = true
+        // todo: notification.title = "开启 wssocks 失败"
+        alertMessage = message
+    }
+
+    private func toggleWssocks() {
+        if wssocksStatus == 0 {
+            if(checkPref() == false) {
+                noticeFailed(message: "No VPN password")
+                return
+            }
+
+            statusDesc = "正在开启wssocks..."
+            btnInProgress = true
+            DispatchQueue.global().async {
+                let msg = self.client.startClient(config: self.configsInView) ?? ""
+                DispatchQueue.main.sync {
+                    btnInProgress = false
+                    if msg != "" {
+                        self.noticeFailed(message: msg)
+                        self.setWssocksStatusUI(status: 0)
+                    } else {
+                        self.setWssocksStatusUI(status: 1)
+                    }
+                }
+            }
+        } else {
+            statusDesc = "正在停止wssocks..."
+            btnInProgress = true
+            DispatchQueue.global().async {
+                let msg = self.client.stopClient() ?? ""
+                DispatchQueue.main.sync {
+                    btnInProgress = false
+                    if msg != "" {
+                        self.noticeFailed(message: msg)
+                    }
+                    self.setWssocksStatusUI(status: 0)
+                }
+            }
+        }
+    }
+
+    private func setWssocksStatusUI(status: Int) {
+        self.wssocksStatus = status
+        if status == 0 {
+            statusImage = "bolt.slash"
+            statusDesc = "点击以开启wssocks"
+            statusItem.image = NSImage(named: "StatusIcon")
+        } else if status == 1 {
+            statusImage = "bolt"
+            statusDesc = "点击以停止wssocks"
+            statusItem.image = NSImage(named: "LaunchIcon")
+        } else {
+
+        }
+    }
+
+    private func showHelpAction(_ sender: Any?) {
+        guard let url = URL(string: "https://genshen.github.io/wssocks-plugin-ustb") else {
+            return
+        }
+        NSWorkspace.shared.open(url)
+    }
+
+    @Environment(\.openURL) var openURL
+    private func showPref() {
+        // see: https://stackoverflow.com/a/65356627/10068476
+        NSApp.sendAction(Selector(("showPreferencesWindow:")), to: nil, from: nil)
+    }
+
+    private func quitApp() {
+       NSApplication.shared.terminate(self)
+    }
+
+    private func showAboutAction(_ sender: Any?) {
+       NSApp.orderFrontStandardAboutPanel(sender);
+       NSApp.activate(ignoringOtherApps: true)
+   }
+}
+
+struct MenuBarView_Previews: PreviewProvider {
+    static var previews: some View {
+        MenuBarView()
+    }
+}
+
+struct TabButton: View {
+    var title: String
+    var body: some View{
+        Button(action: {}, label: {
+            Text(title)
+                .font(.callout)
+                .fontWeight(.bold)
+                .foregroundColor(.primary)
+                .padding(.vertical, 4)
+                .frame(maxWidth: .infinity)
+                .background(
+                    ZStack{
+                        RoundedRectangle(cornerRadius: 4)
+                            .stroke(Color.primary)
+//                            .fill(Color.blue)
+                    }
+                )
+        })
+            .buttonStyle(PlainButtonStyle())
+    }
+}

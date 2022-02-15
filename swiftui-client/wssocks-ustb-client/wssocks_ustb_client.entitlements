@@ -10,10 +10,5 @@
 	<true/>
 	<key>com.apple.security.network.server</key>
 	<true/>
-	<key>com.apple.security.scripting-targets</key>
-	<dict>
-		<key>com.apple.systempreferences</key>
-		<string>preferencepane.reveal</string>
-	</dict>
 </dict>
 </plist>

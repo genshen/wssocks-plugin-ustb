@@ -1,52 +1,90 @@
 //
-//  AppDelegate.swift
+//  wssocks_ustb_clientApp.swift
 //  wssocks-ustb-client
 //
 //  Created by genshen on 2020/4/30.
 //  Copyright © 2020 genshen. All rights reserved.
-//  Updated by genshen on 2021/8/19.
+//  Updated by genshen on 2021/8/19 and 2022/1/14.
 //
 
-import Cocoa
 import SwiftUI
 
 @main
+struct wssocks_ustb_clientApp: App {
+    @ObservedObject var config = Configs()
+
+    @NSApplicationDelegateAdaptor(AppDelegate.self) var delegate
+
+    init() {
+        self.delegate.config = config
+    }
+
+    var body: some Scene {
+        // to hiden unnecessary view,
+        // see https://khorbushko.github.io/article/2021/04/30/minimal-macOS-menu-bar-extra%27s-app-with-SwiftUI.html
+        Settings {
+            ContentView(conf: config).frame(width: 450)
+        }
+    }
+}
+
 class AppDelegate: NSObject, NSApplicationDelegate {
+    var config: Configs!
+    var eventMonitor: EventMonitor?
 
-    private var menuExtrasConfigurator: MacExtrasConfigurator?
+    var popOver = NSPopover()
 
-    var window: NSWindow!
-    var contentView: ContentView!
+    private var statusBar: NSStatusBar!
+    private var statusItem: NSStatusItem!
+
+    @objc func onStatusBarToggle(_ sender: Any?) {
+        if popOver.isShown {
+            popOver.performClose(sender)
+            self.eventMonitor?.stop()
+        }else {
+            if let statusBarButton = statusItem.button {
+                self.popOver.show(relativeTo: statusBarButton.bounds, of: statusBarButton, preferredEdge: NSRectEdge.minY)
+                self.eventMonitor?.start()
+            }
+        }
+    }
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        // Create the SwiftUI view that provides the window contents.
-        menuExtrasConfigurator = .init()
-        
-        contentView = ContentView()
+        // set status bar
+        statusBar = NSStatusBar.system
+        statusItem = statusBar.statusItem(withLength: NSStatusItem.squareLength)
+        if let statusBarButton = statusItem.button {
+            statusBarButton.image = NSImage(named: "StatusIcon")
+            statusBarButton.image?.isTemplate = true
+            statusBarButton.action = #selector(onStatusBarToggle(_:))
+        }
 
-        // Create the window and set the content view.
-        window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 480, height: 300),
-            styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
-            backing: .buffered, defer: false)
-        menuExtrasConfigurator?.window = window
-        menuExtrasConfigurator?.configsInView = contentView.config
+        // set main popover
+        popOver.behavior = .transient
+        popOver.animates = true
 
-        window.title = "Preference"
-        window.isReleasedWhenClosed = false
-        window.center()
-        window.setFrameAutosaveName("Preference")
-        window.contentView = NSHostingView(rootView: contentView)
-        // window.makeKeyAndOrderFront(nil)
+        var menuView = MenuBarView()
+        menuView.statusItem = statusItem
+        menuView.configsInView = config
+
+        popOver.contentViewController = NSViewController()
+        popOver.contentViewController?.view = NSHostingView(rootView: menuView)
+
+        // add event listerner to auto close popover
+        eventMonitor = EventMonitor(mask: [.leftMouseDown, .rightMouseDown]) { [weak self] event in
+            if let strongSelf = self, strongSelf.popOver.isShown {
+                self!.popOver.performClose(event!)
+                self!.eventMonitor?.stop()
+            }
+        }
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
         // Insert code here to tear down your application
-        contentView.config.StoreUserDefaults(defaults: UserDefaults.standard)
+        config.StoreUserDefaults(defaults: UserDefaults.standard)
     }
 
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
         false
     }
-    
 }

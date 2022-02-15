@@ -3,7 +3,7 @@
 //  wssocks-ustb-clientTests
 //
 //  Created by chu genshen on 2020/4/30.
-//  Copyright © 2020 genshen. All rights reserved.
+//  Copyright © 2020-present genshen. All rights reserved.
 //
 
 import XCTest
@@ -22,6 +22,9 @@ class wssocks_ustb_clientTests: XCTestCase {
     func testExample() throws {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
+        // Any test you write for XCTest can be annotated as throws and async.
+        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
+        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
     }
 
     func testPerformanceExample() throws {
