@@ -13,8 +13,8 @@ struct MenuBarView: View {
     @State private var alertMessage: String = ""
     @State private var btnInProgress = false
 
-    @State private var statusImage: String = "bolt.slash"
     @State private var statusDesc: String = ""
+    @State private var clickI: Int = 0
 
     var statusItem: NSStatusItem! // ref of status item
     var configsInView: Configs! // ref of config values in ContentView
@@ -53,8 +53,7 @@ struct MenuBarView: View {
                     } else {
                         Text("关于")
                     }
-                }) // .disabled(!uiEnableSubmitBtn)
-//                .keyboardShortcut(.defaultAction) // see https://stackoverflow.com/a/62727585
+                })
             }
             .padding(.top, 8)
             .padding(.horizontal, 8)
@@ -89,11 +88,19 @@ struct MenuBarView: View {
            // Divider().padding(.top, 4)
 
             if #available(macOS 11.0, *) {
-                Image(systemName: statusImage)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .foregroundColor(wssocksStatus==0 ? Color.primary: Color.accentColor)
-                    .padding(24)
+                Button(action: {
+                    self.clickI = clickI + 1
+                }) {
+                    Image(systemName: wssocksStatus==0 ? "bolt.slash": (clickI % 5 == 4 ? "circle.hexagongrid.fill": "bolt"))
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .foregroundColor(wssocksStatus==0 ? Color.primary: Color.accentColor)
+                        .padding((wssocksStatus == 1 && clickI % 5 == 4) ? 12: 24)
+                        .symbolRenderingMode(.multicolor)
+                }.buttonStyle(PlainButtonStyle())
+                if wssocksStatus == 1 && clickI % 5 == 4 {
+                    Text("Oh! This is an easter egg!")
+                }
             } else {
                 // Fallback on earlier versions
             }
@@ -217,11 +224,9 @@ end tell
     private func setWssocksStatusUI(status: Int) {
         self.wssocksStatus = status
         if status == 0 {
-            statusImage = "bolt.slash"
             statusDesc = "点击以开启wssocks"
             statusItem.image = NSImage(named: "StatusIcon")
         } else if status == 1 {
-            statusImage = "bolt"
             statusDesc = "点击以停止wssocks"
             statusItem.image = NSImage(named: "LaunchIcon")
         } else {
