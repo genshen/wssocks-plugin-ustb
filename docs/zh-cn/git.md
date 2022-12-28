@@ -9,7 +9,7 @@ GIT_SSH_COMMAND="ssh -o ProxyCommand='nc -x 127.0.0.1:1080 %h %p' " git clone ss
 ```
 - Windows Git Bash (ssh 协议)
 ```bash
-GIT_SSH_COMMAND="ssh -o ProxyCommand='connect -x 127.0.0.1:1080 %h %p' " git clone ssh://git@git.hpcer.dev:2222/cli/cli.git
+GIT_SSH_COMMAND="ssh -o ProxyCommand='connect -S 127.0.0.1:1080 %h %p' " git clone ssh://git@git.hpcer.dev:2222/cli/cli.git
 ```
 
 ## HTTP/HTTPS 协议访问
