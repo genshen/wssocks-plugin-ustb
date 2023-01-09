@@ -156,19 +156,25 @@ struct MenuBarView: View {
     private func openNetworkProxyPreferences() {
 //        let url = URL(string:"x-apple.systempreferences:com.apple.preference.network?Proxies")!
 //        NSWorkspace.shared.open(url)
-       let script = """
+        if #available(macOS 13, *) {
+            // see https://github.com/bvanpeski/SystemPreferences/blob/main/macos_preferencepanes-Ventura.md#network
+            let url = URL(string:"x-apple.systempreferences:com.apple.Network-Settings.extension?Proxies")!
+            NSWorkspace.shared.open(url)
+        }else{
+            let script = """
 tell application "System Preferences"
    reveal anchor "Proxies" of pane "com.apple.preference.network"
    activate
 end tell
 """
-       var err: NSDictionary?
-       let scriptObject = NSAppleScript(source: script)
-       if let output = scriptObject?.executeAndReturnError(&err) {
-           print(output.stringValue ?? "")
-       } else {
-           // something's wrong
-       }
+            var err: NSDictionary?
+            let scriptObject = NSAppleScript(source: script)
+            if let output = scriptObject?.executeAndReturnError(&err) {
+                print(output.stringValue ?? "")
+            } else {
+                // something's wrong
+            }
+        }
    }
 
     private func showGithubAction(_ sender: Any?) {
@@ -244,7 +250,11 @@ end tell
     @Environment(\.openURL) var openURL
     private func showPref() {
         // see: https://stackoverflow.com/a/65356627/10068476
-        NSApp.sendAction(Selector(("showPreferencesWindow:")), to: nil, from: nil)
+        if #available(macOS 13, *) {
+            NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
+        } else {
+            NSApp.sendAction(Selector(("showPreferencesWindow:")), to: nil, from: nil)
+        }
     }
 
     private func quitApp() {
