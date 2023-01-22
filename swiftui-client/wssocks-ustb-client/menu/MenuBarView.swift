@@ -18,7 +18,8 @@ struct MenuBarView: View {
 
     var statusItem: NSStatusItem! // ref of status item
     var configsInView: Configs! // ref of config values in ContentView
-    
+
+    @State var ignoreWaitErr = true
     private let defaults = UserDefaults.standard
     @State var wssocksStatus = 0
     var client = WssocksClient()
@@ -210,10 +211,26 @@ end tell
                         self.setWssocksStatusUI(status: 1)
                     }
                 }
+                if msg != "" { // starting has error, skip waiting
+                    return
+                }
+
+                self.ignoreWaitErr = false // now we can accept wait error
+                let errorMsg = self.client.waitClient() ?? ""
+                DispatchQueue.main.sync {
+                    // we only log error when it task is finished with error (not button clicking by user).
+                    if errorMsg != "" && !ignoreWaitErr {
+                        self.noticeFailed(message: errorMsg)
+                    }
+                    // waiting finished, set the status as "stopped".
+                    self.setWssocksStatusUI(status: 0)
+                    self.ignoreWaitErr = true
+                }
             }
         } else {
             statusDesc = "正在停止wssocks..."
             btnInProgress = true
+            self.ignoreWaitErr = true
             DispatchQueue.global().async {
                 let msg = self.client.stopClient() ?? ""
                 DispatchQueue.main.sync {
