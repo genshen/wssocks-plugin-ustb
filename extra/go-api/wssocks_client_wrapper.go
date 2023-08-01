@@ -50,6 +50,15 @@ func StartClientWrapper(handlesPtr uintptr, localAddr, remoteAddr, httpLocalAddr
 	return C.CString("")
 }
 
+//export WaitClientWrapper
+func WaitClientWrapper(handlesPtr uintptr) *C.char {
+	var hp = (*extra.TaskHandles)(unsafe.Pointer(handlesPtr))
+	if err := hp.Wait(); err != nil {
+		return C.CString(err.Error())
+	}
+	return C.CString("")
+}
+
 //export StopClientWrapper
 func StopClientWrapper(handlesPtr uintptr) *C.char {
 	var hp = (*extra.TaskHandles)(unsafe.Pointer(handlesPtr))

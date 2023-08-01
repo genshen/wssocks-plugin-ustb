@@ -42,6 +42,11 @@ struct WssocksClient {
         return String(bytesNoCopy: v, length: strlen(v), encoding: .utf8, freeWhenDone: true)
     }
 
+    public func waitClient() -> String? {
+        guard let v = WaitClientWrapper(self.handle) else { return nil }
+        return String(bytesNoCopy: v, length: strlen(v), encoding: .utf8, freeWhenDone: true)
+    }
+
     public func stopClient() -> String? {
         guard let v = StopClientWrapper(self.handle) else { return nil }
         return String(bytesNoCopy: v, length: strlen(v), encoding: .utf8, freeWhenDone: true)
