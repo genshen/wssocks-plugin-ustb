@@ -6,12 +6,10 @@
 1. build C header file and archive file from go API.  
     ```bash
     cd extra/go-api
-    ./build_archive.sh
+    make
     ```
 
-2. Update target’s build settings  
- In Xcode, set `SWIFT_INCLUDE_PATHS` (Header Search Paths) to `$(SRCROOT)`,
- where `$(SRCROOT)` is the same directory as .xcodeproj.
- Then `LIBRARY_SEARCH_PATHS` (Library Search Paths) to `$(SRCROOT)/../extra/go-api`.
-
-3. Build application in Xcode.  
+2. Build App
+    ```bash
+    xcodebuild -arch=x86_64 -arch=arm64
+    ```
