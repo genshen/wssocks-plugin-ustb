@@ -47,10 +47,10 @@ jobs:
           mv client-ui-macOS-amd64.app.zip ../
           cd ../
           echo "building swiftui-client"
-          cd extra/go-api && ./build_archive.sh && cd ../../
-          cd swiftui-client && xcodebuild -arch "x86_64"
-          cd build/Release/ && zip -r wssocks-ustb-client-macOS-amd64.app.zip wssocks-ustb-client.app && cd ../../../
-          mv swiftui-client/build/Release/wssocks-ustb-client-macOS-amd64.app.zip ./
+          cd extra/go-api && make && cd ../../
+          cd swiftui-client && xcodebuild -arch x86_64 -arch arm64
+          cd build/Release/ && zip -r wssocks-ustb-client-macOS-universal.app.zip wssocks-ustb-client.app && cd ../../../
+          mv swiftui-client/build/Release/wssocks-ustb-client-macOS-universal.app.zip ./
 
       - name: Build Windows
         if: matrix.os == 'windows-latest'
@@ -88,7 +88,7 @@ jobs:
           files: |
             client-ui-windows-amd64.exe
             client-ui-macOS-amd64.app.zip
-            wssocks-ustb-client-macOS-amd64.app.zip
+            wssocks-ustb-client-macOS-universal.app.zip
             wssocks-ustb-darwin-amd64
             wssocks-ustb-linux-arm64
             wssocks-ustb-linux-amd64
