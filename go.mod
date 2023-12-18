@@ -7,5 +7,5 @@ require (
 	github.com/genshen/cmds v0.0.0-20200505065256-d4c52690e15b
 	github.com/genshen/wssocks v0.6.1
 	github.com/sirupsen/logrus v1.9.3
-	golang.org/x/crypto v0.11.0
+	golang.org/x/crypto v0.17.0
 )
