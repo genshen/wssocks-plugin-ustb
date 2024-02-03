@@ -113,7 +113,7 @@ struct MenuBarView: View {
                         .aspectRatio(contentMode: .fit)
                         .foregroundColor(wssocksStatus==0 ? Color.primary: Color.accentColor)
                         .padding((wssocksStatus == 1 && clickI % 5 == 4) ? 12: 24)
-                        .symbolRenderingMode(.multicolor)
+                        .symbolRenderingMode((wssocksStatus == 1 && clickI % 5 == 4) ? .multicolor: .hierarchical)
                 }.buttonStyle(PlainButtonStyle())
                 if wssocksStatus == 1 && clickI % 5 == 4 {
                     Text("Oh! This is an easter egg!")
