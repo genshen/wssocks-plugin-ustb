@@ -12,15 +12,15 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [ubuntu-22.04, macos-12, windows-2022]
         include:
-          - os: ubuntu-latest
+          - os: ubuntu-22.04
             artifact_files: wssocks-ustb-*
-          - os: macos-latest
+          - os: macos-12
             artifact_files: |
-              wssocks-ustb-client-macOS-amd64.app.zip
-              client-ui-macOS-amd64.app.zip
-          - os: windows-latest
+              wssocks-ustb-client-macOS-universal.app.zip
+              client-ui-macOS-universal.app.zip
+          - os: windows-2022
             artifact_files: client-ui-windows-amd64.exe
     steps:
       - name: Checkout code
@@ -30,21 +30,21 @@ jobs:
         with:
           go-version: 1.17.13
       - run: |
-          go get fyne.io/fyne/v2/cmd/fyne@v2.1.2
+          go get fyne.io/fyne/v2/cmd/fyne@v2.4.3
           go mod download
 
       - name: Build Cli
-        if: matrix.os == 'ubuntu-latest'
+        if: matrix.os == 'ubuntu-22.04'
         run: |
           make
 
       - name: Build macOS
-        if: matrix.os == 'macos-latest'
+        if: matrix.os == 'macos-12'
         run: |
           cd client-ui
-          make client-ui-macOS-amd64.app -f Makefile-ci
-          zip -r client-ui-macOS-amd64.app.zip client-ui-macOS-amd64.app
-          mv client-ui-macOS-amd64.app.zip ../
+          make client-ui-macOS-universal.app -f Makefile-ci
+          zip -r client-ui-macOS-universal.app.zip client-ui-macOS-universal.app
+          mv client-ui-macOS-universal.app.zip ../
           cd ../
           echo "building swiftui-client"
           cd extra/go-api && make && cd ../../
@@ -53,7 +53,7 @@ jobs:
           mv swiftui-client/build/Release/wssocks-ustb-client-macOS-universal.app.zip ./
 
       - name: Build Windows
-        if: matrix.os == 'windows-latest'
+        if: matrix.os == 'windows-2022'
         run: |
           cd client-ui
           make client-ui-windows-amd64.exe -f Makefile-ci
@@ -68,17 +68,17 @@ jobs:
   release:
     name: On Release
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/download-artifact@v2
         with:
-          name: build-artifact-ubuntu-latest
+          name: build-artifact-ubuntu-22.04
       - uses: actions/download-artifact@v2
         with:
-          name: build-artifact-windows-latest
+          name: build-artifact-windows-2022
       - uses: actions/download-artifact@v2
         with:
-          name: build-artifact-macos-latest
+          name: build-artifact-macos-12
       - run: ls -R
 
       - name: Release
@@ -87,7 +87,7 @@ jobs:
         with:
           files: |
             client-ui-windows-amd64.exe
-            client-ui-macOS-amd64.app.zip
+            client-ui-macOS-universal.app.zip
             wssocks-ustb-client-macOS-universal.app.zip
             wssocks-ustb-darwin-amd64
             wssocks-ustb-linux-arm64
