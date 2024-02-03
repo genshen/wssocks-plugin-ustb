@@ -38,7 +38,7 @@ client-ui-macOS-universal.app: wssocks-ustb-ui-macOS-universal
 
 client-ui-windows-amd64.exe: wssocks-ustb-ui-windows-amd64.exe
 	CGO_ENABLED=1 GOOS=windows GOARCH=amd64 fyne package -os windows ${PACKAGE_FLAG} -executable wssocks-ustb-ui-windows-amd64.exe -name ${appName}.exe
-	mv client-ui.exe client-ui-windows-amd64.exe
+	mv ${appName}.exe client-ui-windows-amd64.exe
 
 # export CGO_CFLAGS='-D _POSIX'
 
