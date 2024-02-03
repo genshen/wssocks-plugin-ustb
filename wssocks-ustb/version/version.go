@@ -8,7 +8,7 @@ import (
 )
 
 // also change version in client-ui and swift-ui if  release
-const VERSION = "0.6.0"
+const VERSION = "0.7.0"
 
 var versionCommand = &cmds.Command{
 	Name:        "version",
