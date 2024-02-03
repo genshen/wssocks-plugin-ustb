@@ -88,8 +88,18 @@ struct MenuBarView: View {
                     .alert(isPresented: $showingAlert) {
                             Alert(title: Text("Error"), message: Text("\(alertMessage)"), dismissButton: .default(Text("OK")))
                     }
+                Spacer()
+                // quit button
+                Button(action: quitApp) {
+                    if #available(macOS 11.0, *) {
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundColor(Color.accentColor)
+                    }else {
+                        Text("Quit")
+                    }
+                }.controlSize(.large) // .buttonStyle(BorderlessButtonStyle())
             }
-            .padding(.horizontal)
+            .padding(.horizontal, 8)
            // .padding(.top)
 
            // Divider().padding(.top, 4)
@@ -108,16 +118,6 @@ struct MenuBarView: View {
                 if wssocksStatus == 1 && clickI % 5 == 4 {
                     Text("Oh! This is an easter egg!")
                 }
-            } else {
-                // Fallback on earlier versions
-            }
-
-            // quit button
-            if #available(macOS 11.0, *) {
-                Button(action: quitApp) {
-                    Label("Quit App", systemImage: "xmark.circle.fill")
-                        //.foregroundColor(Color.accentColor)
-                }.buttonStyle(BorderlessButtonStyle())
             } else {
                 // Fallback on earlier versions
             }
