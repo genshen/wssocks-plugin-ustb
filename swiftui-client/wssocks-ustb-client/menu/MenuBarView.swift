@@ -27,15 +27,22 @@ struct MenuBarView: View {
     var body: some View {
         VStack{
             HStack{
-                Button (action:{
-                    showPref()
-                }, label: {
-                    if #available(macOS 11.0, *) {
+                if #available(macOS 14.0, *) {
+                    SettingsLink{
                         Image(systemName: "gear.circle.fill")
-                    } else {
-                        Text("偏好设置")
                     }
-                })
+                } else {
+                    Button (action:{
+                        showPref()
+                    }, label: {
+                        if #available(macOS 11.0, *) {
+                            Image(systemName: "gear.circle.fill")
+                        } else {
+                            Text("偏好设置")
+                        }
+                    })
+                }
+
                 Button (action:{
                     openNetworkProxyPreferences()
                 }, label: {
@@ -266,12 +273,15 @@ end tell
 
     @Environment(\.openURL) var openURL
     private func showPref() {
+        // see: https://stackoverflow.com/a/69600396/10068476
+        NSApp.activate(ignoringOtherApps: true)
         // see: https://stackoverflow.com/a/65356627/10068476
         if #available(macOS 13, *) {
             NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
         } else {
             NSApp.sendAction(Selector(("showPreferencesWindow:")), to: nil, from: nil)
         }
+        NSApp.windows.first?.orderFrontRegardless()
     }
 
     private func quitApp() {
