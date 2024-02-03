@@ -15,9 +15,17 @@ See more about wssocks: https://github.com/genshen/wssocks.
 ## Clients
 The available clients for different platforms are list as follows:
 - cli: command line client.
-- client-ui: From v0.5.0, we also provide GUI [client](client-ui).
+- client-ui: From v0.5.0, we also provide a GUI [client](client-ui) for windows and macos.
+- swiftui-client: From v0.6.0 and v0.7.0, we also provide a mac native app (build using swiftui). You cn download the app in release page (filename:  `wssocks-ustb-client-macOS-*.app.zip`).
 
 Note: **wssocks** and wssocks-plugin-ustb plugin are all included in both cli and client-ui clients.
+
+**Screenshots**:
+| | cli | client-ui | swiftui-client |
+| -- | -- | --- |  ------ |
+| Screenshots | - | ![client ui](./docs/zh-cn/resource/client.webp) | ![swiftui](./docs/zh-cn/resource/macos-client.webp) |
+| Description | command line app for all platforms. | universal GUI client based on [fyne](https://fyne.io) cross platform toolkit. | macOS native client build using swiftUI. |
+| Supported Platforms | Windows x64, macOS x64/arm64, Linux x64/arm64 | Windows x64, macOS x64/arm64 | macOS x64/arm64 |
 
 ### install cli client
 ```bash
