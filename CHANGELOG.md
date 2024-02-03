@@ -1,4 +1,53 @@
 
+<a name="v0.7.0"></a>
+## [v0.7.0](https://github.com/genshen/wssocks-plugin-ustb/compare/v0.6.0...v0.7.0)
+
+> 2024-02-03
+
+### Docs
+
+* add new screenshot for swiftui client and add screenshots to porject README
+* update docs for git lfs and correct/update git and ssh document
+* add tips of "connect.exe" path on windows
+* add document for macOS client
+* update document about versions for downloading
+* add downloads number badge and action status badge
+* add new version, complete document for wssocks-ustb usage
+* **git:** correct ProxyCommand of git under ssh protocol on windows Git Bash
+
+### Feat
+
+* **docs:** change docs theme to `theme-simple` and add edit-on-github button
+* **gui:** update document url of fyne-based client to github page
+* **swiftui:** adjust "quit app" button to right of "Start/Stop" button
+* **swiftui:** add feature of copying proxy command for git/ssh/http/https
+* **swiftui:** wait and show client error message after the client is started
+* **swiftui:** add an easter egg
+* **swiftui:** big code refactor and UI redesign(use "popover menu" now)
+* **swiftui:** change the swiftui based wssocks client app to menu bar style
+* **version:** bump version to v0.7.0
+
+### Fix
+
+* **swiftui:** fix the front color of the status images: only use multicolor for easter egg
+* **swiftui:** fix compatibility issue of swiftui client on mac ventura
+* **swiftui:** fix bug of "can not open network proxy preference"
+
+### Merge
+
+* Merge pull request [#19](https://github.com/genshen/wssocks-plugin-ustb/issues/19) from genshen/docs-update
+* Merge pull request [#7](https://github.com/genshen/wssocks-plugin-ustb/issues/7) from genshen/new-version-document
+* **gh-action:** Merge pull request [#9](https://github.com/genshen/wssocks-plugin-ustb/issues/9) from genshen/fix-ci-building-error
+* **gomodule:** Merge pull request [#11](https://github.com/genshen/wssocks-plugin-ustb/issues/11) from genshen/dependabot/go_modules/golang.org/x/crypto-0.1.0
+* **gui:** Merge pull request [#16](https://github.com/genshen/wssocks-plugin-ustb/issues/16) from genshen/feature-fyne-based-client-mac-arm64-support
+* **swiftui:** Merge pull request [#17](https://github.com/genshen/wssocks-plugin-ustb/issues/17) from genshen/feature-macos-copy-proxy-command
+* **swiftui:** Merge pull request [#14](https://github.com/genshen/wssocks-plugin-ustb/issues/14) from genshen/feature-client-macos-arm-support
+* **swiftui:** Merge pull request [#12](https://github.com/genshen/wssocks-plugin-ustb/issues/12) from genshen/feature-swiftui-client-wait
+* **swiftui:** Merge pull request [#10](https://github.com/genshen/wssocks-plugin-ustb/issues/10) from genshen/fix-swiftui-menu-bar-ventura
+* **swiftui:** Merge branch 'fix-swiftui-client-building-error' into 'master'
+* **swiftui:** Merge pull request [#8](https://github.com/genshen/wssocks-plugin-ustb/issues/8) from genshen/feature-swiftui-menu-bar
+
+
 <a name="v0.6.0"></a>
 ## [v0.6.0](https://github.com/genshen/wssocks-plugin-ustb/compare/v0.5.1...v0.6.0)
 
@@ -24,15 +73,15 @@
 * **gui:** ability to set `SkipTSLVerify` option in client-ui
 * **plugin-option:** add option plugin to gui/swiftui and cli client
 * **plugin-vpn:** use `SkipTLSVerify` core option to control vpn connection with/without tsl verify
-* **swiftui:** add ui for macOS client which is built by swiftui
-* **swiftui:** add a button to open network proxies preference on mac
 * **swiftui:** ability to set `SkipTSLVerify` option in swiftui
+* **swiftui:** add a button to open network proxies preference on mac
 * **swiftui:** migrate go api used by swiftui to wssocks v0.5
 * **swiftui:** show primary style "Start" button on OSX 11.0
 * **swiftui:** now we can pass client handles pointer between swift side and Go side
 * **swiftui:** add submit button action to start or stop client task
 * **swiftui:** add app icon, version. And disable window resizing
 * **swiftui:** add swift-go binding to enable to estabilish connections with server
+* **swiftui:** add ui for macOS client which is built by swiftui
 * **version:** bump version to v0.6.0
 
 ### Fix
@@ -60,12 +109,12 @@
 
 ### Docs
 
-* update usage document, add gui document and correct document errors
 * change default vpn host to n.ustb.edu.cn, rather than vpn4.ustb.edu.cn
 * add document of using SwitchyOmega extension as proxy client in Chrome or new Edge
 * update document to use socks5 proxy on chromium based browser
-* **changelog:** add CHANGELOG.md file and git-chglog config
+* update usage document, add gui document and correct document errors
 * **changelog:** update changelog for release v0.5.1
+* **changelog:** add CHANGELOG.md file and git-chglog config
 * **readme:** add document of available clients to README.md
 
 ### Feat
