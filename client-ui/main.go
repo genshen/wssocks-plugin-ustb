@@ -20,7 +20,7 @@ const (
 	AppId             = "wssocks-ustb.genshen.github.com"
 	CoreGithubRepoUrl = "https://github.com/genshen/wssocks"
 	GithubRepoUrl     = "https://github.com/genshen/wssocks-plugin-ustb"
-	DocumentUrl       = "https://github.com/genshen/wssocks-plugin-ustb/blob/master/docs/zh-cn/README.md"
+	DocumentUrl       = "https://genshen.github.io/wssocks-plugin-ustb/"
 )
 
 const (
