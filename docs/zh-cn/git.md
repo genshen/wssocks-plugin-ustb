@@ -12,15 +12,27 @@ GIT_SSH_COMMAND="ssh -o ProxyCommand='nc -x 127.0.0.1:1080 %h %p' " git clone ss
 GIT_SSH_COMMAND="ssh -o ProxyCommand='connect -S 127.0.0.1:1080 %h %p' " git clone ssh://git@git.hpcer.dev:2222/cli/cli.git
 ```
 
+## git-lfs (macos)
+wssocks-ustb 客户端需要开启 http/https 代理。
+适用于 lfs 数据通过 https/http 协议传输的情况。
+
+```bash
+# macos
+export https_proxy=http://127.0.0.1:1080 http_proxy=http://127.0.0.1:1086
+git push
+```
+
 ## HTTP/HTTPS 协议访问
 wssocks-ustb 客户端需要开启 http/https 代理。
 这里全局配置 https://git.hpcer.dev 域名下的所有仓库都通过代理访问，https 代理服务器的地址为 http://127.0.0.1:1080 (与 wssocks-ustb的 socsk5 address 一致)。
-```
+
+```bash
 git config --global http.https://git.hpcer.dev.proxy http://127.0.0.1:1080
 git clone https://git.hpcer.dev/genshen/my-project.git
 ```
 注意，如果你的服务器只支持 http 协议，git 的配置的 http 代理服务器地址改为 http://127.0.0.1:1086 (与wssocks-ustb的 htt(s) address 一致):
-```
+
+```bash
 git config --global http.http://git.hpcer.dev.proxy http://127.0.0.1:1086
 ```
 
