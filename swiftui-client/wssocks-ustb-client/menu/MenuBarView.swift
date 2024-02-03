@@ -7,6 +7,12 @@
 
 import SwiftUI
 
+enum CopyProxyCommandType: Int{
+    case GIT = 1
+    case HTTP = 2
+    case SSH = 3
+}
+
 struct MenuBarView: View {
     @Namespace var animation
     @State private var showingAlert = false
@@ -117,7 +123,22 @@ struct MenuBarView: View {
             }
 
             Divider().padding(.top, 4)
-
+            HStack{
+                Menu("Copy Proxy Command") {
+                    Button(action: {
+                        copyProxyCommand(tp: CopyProxyCommandType.GIT)
+                    }, label: {
+                        Label("git (ssh)", systemImage: "heart.circle.fill")
+                            .symbolRenderingMode(.multicolor)
+                    })
+                    Button(action: {
+                        copyProxyCommand(tp: CopyProxyCommandType.HTTP)
+                    }, label: { Text("http/https")})
+                    Button(action: {
+                        copyProxyCommand(tp: CopyProxyCommandType.SSH)
+                    }, label: { Text("ssh/scp/sftp")})
+                }
+            }.padding(.horizontal, 8)
             // bottom view
             HStack{
                 Button (action:{
@@ -144,7 +165,29 @@ struct MenuBarView: View {
             .padding(.bottom, 4)
             .padding(.horizontal, 8)
         }
-        .frame(width: 250, height: 250)
+        .frame(width: 250, height: 280)
+    }
+
+    private func copyProxyCommand(tp: CopyProxyCommandType) {
+        let socks_proxy_addr = self.configsInView.uiSocks5Addr
+        let http_proxy_addr = self.configsInView.uiHttpAddr
+        var text = ""
+
+        switch tp {
+        case .GIT:
+            text = "export GIT_SSH_COMMAND=\"ssh -o ProxyCommand='nc -x \(socks_proxy_addr) %h %p' \""
+            break;
+        case .HTTP:
+            text = "export https_proxy=http://\(socks_proxy_addr) http_proxy=http://\(http_proxy_addr)"
+            break;
+        case .SSH:
+            text = "ssh -o ProxyCommand='nc -x \(socks_proxy_addr) %h %p'"
+            break;
+        }
+        
+        let pasteboard = NSPasteboard.general
+        pasteboard.declareTypes([.string], owner: nil)
+        pasteboard.setString(text, forType: .string)
     }
 
     func checkPref() -> Bool {
