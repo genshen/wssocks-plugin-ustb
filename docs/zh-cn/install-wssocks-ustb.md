@@ -12,8 +12,8 @@ wssocks-ustb 客户端及其插件的源码可在 [github](https://github.com/ge
 注：前者是稳定版，后者是 night-release，如果最新的稳定版还未释放出来，可使用 night-release 版本。
 
 其中：
-- client-ui-macOS-amd64.zip 和 client-ui-windows-amd64.exe 分别是 macOS 和 windows 上通用的 GUI wssocks-ustb 客户端，
-- wssocks-ustb-client-macOS-amd64.app.zip 是基于 swiftui 构建的 macOS wssocks-ustb 客户端，更符合 macOS 设计风格。  
+- client-ui-macOS-*.zip 和 client-ui-windows-amd64.exe 分别是 macOS 和 windows 上通用的 GUI wssocks-ustb 客户端（基于 [fyne](https://fyne.io) 构建）。自 v0.7.0 版本开始，macOS 系统上原生支持 arm64（M1/M2/M3等） 和 x64 （Intel）两种架构（之前的版本只原生支持x64平台，在 arm64 架构上运行需要通过 Rosetta 2 转译实现）。  
+- wssocks-ustb-client-macOS-*.app.zip 是基于 swiftui 构建的 macOS wssocks-ustb 客户端，更符合 macOS 设计风格。自v0.7.0 版本开始，原生支持 arm64（M1/M2/M3等） 和 x64 （Intel）两种架构（之前的版本只原生支持x64平台，在 arm64 架构上运行需要通过 Rosetta 2 转译实现）。  
 - 而 wssocks-ustb-{OS}-{ARCH} 是命令行版本，如果你是极客，可以下载改版本，命令行的参数使用可参见 [相关文档](https://github.com/genshen/wssocks-plugin-ustb/blob/master/docs/zh-cn/README.md) 或者 **help** 子命令。
 
 以下示例以 GUI 版本进行说明。
