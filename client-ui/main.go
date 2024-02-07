@@ -1,9 +1,12 @@
 package main
 
 import (
+	"fmt"
+	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/dialog"
+	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
 	resource "github.com/genshen/wssocks-plugin-ustb/client-ui/resources"
@@ -53,6 +56,7 @@ func main() {
 	// basic input
 	uiLocalAddr := &widget.Entry{PlaceHolder: "socks5 listen address", Text: "127.0.0.1:1080"}
 	uiRemoteAddr := &widget.Entry{PlaceHolder: "wssocks server address"}
+	uiAuthToken := &widget.Entry{PlaceHolder: "the token for proxy authentication"}
 	uiHttpEnable := newCheckbox("", false, nil)
 	uiHttpLocalAddr := &widget.Entry{PlaceHolder: "http listen address", Text: "127.0.0.1:1086"}
 	uiSkipTSLVerify := newCheckbox("", false, nil)
@@ -166,17 +170,22 @@ func main() {
 		return
 	}
 
-	w.SetContent(container.NewVBox(
-		widget.NewCard("", "Basic",
+	tabs := container.NewAppTabs(
+		container.NewTabItemWithIcon(
+			"Basic",
+			theme.SettingsIcon(),
 			&widget.Form{Items: []*widget.FormItem{
 				{Text: "socks5 address", Widget: uiLocalAddr},
 				{Text: "remote address", Widget: uiRemoteAddr},
+				{Text: "auth token", Widget: uiAuthToken},
 				{Text: "http(s) proxy", Widget: uiHttpEnable},
 				{Text: "http(s) address", Widget: uiHttpLocalAddr},
 				{Text: "skip TSL verify", Widget: uiSkipTSLVerify},
 			}},
-		), // end group
-		widget.NewCard("", "USTB VPN",
+		),
+		container.NewTabItemWithIcon(
+			"USTB VPN",
+			theme.AccountIcon(),
 			&widget.Form{Items: []*widget.FormItem{
 				{Text: "enable", Widget: uiVpnEnable},
 				{Text: "force logout", Widget: uiVpnForceLogout},
@@ -185,8 +194,14 @@ func main() {
 				{Text: "username", Widget: uiVpnUsername},
 				{Text: "password", Widget: uiVpnPassword},
 			}},
-		), // end group
+		),
+	)
+	tabs.SetTabLocation(container.TabLocationTop)
+
+	w.SetContent(container.NewVBox(
+		widget.NewCard("Settings", "", tabs),
 		btnStart,
+		&widget.Separator{},
 		container.NewGridWithColumns(2,
 			container.NewHBox(
 				NewHyperlinkIcon(resource.GithubIcon(), coreRepoUrl),
@@ -201,7 +216,16 @@ func main() {
 			),
 			container.NewGridWithColumns(2,
 				widget.NewLabel("v"+pluginversion.VERSION),
-				NewHyperlinkIcon(theme.HelpIcon(), docUrl),
+				container.NewHBox(
+					layout.NewSpacer(),
+					widget.NewToolbar(
+						widget.NewToolbarAction(theme.HelpIcon(), func() {
+							if err := fyne.CurrentApp().OpenURL(docUrl); err != nil {
+								dialog.ShowError(fmt.Errorf("open link %s failed", docUrl), w)
+							}
+						}),
+					),
+				),
 			),
 		),
 	))
