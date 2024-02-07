@@ -2,6 +2,9 @@ package main
 
 import (
 	"fmt"
+	"net/url"
+	"runtime"
+
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/container"
@@ -15,7 +18,6 @@ import (
 	pluginversion "github.com/genshen/wssocks-plugin-ustb/wssocks-ustb/version"
 	"github.com/genshen/wssocks/client"
 	"github.com/genshen/wssocks/version"
-	"net/url"
 )
 
 const (
@@ -31,6 +33,12 @@ const (
 	btnStarting
 	btnRunning
 	btnStopping
+)
+
+const (
+	ProxyCommandGit = iota
+	ProxyCommandHttp
+	ProxyCommandSsh
 )
 
 func newEntryWithText(text string) *widget.Entry {
@@ -197,10 +205,28 @@ func main() {
 		),
 	)
 	tabs.SetTabLocation(container.TabLocationTop)
+	selectCopyProxyCommand := container.NewBorder(nil, nil, nil, nil,
+		NewWSelectWithCopyProxyCommand([]string{"git", "http/https", "ssh/sftp/scp"},
+			func(sel *widget.Select, value string) {
+				if value != "" {
+					sel.ClearSelected()
+					switch value {
+					case "git":
+						copyToClipboard(ProxyCommandGit, uiLocalAddr.Text, uiHttpLocalAddr.Text, w)
+					case "http/https":
+						copyToClipboard(ProxyCommandHttp, uiLocalAddr.Text, uiHttpLocalAddr.Text, w)
+					case "ssh/sftp/scp":
+						copyToClipboard(ProxyCommandSsh, uiLocalAddr.Text, uiHttpLocalAddr.Text, w)
+					}
+				}
+			},
+		),
+	)
 
 	w.SetContent(container.NewVBox(
 		widget.NewCard("Settings", "", tabs),
 		btnStart,
+		selectCopyProxyCommand,
 		&widget.Separator{},
 		container.NewGridWithColumns(2,
 			container.NewHBox(
@@ -243,4 +269,37 @@ func main() {
 	})
 	//w.SetOnClosed() todo
 	w.ShowAndRun()
+}
+
+// NewWSelectWithCopyProxyCommand is copied from widget.NewSelect.
+func NewWSelectWithCopyProxyCommand(options []string, changed func(sel *widget.Select, val string)) *widget.Select {
+	s := &widget.Select{
+		Options:     options,
+		PlaceHolder: "(copy proxy command)",
+	}
+	s.OnChanged = func(val string) {
+		changed(s, val)
+	}
+	s.ExtendBaseWidget(s)
+	return s
+}
+
+func copyToClipboard(category int, socksAddr string, httpAddr string, win fyne.Window) {
+	var text = ""
+	var nc = "nc -x" // darwin or linux
+	if runtime.GOOS == "windows" {
+		nc = "connect -S"
+	}
+	switch category {
+	case ProxyCommandGit:
+		text = fmt.Sprintf("export GIT_SSH_COMMAND=\"ssh -o ProxyCommand='%s %s %%h %%p' \"", nc, socksAddr)
+		break
+	case ProxyCommandHttp:
+		text = fmt.Sprintf("export https_proxy=http://%s http_proxy=http://%s", socksAddr, httpAddr)
+		break
+	case ProxyCommandSsh:
+		text = fmt.Sprintf("ssh -o ProxyCommand='%s %s %%h %%p'", nc, socksAddr)
+		break
+	}
+	win.Clipboard().SetContent(text)
 }
