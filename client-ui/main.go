@@ -99,9 +99,11 @@ func main() {
 
 	btnStatus := btnStopped
 	var handles extra.TaskHandles
+	var ignoreWaitErr = true
 	btnStart.OnTapped = func() {
 		if btnStatus == btnRunning { // running can stop
 			btnStatus = btnStopping
+			ignoreWaitErr = true
 			btnStart.SetText("Stopping")
 			handles.NotifyCloseWrapper()
 			btnStart.SetText("Start")
@@ -135,6 +137,17 @@ func main() {
 			}
 			btnStart.SetText("Stop")
 			btnStatus = btnRunning
+			go func() {
+				// the `ignoreWaitErr` the same as swiftui.
+				ignoreWaitErr = false
+				// wait error and stop the client
+				if err := handles.Wait(); err != nil && !ignoreWaitErr {
+					dialog.ShowError(err, w)
+				}
+				btnStart.SetText("Start")
+				btnStatus = btnStopped
+				ignoreWaitErr = true
+			}()
 		}
 	}
 
