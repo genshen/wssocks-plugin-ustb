@@ -56,6 +56,7 @@ func main() {
 	// basic input
 	uiLocalAddr := &widget.Entry{PlaceHolder: "socks5 listen address", Text: "127.0.0.1:1080"}
 	uiRemoteAddr := &widget.Entry{PlaceHolder: "wssocks server address"}
+	uiAuthToken := &widget.Entry{PlaceHolder: "the token for proxy authentication"}
 	uiHttpEnable := newCheckbox("", false, nil)
 	uiHttpLocalAddr := &widget.Entry{PlaceHolder: "http listen address", Text: "127.0.0.1:1086"}
 	uiSkipTSLVerify := newCheckbox("", false, nil)
@@ -163,6 +164,7 @@ func main() {
 			&widget.Form{Items: []*widget.FormItem{
 				{Text: "socks5 address", Widget: uiLocalAddr},
 				{Text: "remote address", Widget: uiRemoteAddr},
+				{Text: "auth token", Widget: uiAuthToken},
 				{Text: "http(s) proxy", Widget: uiHttpEnable},
 				{Text: "http(s) address", Widget: uiHttpLocalAddr},
 				{Text: "skip TSL verify", Widget: uiSkipTSLVerify},
