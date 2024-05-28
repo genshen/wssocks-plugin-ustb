@@ -203,6 +203,15 @@ func main() {
 				{Text: "password", Widget: uiVpnPassword},
 			}},
 		),
+		container.NewTabItemWithIcon(
+			"QR Code",
+			theme.MoreHorizontalIcon(),
+			container.NewVBox(
+				LoadQRImage(),
+				widget.NewLabel("QR code scanned"),
+				widget.NewButton("Load/Reload QR Code", func() {}),
+			),
+		),
 	)
 	tabs.SetTabLocation(container.TabLocationTop)
 	selectCopyProxyCommand := container.NewBorder(nil, nil, nil, nil,
