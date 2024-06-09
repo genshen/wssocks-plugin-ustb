@@ -5,13 +5,16 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"github.com/skip2/go-qrcode"
 	"gopkg.in/yaml.v3"
+	"io"
 	"net/http"
 	"net/url"
 	"strings"
 )
 
 const LoadImgUrl = "https://n.ustb.edu.cn/login/"
+const SisAuthPath = "https://sis.ustb.edu.cn"
 const FindQrcodeUrlRegex = `"ustb-qrcode",`
 const FindQrcodeImgTagRegex = `<img`
 
@@ -43,9 +46,16 @@ func (q *QRCodeImgLoaderConfig) genIframeUrl() (string, error) {
 	return fmt.Sprintf("%s?appid=%s&return_url=%s&rand_token=%s&embed_flag=1", q.ApiUrl, q.AppID, q.ReturnUrl, q.RandToken), nil
 }
 
+type QrImg struct {
+	imgUrl string
+	QrImg  []byte
+	Sid    string // sis in ustb auth, can be parsed from image url.
+}
+
 // ParseQRCodeImgUrl uses ParseQRCodeHtmlUrl to get the iframe html,
-// and then parse the html file to get final image url (contains SID)
-func ParseQRCodeImgUrl() (string, error) {
+// and then parse the html file to get final image url (contains SID).
+// And set QrImg's imgUrl and sid.
+func (i *QrImg) ParseQRCodeImgUrl() (string, error) {
 	iframeUrl, err := ParseQRCodeHtmlUrl()
 	if err != nil {
 		return "", err
@@ -64,7 +74,6 @@ func ParseQRCodeImgUrl() (string, error) {
 	defer response.Body.Close()
 
 	scanner := bufio.NewScanner(response.Body)
-	imgUrl := ""
 	for scanner.Scan() {
 		line := scanner.Text()
 		if strings.Contains(line, FindQrcodeImgTagRegex) { // first line to match start
@@ -73,7 +82,7 @@ func ParseQRCodeImgUrl() (string, error) {
 			if len(subStr) != 5 {
 				return "", errors.New("invalid format in qr image url parsing")
 			} else {
-				imgUrl = subStr[3]
+				i.imgUrl = subStr[3]
 				break
 			}
 		}
@@ -83,8 +92,16 @@ func ParseQRCodeImgUrl() (string, error) {
 		return "", err
 	}
 
+	// parse sid in qr image url.
+	sidStr := strings.SplitN(i.imgUrl, "=", 2)
+	if len(sidStr) != 2 {
+		return "", errors.New("invalid format in qr image url (sis) parsing")
+	} else {
+		i.Sid = sidStr[1]
+	}
+
 	// use htmlUri's host, schema
-	return fmt.Sprintf("%s://%s%s", htmlUri.Scheme, htmlUri.Host, imgUrl), nil
+	return fmt.Sprintf("%s://%s%s", htmlUri.Scheme, htmlUri.Host, i.imgUrl), nil
 }
 
 func ParseQRCodeHtmlUrl() (string, error) {
@@ -140,7 +157,30 @@ func ParseQRCodeHtmlUrl() (string, error) {
 	}
 }
 
-// wait qr state and get auth code
+func (i *QrImg) GenQrImg() error {
+	imgContent := fmt.Sprintf(SisAuthPath+"/auth?sid=%s", i.Sid)
+	qrPng, err := qrcode.Encode(imgContent, qrcode.Medium, 256)
+	if err != nil {
+		return err
+	}
+	i.QrImg = qrPng
+	return nil
+}
+
+func LoadQrAuthImage() (io.Reader, error) {
+	var qr QrImg
+	if _, err := qr.ParseQRCodeImgUrl(); err != nil {
+		return nil, err
+	}
+
+	if err := qr.GenQrImg(); err != nil {
+		return nil, err
+	}
+	buf := bytes.NewReader(qr.QrImg)
+	return buf, nil
+}
+
+// WaitQrState waits qr state and get auth code
 func WaitQrState(imgUrl *url.URL) {
 	// get https://sis.ustb.edu.cn/connect/state?sid=bf1a027b75d6e21b351f81cdc1b739a2
 }
