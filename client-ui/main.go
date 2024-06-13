@@ -322,6 +322,7 @@ func loadVpnUI(wssApp *fyne.App) (*fyne.Container, func() vpn.UstbVpn, func()) {
 				Username: uiVpnUsername.Text,
 				Password: uiVpnPassword.Text,
 			},
+			QrCodeAuth: newQrCodeAuth(wssApp),
 		}
 	}
 	onVpnClose := func() {

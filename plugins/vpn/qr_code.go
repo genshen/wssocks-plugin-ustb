@@ -3,12 +3,14 @@ package vpn
 import (
 	"bufio"
 	"bytes"
+	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/skip2/go-qrcode"
+	log "github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v3"
-	"io"
+	"io/ioutil"
 	"net/http"
+	"net/http/cookiejar"
 	"net/url"
 	"strings"
 )
@@ -47,64 +49,64 @@ func (q *QRCodeImgLoaderConfig) genIframeUrl() (string, error) {
 }
 
 type QrImg struct {
-	imgUrl string
-	QrImg  []byte
+	Config QRCodeImgLoaderConfig
 	Sid    string // sis in ustb auth, can be parsed from image url.
 }
 
 // ParseQRCodeImgUrl uses ParseQRCodeHtmlUrl to get the iframe html,
 // and then parse the html file to get final image url (contains SID).
-// And set QrImg's imgUrl and sid.
-func (i *QrImg) ParseQRCodeImgUrl() (string, error) {
-	iframeUrl, err := ParseQRCodeHtmlUrl()
+// And set QrImg's fields of config and sid.
+func (i *QrImg) ParseQRCodeImgUrl(client *http.Client, cookies *([]*http.Cookie)) error {
+	qrImgUrlConfig, err := ParseQRCodeHtmlUrl(client, cookies)
 	if err != nil {
-		return "", err
+		return err
 	}
-	htmlUri, err := url.Parse(iframeUrl)
+	i.Config = qrImgUrlConfig
+	// generate iframe url.
+	iframeUrl, err := qrImgUrlConfig.genIframeUrl()
 	if err != nil {
-		return "", err
+		return err
 	}
 
 	// make a http request of the iframe
-	response, err := http.Get(iframeUrl)
+	req, err := http.Get(iframeUrl)
 	if err != nil {
-		return "", err
+		return err
 	}
 
-	defer response.Body.Close()
+	defer req.Body.Close()
 
-	scanner := bufio.NewScanner(response.Body)
+	scanner := bufio.NewScanner(req.Body)
+	var imgUrl string
 	for scanner.Scan() {
 		line := scanner.Text()
 		if strings.Contains(line, FindQrcodeImgTagRegex) { // first line to match start
 			// line e.g. <img id="qrimg" src="/connect/qrimg?sid=3894c5568dd1ef0f6434f426297a678d" height="90%" border="0">
 			subStr := strings.SplitN(line, "\"", 5)
 			if len(subStr) != 5 {
-				return "", errors.New("invalid format in qr image url parsing")
+				return errors.New("invalid format in qr image url parsing")
 			} else {
-				i.imgUrl = subStr[3]
+				imgUrl = subStr[3]
 				break
 			}
 		}
 	}
 
 	if err := scanner.Err(); err != nil {
-		return "", err
+		return err
 	}
 
 	// parse sid in qr image url.
-	sidStr := strings.SplitN(i.imgUrl, "=", 2)
+	sidStr := strings.SplitN(imgUrl, "=", 2)
 	if len(sidStr) != 2 {
-		return "", errors.New("invalid format in qr image url (sis) parsing")
+		return errors.New("invalid format in qr image url (sis) parsing")
 	} else {
 		i.Sid = sidStr[1]
 	}
-
-	// use htmlUri's host, schema
-	return fmt.Sprintf("%s://%s%s", htmlUri.Scheme, htmlUri.Host, i.imgUrl), nil
+	return nil
 }
 
-func ParseQRCodeHtmlUrl() (string, error) {
+func ParseQRCodeHtmlUrl(client *http.Client, cookies *([]*http.Cookie)) (QRCodeImgLoaderConfig, error) {
 	// parse the html of `LOAD_IMG_URL` to get following object text:
 	//{
 	//  id: "ustb-qrcode",
@@ -115,11 +117,23 @@ func ParseQRCodeHtmlUrl() (string, error) {
 	//	width: "",
 	//	height: ""
 	//}
-	response, err := http.Get(LoadImgUrl)
+	// make a http request of the iframe
+	req, err := http.NewRequest("GET", LoadImgUrl, nil)
 	if err != nil {
+		return QRCodeImgLoaderConfig{}, err
 	}
 
+	response, err := client.Do(req)
+	if err != nil {
+		return QRCodeImgLoaderConfig{}, err
+	}
 	defer response.Body.Close()
+
+	*cookies = response.Cookies() // save cookies
+	if len(*cookies) == 0 {
+		return QRCodeImgLoaderConfig{}, fmt.Errorf("no cookie found while getting iframe")
+	}
+	log.Println("COOKIE:", *cookies)
 
 	scanner := bufio.NewScanner(response.Body)
 	var findQrMatchStart = false
@@ -140,47 +154,87 @@ func ParseQRCodeHtmlUrl() (string, error) {
 	}
 
 	if err := scanner.Err(); err != nil {
-		return "", err
+		return QRCodeImgLoaderConfig{}, err
 	}
 
 	fmt.Println("parsed qr code config:", qrConfigBuffer.String())
 	var qrImgUrlConfig QRCodeImgLoaderConfig
 	if err := yaml.Unmarshal(qrConfigBuffer.Bytes(), &qrImgUrlConfig); err != nil {
-		return "", err
+		return QRCodeImgLoaderConfig{}, err
 	}
 
-	// generate iframe url.
-	if qrUrl, err := qrImgUrlConfig.genIframeUrl(); err != nil {
-		return "", err
-	} else {
-		return qrUrl, nil
-	}
+	return qrImgUrlConfig, nil
 }
 
-func (i *QrImg) GenQrImg() error {
-	imgContent := fmt.Sprintf(SisAuthPath+"/auth?sid=%s", i.Sid)
-	qrPng, err := qrcode.Encode(imgContent, qrcode.Medium, 256)
+func (i *QrImg) GenQrCodeContent() string {
+	return fmt.Sprintf(SisAuthPath+"/auth?sid=%s", i.Sid)
+}
+
+// GenQrImgUrl generate the url of qr code image
+func (i *QrImg) GenQrImgUrl(imgUrl string) (string, error) {
+	iframeUrl, err := i.Config.genIframeUrl()
+	if err != nil {
+		return "", err
+	}
+
+	htmlUri, err := url.Parse(iframeUrl)
+	if err != nil {
+		return "", err
+	}
+	// use htmlUri's host, schema
+	return fmt.Sprintf("%s://%s%s", htmlUri.Scheme, htmlUri.Host, imgUrl), nil
+}
+
+type StateResponseAuthData struct {
+	State int    `json:"state"`
+	Data  string `json:"data"`
+}
+
+// WaitQrState waits qr state and get auth code (as return value)
+func WaitQrState(sid string) (string, error) {
+	stateUrl := fmt.Sprintf(SisAuthPath+"/connect/state?sid=%s", sid)
+	response, err := http.Get(stateUrl)
+	if err != nil {
+		return "", err
+	}
+
+	defer response.Body.Close()
+	body, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return "", err
+	}
+
+	authData := StateResponseAuthData{}
+	if err := json.Unmarshal(body, &authData); err != nil {
+		return "", err
+	}
+	if authData.State != 200 {
+		return "", fmt.Errorf("auth status is not 200, but %d", authData.State)
+	}
+	return authData.Data, nil
+}
+
+func RedirectToLogin(client *http.Client, cookies []*http.Cookie, appid, authCode, randToken string) error {
+	loginUrl := fmt.Sprintf(LoadImgUrl+"?ustb_sis=true&appid=%s&auth_code=%s&rand_token=%s", appid, authCode, randToken)
+	// todo: generate login url based on return url.
+	log.Println("redirect url:", loginUrl)
+
+	req, err := http.NewRequest("GET", loginUrl, nil)
 	if err != nil {
 		return err
 	}
-	i.QrImg = qrPng
+
+	jar, _ := cookiejar.New(nil)
+	jar.SetCookies(req.URL, cookies)
+	client.Jar = jar
+
+	response, err := client.Do(req)
+	if err != nil {
+		return err
+	}
+	//, err := ioutil.ReadAll(response.Body)
+	//fmt.Println(string(b))
+
+	defer response.Body.Close()
 	return nil
-}
-
-func LoadQrAuthImage() (io.Reader, error) {
-	var qr QrImg
-	if _, err := qr.ParseQRCodeImgUrl(); err != nil {
-		return nil, err
-	}
-
-	if err := qr.GenQrImg(); err != nil {
-		return nil, err
-	}
-	buf := bytes.NewReader(qr.QrImg)
-	return buf, nil
-}
-
-// WaitQrState waits qr state and get auth code
-func WaitQrState(imgUrl *url.URL) {
-	// get https://sis.ustb.edu.cn/connect/state?sid=bf1a027b75d6e21b351f81cdc1b739a2
 }

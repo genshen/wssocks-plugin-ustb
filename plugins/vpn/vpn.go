@@ -29,10 +29,15 @@ type UstbVpnPasswdAuth struct {
 	Password string
 }
 
+type QrCodeAuth interface {
+	ShowQrCodeAndWait(client *http.Client, cookies []*http.Cookie, qrCode QrImg) ([]*http.Cookie, error)
+}
+
 type UstbVpn struct {
 	Enable      bool
 	AuthMethod  int // value of VpnAuthMethodPasswd or VpnAuthMethodQRCode
 	PasswdAuth  UstbVpnPasswdAuth
+	QrCodeAuth  QrCodeAuth
 	TargetVpn   string
 	HostEncrypt bool
 	ForceLogout bool
@@ -57,11 +62,25 @@ func NewUstbVpnCli() *UstbVpn {
 	return &vpn
 }
 
-// implementation of interface RequestPlugin
+// BeforeRequest is implementation of interface RequestPlugin
+// In the UstbVpn plugin, we use it for vpn auth (password auth and QR code auth).
 func (v *UstbVpn) BeforeRequest(hc *http.Client, transport *http.Transport, url *url.URL, header *http.Header) error {
 	if !v.Enable {
 		return nil
 	}
+
+	if v.AuthMethod == VpnAuthMethodPasswd {
+		return v.PasswordAuthForCookie(hc, transport, url)
+	} else if v.AuthMethod == VpnAuthMethodQRCode {
+		return v.QrCodeAuthForCookie(hc, transport, url)
+	}
+	return fmt.Errorf("unknown auth method")
+}
+
+// PasswordAuthForCookie send password to vpn server for auth,
+// and keep cookie for websocket request.
+// It can support cli and gui client.
+func (v *UstbVpn) PasswordAuthForCookie(hc *http.Client, transport *http.Transport, url *url.URL) error {
 	// read username and password if they are empty.
 	if v.PasswdAuth.Username == "" {
 		reader := bufio.NewReader(os.Stdin)
@@ -86,26 +105,54 @@ func (v *UstbVpn) BeforeRequest(hc *http.Client, transport *http.Transport, url 
 	if cookies, err := al.vpnLogin(v.PasswdAuth.Username, v.PasswdAuth.Password); err != nil {
 		return fmt.Errorf("error vpn login: %w", err)
 	} else {
-		// In vpnLogin, we can test https support.
-		// If the vpn support https, we can set transport.SkipTLSVerify if necessary.
-		if al.SSLEnabled && v.ConnOptions.SkipTLSVerify {
-			transport.TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
-		}
+		return v.SetWebSocketCookies(al.SSLEnabled, hc, transport, url, cookies)
+	}
+}
 
-		// change target url.
-		vpnUrl(v.HostEncrypt, v.TargetVpn, al.SSLEnabled, url)
-		log.Infof("real url: %s, ssl enabled:%t", url.String(), al.SSLEnabled)
+func (v *UstbVpn) SetWebSocketCookies(SSLEnabled bool, hc *http.Client, transport *http.Transport, url *url.URL, cookies []*http.Cookie) error {
+	// In vpnLogin, we can test https support.
+	// If the vpn support https, we can set transport.SkipTLSVerify if necessary.
+	if SSLEnabled && v.ConnOptions.SkipTLSVerify {
+		transport.TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
+	}
 
-		if jar, err := cookiejar.New(nil); err != nil {
-			return err
-		} else {
-			cookieUrl := *url
-			// replace url scheme "wss" to "https" and "ws"to "http"
-			cookieUrl.Scheme = strings.Replace(cookieUrl.Scheme, "ws", "http", 1)
-			jar.SetCookies(&cookieUrl, cookies)
-			hc.Jar = jar
-			return nil
-		}
+	// change target url.
+	vpnUrl(v.HostEncrypt, v.TargetVpn, SSLEnabled, url)
+	log.Infof("real url: %s, ssl enabled:%t", url.String(), SSLEnabled)
+
+	if jar, err := cookiejar.New(nil); err != nil {
+		return err
+	} else {
+		cookieUrl := *url
+		// replace url scheme "wss" to "https" and "ws"to "http"
+		cookieUrl.Scheme = strings.Replace(cookieUrl.Scheme, "ws", "http", 1)
+		jar.SetCookies(&cookieUrl, cookies)
+		hc.Jar = jar
+		return nil
+	}
+}
+
+func (v *UstbVpn) QrCodeAuthForCookie(hc *http.Client, transport *http.Transport, url *url.URL) error {
+	if v.QrCodeAuth == nil {
+		return fmt.Errorf("QrCodeAuth is not configed")
+	}
+	// Note: todo: check https enabled for the vpn host
+	// currently, it only support https schema.
+	authHttpClient := http.Client{}
+	var cookies []*http.Cookie
+
+	// step1: send request to get a frame and SID in the frame.
+	var qr QrImg
+	if err := qr.ParseQRCodeImgUrl(&authHttpClient, &cookies); err != nil {
+		return err
+	}
+
+	// step2: pass qr code content to show qr code in ui and wait for scan status.
+	if _, err := v.QrCodeAuth.ShowQrCodeAndWait(&authHttpClient, cookies, qr); err != nil {
+		return err
+	} else {
+		// pass cookie to websocket
+		return v.SetWebSocketCookies(true, hc, transport, url, cookies)
 	}
 }
 
