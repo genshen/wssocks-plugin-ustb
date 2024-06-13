@@ -41,6 +41,11 @@ const (
 	ProxyCommandSsh
 )
 
+const (
+	TextVpnAuthMethodPasswd = "Password"
+	TextVpnAuthMethodQrCode = "QR Code"
+)
+
 func newEntryWithText(text string) *widget.Entry {
 	entry := widget.NewEntry()
 	entry.SetText(text)
@@ -255,7 +260,6 @@ func loadVpnUI(wssApp *fyne.App) (*fyne.Container, func() vpn.UstbVpn, func()) {
 	uiBtnAuthQrCode := widget.NewButton("Config QR Code auth", func() {
 		qrAuthWindow := (*wssApp).NewWindow("QR Code vpn auth")
 		qrAuthWindow.SetContent(container.NewVBox(
-			LoadQRImage(),
 			widget.NewLabel("QR code scanned"),
 			widget.NewButton("Load/Reload QR Code", func() {}),
 		))
@@ -263,7 +267,7 @@ func loadVpnUI(wssApp *fyne.App) (*fyne.Container, func() vpn.UstbVpn, func()) {
 		return
 	})
 
-	loadVPNPreference((*wssApp).Preferences(), uiVpnEnable, uiVpnForceLogout,
+	loadVPNPreference((*wssApp).Preferences(), uiVpnAuthMethod, uiVpnEnable, uiVpnForceLogout,
 		uiVpnHostEncrypt, uiVpnHostInput, uiVpnUsername, uiVpnPassword)
 
 	uiVpnEnable.OnChanged = func(checked bool) {
@@ -288,6 +292,14 @@ func loadVpnUI(wssApp *fyne.App) (*fyne.Container, func() vpn.UstbVpn, func()) {
 		}
 	}
 
+	// convert from  selected string to int value
+	getAuthMethodInt := func() int {
+		if uiVpnAuthMethod.Selected == TextVpnAuthMethodPasswd {
+			return vpn.VpnAuthMethodPasswd
+		} else {
+			return vpn.VpnAuthMethodQRCode
+		}
+	}
 	// the vpn UI
 	vpnUi := container.NewVBox(
 		&widget.Form{Items: []*widget.FormItem{
@@ -305,12 +317,15 @@ func loadVpnUI(wssApp *fyne.App) (*fyne.Container, func() vpn.UstbVpn, func()) {
 			ForceLogout: uiVpnForceLogout.Checked,
 			HostEncrypt: uiVpnHostEncrypt.Checked,
 			TargetVpn:   uiVpnHostInput.Text,
-			Username:    uiVpnUsername.Text,
-			Password:    uiVpnPassword.Text,
+			AuthMethod:  getAuthMethodInt(),
+			PasswdAuth: vpn.UstbVpnPasswdAuth{
+				Username: uiVpnUsername.Text,
+				Password: uiVpnPassword.Text,
+			},
 		}
 	}
 	onVpnClose := func() {
-		saveVPNPreference((*wssApp).Preferences(), uiVpnEnable, uiVpnForceLogout,
+		saveVPNPreference((*wssApp).Preferences(), uiVpnAuthMethod, uiVpnEnable, uiVpnForceLogout,
 			uiVpnHostEncrypt, uiVpnHostInput, uiVpnUsername, uiVpnPassword)
 	}
 	return vpnUi, loadUiValues, onVpnClose

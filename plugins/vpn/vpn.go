@@ -19,10 +19,20 @@ import (
 	"golang.org/x/crypto/ssh/terminal"
 )
 
+const (
+	VpnAuthMethodPasswd = iota
+	VpnAuthMethodQRCode
+)
+
+type UstbVpnPasswdAuth struct {
+	Username string
+	Password string
+}
+
 type UstbVpn struct {
 	Enable      bool
-	Username    string
-	Password    string
+	AuthMethod  int // value of VpnAuthMethodPasswd or VpnAuthMethodQRCode
+	PasswdAuth  UstbVpnPasswdAuth
 	TargetVpn   string
 	HostEncrypt bool
 	ForceLogout bool
@@ -35,13 +45,14 @@ func NewUstbVpnCli() *UstbVpn {
 	// add more command options for client sub-command.
 	if ok, clientCmd := cmds.Find(client.CommandNameClient); ok {
 		clientCmd.FlagSet.BoolVar(&vpn.Enable, "vpn-enable", false, `enable USTB vpn feature.`)
-		clientCmd.FlagSet.StringVar(&vpn.Username, "vpn-username", "", `username to login vpn.`)
-		clientCmd.FlagSet.StringVar(&vpn.Password, "vpn-password", "", `password to login vpn.`)
+		clientCmd.FlagSet.StringVar(&vpn.PasswdAuth.Username, "vpn-username", "", `username to login vpn.`)
+		clientCmd.FlagSet.StringVar(&vpn.PasswdAuth.Password, "vpn-password", "", `password to login vpn.`)
 		clientCmd.FlagSet.StringVar(&vpn.TargetVpn, "vpn-host", USTBVpnHost, `hostname of vpn server.`)
 		clientCmd.FlagSet.BoolVar(&vpn.ForceLogout, "vpn-force-logout", false,
 			`force logout account on other devices.`)
 		clientCmd.FlagSet.BoolVar(&vpn.HostEncrypt, "vpn-host-encrypt", true,
 			`encrypt proxy host using aes algorithm.`)
+		vpn.AuthMethod = VpnAuthMethodPasswd // todo: for cli, only support password auth.
 	}
 	return &vpn
 }
@@ -52,27 +63,27 @@ func (v *UstbVpn) BeforeRequest(hc *http.Client, transport *http.Transport, url 
 		return nil
 	}
 	// read username and password if they are empty.
-	if v.Username == "" {
+	if v.PasswdAuth.Username == "" {
 		reader := bufio.NewReader(os.Stdin)
 		fmt.Print("Enter username: ")
 		if text, err := reader.ReadString('\n'); err != nil {
 			return fmt.Errorf("error while reading username, %w", err)
 		} else {
-			v.Username = strings.TrimSuffix(text, "\n")
+			v.PasswdAuth.Username = strings.TrimSuffix(text, "\n")
 		}
 	}
-	if v.Password == "" {
+	if v.PasswdAuth.Password == "" {
 		fmt.Print("Enter Password: ")
 		if bytePassword, err := terminal.ReadPassword(int(os.Stdin.Fd())); err != nil { // error
 			return fmt.Errorf("error while parsing password, %w", err)
 		} else {
-			v.Password = string(bytePassword)
+			v.PasswdAuth.Password = string(bytePassword)
 		}
 	}
 
 	// add cookie
 	al := AutoLogin{Host: v.TargetVpn, ForceLogout: v.ForceLogout, skipTLSVerify: v.ConnOptions.SkipTLSVerify}
-	if cookies, err := al.vpnLogin(v.Username, v.Password); err != nil {
+	if cookies, err := al.vpnLogin(v.PasswdAuth.Username, v.PasswdAuth.Password); err != nil {
 		return fmt.Errorf("error vpn login: %w", err)
 	} else {
 		// In vpnLogin, we can test https support.
