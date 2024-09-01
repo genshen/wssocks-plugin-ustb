@@ -1,4 +1,4 @@
-package vpn
+package qrcode
 
 import (
 	"bufio"
@@ -51,6 +51,10 @@ func (q *QRCodeImgLoaderConfig) genIframeUrl() (string, error) {
 type QrImg struct {
 	Config QRCodeImgLoaderConfig
 	Sid    string // sis in ustb auth, can be parsed from image url.
+}
+
+type QrCodeAuth interface {
+	ShowQrCodeAndWait(client *http.Client, cookies []*http.Cookie, qrCode QrImg) ([]*http.Cookie, error)
 }
 
 // ParseQRCodeImgUrl uses ParseQRCodeHtmlUrl to get the iframe html,

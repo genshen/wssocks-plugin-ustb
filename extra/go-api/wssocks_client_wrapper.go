@@ -4,6 +4,7 @@ import "C"
 import (
 	"github.com/genshen/wssocks-plugin-ustb/extra"
 	"github.com/genshen/wssocks-plugin-ustb/plugins/vpn"
+	"github.com/genshen/wssocks-plugin-ustb/plugins/vpn/passwd"
 	"github.com/genshen/wssocks/client"
 	"unsafe"
 )
@@ -38,8 +39,8 @@ func StartClientWrapper(handlesPtr uintptr, localAddr, remoteAddr, httpLocalAddr
 			ForceLogout: bool(vpnForceLogout),
 			HostEncrypt: bool(vpnHostEncrypt),
 			TargetVpn:   C.GoString(vpnHostInput),
-			AuthMethod:  0,
-			PasswdAuth: vpn.UstbVpnPasswdAuth{
+			AuthMethod:  vpn.VpnAuthMethodPasswd,
+			PasswdAuth: passwd.UstbVpnPasswdAuth{
 				Username: C.GoString(vpnUsername),
 				Password: C.GoString(vpnPassword),
 			},

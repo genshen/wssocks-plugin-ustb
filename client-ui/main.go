@@ -15,6 +15,7 @@ import (
 	resource "github.com/genshen/wssocks-plugin-ustb/client-ui/resources"
 	"github.com/genshen/wssocks-plugin-ustb/extra"
 	"github.com/genshen/wssocks-plugin-ustb/plugins/vpn"
+	"github.com/genshen/wssocks-plugin-ustb/plugins/vpn/passwd"
 	pluginversion "github.com/genshen/wssocks-plugin-ustb/wssocks-ustb/version"
 	"github.com/genshen/wssocks/client"
 	"github.com/genshen/wssocks/version"
@@ -318,7 +319,7 @@ func loadVpnUI(wssApp *fyne.App) (*fyne.Container, func() vpn.UstbVpn, func()) {
 			HostEncrypt: uiVpnHostEncrypt.Checked,
 			TargetVpn:   uiVpnHostInput.Text,
 			AuthMethod:  getAuthMethodInt(),
-			PasswdAuth: vpn.UstbVpnPasswdAuth{
+			PasswdAuth: passwd.UstbVpnPasswdAuth{
 				Username: uiVpnUsername.Text,
 				Password: uiVpnPassword.Text,
 			},

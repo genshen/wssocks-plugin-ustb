@@ -1,4 +1,4 @@
-package vpn
+package qrcode
 
 import (
 	"fmt"

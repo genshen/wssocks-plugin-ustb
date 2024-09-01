@@ -1,4 +1,4 @@
-package vpn
+package passwd
 
 import (
 	"bufio"
@@ -30,7 +30,7 @@ type AutoLogin struct {
 	Host          string
 	ForceLogout   bool
 	SSLEnabled    bool // the vpn server supports https
-	skipTLSVerify bool // skip tsl verify when setting https connectioon
+	SkipTLSVerify bool // skip tsl verify when setting https connectioon
 }
 
 func (al *AutoLogin) TestAddr(ssl bool) string {
@@ -60,7 +60,7 @@ func (al *AutoLogin) LogoutAddr(ssl bool) string {
 // even if current connection is under http (may be redirected to https)
 func (al *AutoLogin) NewHttpClient(force bool, checkRedirect func(req *http.Request, via []*http.Request) error) *http.Client {
 	hc := http.Client{}
-	if (force || al.SSLEnabled) && al.skipTLSVerify {
+	if (force || al.SSLEnabled) && al.SkipTLSVerify {
 		hc.Transport = &http.Transport{
 			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 		}
@@ -71,8 +71,8 @@ func (al *AutoLogin) NewHttpClient(force bool, checkRedirect func(req *http.Requ
 	return &hc
 }
 
-// auto login vpn and get cookie
-func (al *AutoLogin) vpnLogin(uname, passwd string) ([]*http.Cookie, error) {
+// VpnLogin login vpn automatically and get cookie
+func (al *AutoLogin) VpnLogin(uname, passwd string) ([]*http.Cookie, error) {
 	// send a get request and check whether it is https protocol.
 	// and save https enable/disable flag
 	if httpsEnabled, err := al.testHttpsEnabled(al.Host); err != nil {

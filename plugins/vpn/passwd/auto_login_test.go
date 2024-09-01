@@ -1,4 +1,4 @@
-package vpn
+package passwd
 
 import (
 	"log"
@@ -28,7 +28,7 @@ func TestRep(t *testing.T) {
 
 func TestAutoLogin(t *testing.T) {
 	al := AutoLogin{Host: "n.ustb.edu.cn", ForceLogout: true}
-	if cookies, err := al.vpnLogin("b20170328", "genshen1234"); err != nil {
+	if cookies, err := al.VpnLogin("b20170328", "genshen1234"); err != nil {
 		log.Println(err.Error())
 	} else {
 		log.Println(cookies)
