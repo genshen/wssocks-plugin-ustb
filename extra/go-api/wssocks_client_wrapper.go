@@ -38,8 +38,11 @@ func StartClientWrapper(handlesPtr uintptr, localAddr, remoteAddr, httpLocalAddr
 			ForceLogout: bool(vpnForceLogout),
 			HostEncrypt: bool(vpnHostEncrypt),
 			TargetVpn:   C.GoString(vpnHostInput),
-			Username:    C.GoString(vpnUsername),
-			Password:    C.GoString(vpnPassword),
+			AuthMethod:  0,
+			PasswdAuth: vpn.UstbVpnPasswdAuth{
+				Username: C.GoString(vpnUsername),
+				Password: C.GoString(vpnPassword),
+			},
 		},
 		RemoteAddr: C.GoString(remoteAddr),
 	}

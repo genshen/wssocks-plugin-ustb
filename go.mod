@@ -7,5 +7,7 @@ require (
 	github.com/genshen/cmds v0.0.0-20200505065256-d4c52690e15b
 	github.com/genshen/wssocks v0.6.1
 	github.com/sirupsen/logrus v1.9.3
+	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e
 	golang.org/x/crypto v0.18.0
+	gopkg.in/yaml.v3 v3.0.1
 )

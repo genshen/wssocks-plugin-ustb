@@ -41,6 +41,11 @@ const (
 	ProxyCommandSsh
 )
 
+const (
+	TextVpnAuthMethodPasswd = "Password"
+	TextVpnAuthMethodQrCode = "QR Code"
+)
+
 func newEntryWithText(text string) *widget.Entry {
 	entry := widget.NewEntry()
 	entry.SetText(text)
@@ -79,32 +84,8 @@ func main() {
 		}
 	}
 
-	// vpn input
-	uiVpnEnable := newCheckbox("enable ustb vpn", true, nil)
-	uiVpnForceLogout := newCheckbox("", true, nil)
-	uiVpnHostEncrypt := newCheckbox("", true, nil)
-	uiVpnHostInput := &widget.Entry{PlaceHolder: "vpn hostname", Text: "n.ustb.edu.cn"}
-	uiVpnUsername := &widget.Entry{PlaceHolder: "vpn username", Text: ""}
-	uiVpnPassword := &widget.Entry{PlaceHolder: "vpn password", Text: "", Password: true}
-
-	loadVPNPreference(wssApp.Preferences(), uiVpnEnable, uiVpnForceLogout,
-		uiVpnHostEncrypt, uiVpnHostInput, uiVpnUsername, uiVpnPassword)
-
-	uiVpnEnable.OnChanged = func(checked bool) {
-		if checked {
-			uiVpnForceLogout.Enable()
-			uiVpnHostEncrypt.Enable()
-			uiVpnHostInput.Enable()
-			uiVpnUsername.Enable()
-			uiVpnPassword.Enable()
-		} else {
-			uiVpnForceLogout.Disable()
-			uiVpnHostEncrypt.Disable()
-			uiVpnHostInput.Disable()
-			uiVpnUsername.Disable()
-			uiVpnPassword.Disable()
-		}
-	}
+	// create vpn ui and necessary callbacks.
+	vpnUi, onLoadValue, onVpnClose := loadVpnUI(&wssApp)
 
 	btnStart := widget.NewButtonWithIcon("Start", theme.MailSendIcon(), nil)
 	btnStart.Importance = widget.HighImportance
@@ -128,14 +109,7 @@ func main() {
 					LocalHttpAddr:   uiHttpLocalAddr.Text,
 					SkipTLSVerify:   uiSkipTSLVerify.Checked,
 				},
-				UstbVpn: vpn.UstbVpn{
-					Enable:      uiVpnEnable.Checked,
-					ForceLogout: uiVpnForceLogout.Checked,
-					HostEncrypt: uiVpnHostEncrypt.Checked,
-					TargetVpn:   uiVpnHostInput.Text,
-					Username:    uiVpnUsername.Text,
-					Password:    uiVpnPassword.Text,
-				},
+				UstbVpn:    onLoadValue(),
 				RemoteAddr: uiRemoteAddr.Text,
 			}
 			btnStatus = btnStarting
@@ -178,33 +152,15 @@ func main() {
 		return
 	}
 
-	tabs := container.NewAppTabs(
-		container.NewTabItemWithIcon(
-			"Basic",
-			theme.SettingsIcon(),
-			&widget.Form{Items: []*widget.FormItem{
-				{Text: "socks5 address", Widget: uiLocalAddr},
-				{Text: "remote address", Widget: uiRemoteAddr},
-				{Text: "auth token", Widget: uiAuthToken},
-				{Text: "http(s) proxy", Widget: uiHttpEnable},
-				{Text: "http(s) address", Widget: uiHttpLocalAddr},
-				{Text: "skip TSL verify", Widget: uiSkipTSLVerify},
-			}},
-		),
-		container.NewTabItemWithIcon(
-			"USTB VPN",
-			theme.AccountIcon(),
-			&widget.Form{Items: []*widget.FormItem{
-				{Text: "enable", Widget: uiVpnEnable},
-				{Text: "force logout", Widget: uiVpnForceLogout},
-				{Text: "host encrypt", Widget: uiVpnHostEncrypt},
-				{Text: "vpn host", Widget: uiVpnHostInput},
-				{Text: "username", Widget: uiVpnUsername},
-				{Text: "password", Widget: uiVpnPassword},
-			}},
-		),
-	)
-	tabs.SetTabLocation(container.TabLocationTop)
+	basicUi := &widget.Form{Items: []*widget.FormItem{
+		{Text: "socks5 address", Widget: uiLocalAddr},
+		{Text: "remote address", Widget: uiRemoteAddr},
+		{Text: "auth token", Widget: uiAuthToken},
+		{Text: "http(s) proxy", Widget: uiHttpEnable},
+		{Text: "http(s) address", Widget: uiHttpLocalAddr},
+		{Text: "skip TSL verify", Widget: uiSkipTSLVerify},
+	}}
+
 	selectCopyProxyCommand := container.NewBorder(nil, nil, nil, nil,
 		NewWSelectWithCopyProxyCommand([]string{"git", "http/https", "ssh/sftp/scp"},
 			func(sel *widget.Select, value string) {
@@ -224,7 +180,8 @@ func main() {
 	)
 
 	w.SetContent(container.NewVBox(
-		widget.NewCard("Settings", "", tabs),
+		widget.NewCard("", "wssocks settings", basicUi),      // wssocks basic ui
+		widget.NewCard("", "USTB VPN authentication", vpnUi), // vpn ui
 		btnStart,
 		selectCopyProxyCommand,
 		&widget.Separator{},
@@ -264,11 +221,115 @@ func main() {
 			handles.NotifyCloseWrapper()
 		}
 		saveBasicPreference(wssApp.Preferences(), uiLocalAddr, uiRemoteAddr, uiHttpLocalAddr, uiHttpEnable, uiSkipTSLVerify)
-		saveVPNPreference(wssApp.Preferences(), uiVpnEnable, uiVpnForceLogout,
-			uiVpnHostEncrypt, uiVpnHostInput, uiVpnUsername, uiVpnPassword)
+		onVpnClose()
 	})
 	//w.SetOnClosed() todo
 	w.ShowAndRun()
+}
+
+// loadVpnUI creates ui for ustb vpn, including auth method selection and the input box.
+// it returns callback function: onAppClose for saving preference,
+// loadUiValue for loading value from the input box.
+func loadVpnUI(wssApp *fyne.App) (*fyne.Container, func() vpn.UstbVpn, func()) {
+	uiVpnEnable := newCheckbox("enable ustb vpn", true, nil)
+	uiVpnForceLogout := newCheckbox("", true, nil)
+	uiVpnHostEncrypt := newCheckbox("", true, nil)
+	uiVpnHostInput := &widget.Entry{PlaceHolder: "vpn hostname", Text: "n.ustb.edu.cn"}
+	uiVpnUsername := &widget.Entry{PlaceHolder: "vpn username", Text: ""}
+	uiVpnPassword := &widget.Entry{PlaceHolder: "vpn password", Text: "", Password: true}
+
+	// select auth method
+	uiVpnAuthMethod := widget.NewRadioGroup([]string{"Password", "QR Code"}, func(value string) {
+		// todo:
+	})
+	uiVpnAuthMethod.Horizontal = true
+	// vpn auth config buttons
+	uiBtnAuthPasswd := widget.NewButton("Config password auth", func() {
+		passwdAuthWindow := (*wssApp).NewWindow("password vpn auth")
+		passwdAuthWindow.SetContent(&widget.Form{Items: []*widget.FormItem{
+			{Text: "force logout", Widget: uiVpnForceLogout},
+			{Text: "host encrypt", Widget: uiVpnHostEncrypt},
+			{Text: "vpn host", Widget: uiVpnHostInput},
+			{Text: "username", Widget: uiVpnUsername},
+			{Text: "password", Widget: uiVpnPassword},
+		}})
+		passwdAuthWindow.Resize(fyne.NewSize(320, 0))
+		passwdAuthWindow.Show()
+		return
+	})
+	uiBtnAuthQrCode := widget.NewButton("Config QR Code auth", func() {
+		qrAuthWindow := (*wssApp).NewWindow("QR Code vpn auth")
+		qrAuthWindow.SetContent(container.NewVBox(
+			widget.NewLabel("QR code scanned"),
+			widget.NewButton("Load/Reload QR Code", func() {}),
+		))
+		qrAuthWindow.Show()
+		return
+	})
+
+	loadVPNPreference((*wssApp).Preferences(), uiVpnAuthMethod, uiVpnEnable, uiVpnForceLogout,
+		uiVpnHostEncrypt, uiVpnHostInput, uiVpnUsername, uiVpnPassword)
+
+	uiVpnEnable.OnChanged = func(checked bool) {
+		if checked {
+			uiVpnAuthMethod.Enable()
+			uiVpnForceLogout.Enable()
+			uiVpnHostEncrypt.Enable()
+			uiVpnHostInput.Enable()
+			uiVpnUsername.Enable()
+			uiVpnPassword.Enable()
+			uiBtnAuthPasswd.Enable()
+			uiBtnAuthQrCode.Enable()
+		} else {
+			uiVpnAuthMethod.Disable()
+			uiVpnForceLogout.Disable()
+			uiVpnHostEncrypt.Disable()
+			uiVpnHostInput.Disable()
+			uiVpnUsername.Disable()
+			uiVpnPassword.Disable()
+			uiBtnAuthPasswd.Disable()
+			uiBtnAuthQrCode.Disable()
+		}
+	}
+
+	// convert from  selected string to int value
+	getAuthMethodInt := func() int {
+		if uiVpnAuthMethod.Selected == TextVpnAuthMethodPasswd {
+			return vpn.VpnAuthMethodPasswd
+		} else {
+			return vpn.VpnAuthMethodQRCode
+		}
+	}
+	// the vpn UI
+	vpnUi := container.NewVBox(
+		&widget.Form{Items: []*widget.FormItem{
+			{Text: "vpn enable", Widget: uiVpnEnable},
+			{Text: "auth method", Widget: uiVpnAuthMethod},
+		}},
+		container.NewGridWithColumns(2,
+			uiBtnAuthPasswd,
+			uiBtnAuthQrCode,
+		))
+
+	loadUiValues := func() vpn.UstbVpn {
+		return vpn.UstbVpn{
+			Enable:      uiVpnEnable.Checked,
+			ForceLogout: uiVpnForceLogout.Checked,
+			HostEncrypt: uiVpnHostEncrypt.Checked,
+			TargetVpn:   uiVpnHostInput.Text,
+			AuthMethod:  getAuthMethodInt(),
+			PasswdAuth: vpn.UstbVpnPasswdAuth{
+				Username: uiVpnUsername.Text,
+				Password: uiVpnPassword.Text,
+			},
+			QrCodeAuth: newQrCodeAuth(wssApp),
+		}
+	}
+	onVpnClose := func() {
+		saveVPNPreference((*wssApp).Preferences(), uiVpnAuthMethod, uiVpnEnable, uiVpnForceLogout,
+			uiVpnHostEncrypt, uiVpnHostInput, uiVpnUsername, uiVpnPassword)
+	}
+	return vpnUi, loadUiValues, onVpnClose
 }
 
 // NewWSelectWithCopyProxyCommand is copied from widget.NewSelect.
