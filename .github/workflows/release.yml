@@ -30,7 +30,7 @@ jobs:
         with:
           go-version: 1.22.8
       - run: |
-          go get fyne.io/fyne/v2/cmd/fyne@v2.4.3
+          go install fyne.io/fyne/v2/cmd/fyne@v2.5.2
           go mod download
 
       - name: Build Cli
