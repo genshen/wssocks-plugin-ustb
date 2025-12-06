@@ -28,9 +28,9 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v2
         with:
-          go-version: 1.17.13
+          go-version: 1.24.11
       - run: |
-          go get fyne.io/fyne/v2/cmd/fyne@v2.4.3
+          go install fyne.io/fyne/v2/cmd/fyne@v2.4.3
           go mod download
 
       - name: Build Cli
