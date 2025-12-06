@@ -15,7 +15,7 @@ struct WssocksClient {
     private var handle: UintPtr
 
     init() {
-        handle = NewClientHandles()
+        handle = UintPtr(NewClientHandles())
     }
 
     public func startClient(config: Configs) -> String? {
@@ -35,7 +35,7 @@ struct WssocksClient {
         let vpnUsernamePtr = UnsafeMutablePointer(mutating: CStrVPNUsername)
         let vpnPasswdPtr = UnsafeMutablePointer(mutating: CStrVPNPasswd)
     
-        guard let v = StartClientWrapper(self.handle, socks5AddrPtr, remoteAddrPtr, httpAddrPtr,
+        guard let v = StartClientWrapper(GoUintptr(self.handle), socks5AddrPtr, remoteAddrPtr, httpAddrPtr,
                                          config.uiEnableHttpProxy, config.uiSkipTSLerify,
                                          config.uiVPNEnable, config.uiVPNForceLogout, config.uiVPNHostEncrypt,
                                          vpnHostPtr, vpnUsernamePtr, vpnPasswdPtr) else { return nil }
@@ -43,12 +43,12 @@ struct WssocksClient {
     }
 
     public func waitClient() -> String? {
-        guard let v = WaitClientWrapper(self.handle) else { return nil }
+        guard let v = WaitClientWrapper(GoUintptr(self.handle)) else { return nil }
         return String(bytesNoCopy: v, length: strlen(v), encoding: .utf8, freeWhenDone: true)
     }
 
     public func stopClient() -> String? {
-        guard let v = StopClientWrapper(self.handle) else { return nil }
+        guard let v = StopClientWrapper(GoUintptr(self.handle)) else { return nil }
         return String(bytesNoCopy: v, length: strlen(v), encoding: .utf8, freeWhenDone: true)
     }
 }
