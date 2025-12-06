@@ -12,11 +12,11 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-22.04, macos-12, windows-2022]
+        os: [ubuntu-24.04, macos-14, windows-2022]
         include:
-          - os: ubuntu-22.04
+          - os: ubuntu-24.04
             artifact_files: wssocks-ustb-*
-          - os: macos-12
+          - os: macos-14
             artifact_files: |
               wssocks-ustb-client-macOS-universal.app.zip
               client-ui-macOS-universal.app.zip
@@ -34,12 +34,12 @@ jobs:
           go mod download
 
       - name: Build Cli
-        if: matrix.os == 'ubuntu-22.04'
+        if: matrix.os == 'ubuntu-24.04'
         run: |
           make
 
       - name: Build macOS
-        if: matrix.os == 'macos-12'
+        if: matrix.os == 'macos-14'
         run: |
           cd client-ui
           make client-ui-macOS-universal.app -f Makefile-ci
@@ -68,17 +68,17 @@ jobs:
   release:
     name: On Release
     needs: build
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/download-artifact@v4
         with:
-          name: build-artifact-ubuntu-22.04
+          name: build-artifact-ubuntu-24.04
       - uses: actions/download-artifact@v4
         with:
           name: build-artifact-windows-2022
       - uses: actions/download-artifact@v4
         with:
-          name: build-artifact-macos-12
+          name: build-artifact-macos-14
       - run: ls -R
 
       - name: Release
