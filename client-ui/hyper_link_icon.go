@@ -9,7 +9,7 @@ import (
 
 type HyperlinkIcon struct {
 	widget.Icon
-	URL       *url.URL
+	URL *url.URL
 }
 
 func NewHyperlinkIcon(res fyne.Resource, url *url.URL) *HyperlinkIcon {

@@ -11,15 +11,14 @@ import (
 
 type myTheme struct{}
 
-
 func (l *myTheme) Color(n fyne.ThemeColorName, v fyne.ThemeVariant) color.Color {
 	switch n {
 	case theme.ColorNameBackground:
-		return  color.RGBA{R: 0xff, G: 0xff, B: 0xff, A: 0xff}
+		return color.RGBA{R: 0xff, G: 0xff, B: 0xff, A: 0xff}
 	case theme.ColorNameForeground:
 		return color.RGBA{R: 0x21, G: 0x21, B: 0x21, A: 0xff}
 	case theme.ColorNameInputBackground:
-		return  color.RGBA{R: 0xff, G: 0xff, B: 0xff, A: 0xff}
+		return color.RGBA{R: 0xff, G: 0xff, B: 0xff, A: 0xff}
 	case theme.ColorNamePrimary:
 		return color.RGBA{R: 0x2e, G: 0x85, B: 0x55, A: 0xff}
 	default:
@@ -38,7 +37,7 @@ func (l *myTheme) Font(s fyne.TextStyle) fyne.Resource {
 		return theme.LightTheme().Font(fyne.TextStyle{Bold: true})
 	}
 	if s.Italic {
-		return  theme.LightTheme().Font(fyne.TextStyle{Italic: true})
+		return theme.LightTheme().Font(fyne.TextStyle{Italic: true})
 	}
 	return theme.LightTheme().Font(fyne.TextStyle{})
 }

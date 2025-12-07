@@ -1,7 +1,7 @@
 #!/bin/sh
 # build app using fyne-cross in docker
 
-# How to run: go to root dir of tthis repo, run `./client-ui/fyne-cross-build.sh`
+# How to run: go to root dir of this repo, run `./client-ui/fyne-cross-build.sh`
 
 appBuildNumber=5
 appID="wssocks-ustb-client-ui.genshen.github.com"

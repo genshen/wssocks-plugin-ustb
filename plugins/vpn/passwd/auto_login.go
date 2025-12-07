@@ -56,7 +56,7 @@ func (al *AutoLogin) LogoutAddr(ssl bool) string {
 
 // create http request client with SSLEnabled and skipTLSVerify as config
 // checkRedirect will be passed into http.Client as CheckRedirect func if it is specified.
-// If force is true, it will enable "InsecureSkipVerify" forcely 
+// If force is true, it will enable "InsecureSkipVerify" forcely
 // even if current connection is under http (may be redirected to https)
 func (al *AutoLogin) NewHttpClient(force bool, checkRedirect func(req *http.Request, via []*http.Request) error) *http.Client {
 	hc := http.Client{}
@@ -117,7 +117,7 @@ func (al *AutoLogin) VpnLogin(uname, passwd string) ([]*http.Cookie, error) {
 		if len(cookies) == 0 {
 			return nil, errors.New(fmt.Sprintf("no cookie while auto login to %s ", loginAddress))
 		} else {
-			// test connection and logout account if have login.
+			// test connection and logout account if we have login.
 			if err := al.testConnect(uname, cookies); err != nil {
 				return nil, err
 			}
@@ -222,7 +222,7 @@ func (al *AutoLogin) logoutAccount(uname, token string, cookies []*http.Cookie) 
 		"username":         {uname},
 	}
 
-	hc := al.NewHttpClient(false,nil)
+	hc := al.NewHttpClient(false, nil)
 
 	req, err := http.NewRequest("POST", al.LogoutAddr(al.SSLEnabled),
 		strings.NewReader(form.Encode()))

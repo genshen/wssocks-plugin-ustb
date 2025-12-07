@@ -26,7 +26,7 @@ func NewClientHandles() uintptr {
 //export StartClientWrapper
 func StartClientWrapper(handlesPtr uintptr, localAddr, remoteAddr, httpLocalAddr *C.char,
 	httpEnable, skipTSLVerify, vpnEnable, vpnForceLogout, vpnHostEncrypt C._Bool,
-	vpnHostInput, vpnUsername, vpnPassword *C.char) (err *C.char) {
+	vpnHostInput, vpnUsername, vpnPassword *C.char) *C.char {
 	options := extra.Options{
 		Options: client.Options{
 			LocalSocks5Addr: C.GoString(localAddr),
