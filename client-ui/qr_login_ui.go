@@ -9,7 +9,7 @@ import (
 	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/widget"
-	"github.com/genshen/wssocks-plugin-ustb/plugins/vpn"
+	qrcode2 "github.com/genshen/wssocks-plugin-ustb/plugins/vpn/qrcode"
 	"github.com/skip2/go-qrcode"
 	"net/http"
 	"time"
@@ -19,13 +19,13 @@ type FyneQrCodeAuth struct {
 	appRef *fyne.App
 }
 
-func newQrCodeAuth(app *fyne.App) vpn.QrCodeAuth {
+func newQrCodeAuth(app *fyne.App) qrcode2.QrCodeAuth {
 	return &FyneQrCodeAuth{
 		appRef: app,
 	}
 }
 
-func (q *FyneQrCodeAuth) ShowQrCodeAndWait(client *http.Client, cookies []*http.Cookie, qr vpn.QrImg) ([]*http.Cookie, error) {
+func (q *FyneQrCodeAuth) ShowQrCodeAndWait(client *http.Client, cookies []*http.Cookie, qr qrcode2.QrImg) ([]*http.Cookie, error) {
 	// generate qr code from image
 	qrPng, err := qrcode.Encode(qr.GenQrCodeContent(), qrcode.Medium, 256)
 	if err != nil {
@@ -62,13 +62,13 @@ func (q *FyneQrCodeAuth) ShowQrCodeAndWait(client *http.Client, cookies []*http.
 	}
 }
 
-func WaitStatus(client *http.Client, cookies []*http.Cookie, qr vpn.QrImg) ([]*http.Cookie, error) {
+func WaitStatus(client *http.Client, cookies []*http.Cookie, qr qrcode2.QrImg) ([]*http.Cookie, error) {
 	// todo: set http cancel, after timeout
-	if state, err := vpn.WaitQrState(qr.Sid); err != nil {
+	if state, err := qrcode2.WaitQrState(qr.Sid); err != nil {
 		fmt.Println(err)
 		return nil, err
 	} else {
-		if err = vpn.RedirectToLogin(client, cookies, qr.Config.AppID, state, qr.Config.RandToken); err != nil {
+		if err = qrcode2.RedirectToLogin(client, cookies, qr.Config.AppID, state, qr.Config.RandToken); err != nil {
 			fmt.Println(err)
 			return nil, err
 		}

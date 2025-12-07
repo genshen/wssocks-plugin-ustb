@@ -35,11 +35,17 @@ func saveBasicPreference(pref fyne.Preferences, uiLocalAddr, uiRemoteAddr,
 	pref.SetBool(PrefSkipTSLVerify, uiSkipTSLVerify.Checked)
 }
 
-func saveVPNPreference(pref fyne.Preferences,
-	uiVpnAuthMethod *widget.RadioGroup,
-	uiVpnEnable, uiVpnForceLogout, uiVpnHostEncrypt *widget.Check,
-	uiVpnHostInput, uiVpnUsername, uiVpnPassword *widget.Entry) {
+func saveVPNMainPreference(pref fyne.Preferences,
+	uiVpnEnable *widget.Check) {
 	pref.SetBool(PrefVpnEnable, uiVpnEnable.Checked)
+}
+
+func saveVPNPreference(pref fyne.Preferences, uiVpnAuthMethod *widget.RadioGroup, uiVpnForceLogout, uiVpnHostEncrypt *widget.Check,
+	uiVpnHostInput, uiVpnUsername, uiVpnPassword *widget.Entry) {
+	if !pref.Bool(PrefHasPreference) {
+		return
+	}
+
 	pref.SetBool(PrefVpnForceLogout, uiVpnForceLogout.Checked)
 	pref.SetBool(PrefVpnHostEncrypt, uiVpnHostEncrypt.Checked)
 	pref.SetString(PrefVpnHostInput, uiVpnHostInput.Text)
@@ -86,9 +92,7 @@ func loadBasicPreference(pref fyne.Preferences, uiLocalAddr, uiRemoteAddr,
 	}
 }
 
-func loadVPNPreference(pref fyne.Preferences,
-	uiVpnAuthMethod *widget.RadioGroup, uiVpnEnable, uiVpnForceLogout, uiVpnHostEncrypt *widget.Check,
-	uiVpnHostInput, uiVpnUsername, uiVpnPassword *widget.Entry) {
+func loadVPNMainPreference(pref fyne.Preferences, uiVpnEnable *widget.Check) {
 	if !pref.Bool(PrefHasPreference) {
 		return
 	}
@@ -97,6 +101,13 @@ func loadVPNPreference(pref fyne.Preferences,
 		uiVpnEnable.SetChecked(enable) // toggle default value
 	} // else, default value(true) or preference is true, dont touch it.
 
+}
+
+func loadVpnPreference(pref fyne.Preferences, uiVpnAuthMethod *widget.RadioGroup, uiVpnForceLogout, uiVpnHostEncrypt *widget.Check,
+	uiVpnHostInput, uiVpnUsername, uiVpnPassword *widget.Entry) {
+	if !pref.Bool(PrefHasPreference) {
+		return
+	}
 	// vpn force logout
 	if enable := pref.Bool(PrefVpnForceLogout); !enable {
 		uiVpnForceLogout.SetChecked(enable)
@@ -126,14 +137,4 @@ func loadVPNPreference(pref fyne.Preferences,
 	//if password := pref.String(PrefVpnPassword); password != "" {
 	//	uiVpnPassword.SetText(password)
 	//}
-
-	// if vpn is disabled
-	if !uiVpnEnable.Checked {
-		uiVpnAuthMethod.Disable()
-		uiVpnForceLogout.Disable()
-		uiVpnHostEncrypt.Disable()
-		uiVpnHostInput.Disable()
-		uiVpnUsername.Disable()
-		uiVpnPassword.Disable()
-	}
 }

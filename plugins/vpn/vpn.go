@@ -15,6 +15,8 @@ import (
 	"github.com/genshen/cmds"
 	plugin "github.com/genshen/wssocks/client"
 	"github.com/genshen/wssocks/cmd/client"
+	"github.com/genshen/wssocks-plugin-ustb/plugins/vpn/passwd"
+	"github.com/genshen/wssocks-plugin-ustb/plugins/vpn/qrcode"
 	log "github.com/sirupsen/logrus"
 	"golang.org/x/crypto/ssh/terminal"
 )
@@ -24,20 +26,11 @@ const (
 	VpnAuthMethodQRCode
 )
 
-type UstbVpnPasswdAuth struct {
-	Username string
-	Password string
-}
-
-type QrCodeAuth interface {
-	ShowQrCodeAndWait(client *http.Client, cookies []*http.Cookie, qrCode QrImg) ([]*http.Cookie, error)
-}
-
 type UstbVpn struct {
 	Enable      bool
 	AuthMethod  int // value of VpnAuthMethodPasswd or VpnAuthMethodQRCode
-	PasswdAuth  UstbVpnPasswdAuth
-	QrCodeAuth  QrCodeAuth
+	PasswdAuth  passwd.UstbVpnPasswdAuth
+	QrCodeAuth  qrcode.QrCodeAuth
 	TargetVpn   string
 	HostEncrypt bool
 	ForceLogout bool
@@ -52,7 +45,7 @@ func NewUstbVpnCli() *UstbVpn {
 		clientCmd.FlagSet.BoolVar(&vpn.Enable, "vpn-enable", false, `enable USTB vpn feature.`)
 		clientCmd.FlagSet.StringVar(&vpn.PasswdAuth.Username, "vpn-username", "", `username to login vpn.`)
 		clientCmd.FlagSet.StringVar(&vpn.PasswdAuth.Password, "vpn-password", "", `password to login vpn.`)
-		clientCmd.FlagSet.StringVar(&vpn.TargetVpn, "vpn-host", USTBVpnHost, `hostname of vpn server.`)
+		clientCmd.FlagSet.StringVar(&vpn.TargetVpn, "vpn-host", passwd.USTBVpnHost, `hostname of vpn server.`)
 		clientCmd.FlagSet.BoolVar(&vpn.ForceLogout, "vpn-force-logout", false,
 			`force logout account on other devices.`)
 		clientCmd.FlagSet.BoolVar(&vpn.HostEncrypt, "vpn-host-encrypt", true,
@@ -101,8 +94,8 @@ func (v *UstbVpn) PasswordAuthForCookie(hc *http.Client, transport *http.Transpo
 	}
 
 	// add cookie
-	al := AutoLogin{Host: v.TargetVpn, ForceLogout: v.ForceLogout, skipTLSVerify: v.ConnOptions.SkipTLSVerify}
-	if cookies, err := al.vpnLogin(v.PasswdAuth.Username, v.PasswdAuth.Password); err != nil {
+	al := passwd.AutoLogin{Host: v.TargetVpn, ForceLogout: v.ForceLogout, SkipTLSVerify: v.ConnOptions.SkipTLSVerify}
+	if cookies, err := al.VpnLogin(v.PasswdAuth.Username, v.PasswdAuth.Password); err != nil {
 		return fmt.Errorf("error vpn login: %w", err)
 	} else {
 		return v.SetWebSocketCookies(al.SSLEnabled, hc, transport, url, cookies)
@@ -142,7 +135,7 @@ func (v *UstbVpn) QrCodeAuthForCookie(hc *http.Client, transport *http.Transport
 	var cookies []*http.Cookie
 
 	// step1: send request to get a frame and SID in the frame.
-	var qr QrImg
+	var qr qrcode.QrImg
 	if err := qr.ParseQRCodeImgUrl(&authHttpClient, &cookies); err != nil {
 		return err
 	}
@@ -198,15 +191,15 @@ func vpnUrl(hostEncrypt bool, vpnHost string, ssl bool, u *url.URL) {
 	// set scheme
 	if u.Scheme == "wss" || u.Scheme == "ws" {
 		if ssl {
-			u.Scheme = USTBVpnWSSScheme
+			u.Scheme = passwd.USTBVpnWSSScheme
 		} else {
-			u.Scheme = USTBVpnWSScheme
+			u.Scheme = passwd.USTBVpnWSScheme
 		}
 	} else { // http or https
 		if ssl {
-			u.Scheme = USTBVpnHttpsScheme
+			u.Scheme = passwd.USTBVpnHttpsScheme
 		} else {
-			u.Scheme = USTBVpnHttpScheme
+			u.Scheme = passwd.USTBVpnHttpScheme
 		}
 	}
 }
