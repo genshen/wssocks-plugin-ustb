@@ -55,6 +55,8 @@ func saveVPNPreference(pref fyne.Preferences, uiVpnAuthMethod *widget.RadioGroup
 		pref.SetInt(PrefVpnAuthMethod, vpn.VpnAuthMethodPasswd)
 	} else if uiVpnAuthMethod.Selected == TextVpnAuthMethodQrCode {
 		pref.SetInt(PrefVpnAuthMethod, vpn.VpnAuthMethodQRCode)
+	} else { // webview
+		pref.SetInt(PrefVpnAuthMethod, vpn.VpnAuthMethodWebview)
 	}
 }
 
@@ -123,8 +125,8 @@ func loadVpnPreference(pref fyne.Preferences, uiVpnAuthMethod *widget.RadioGroup
 		uiVpnAuthMethod.SetSelected(TextVpnAuthMethodPasswd)
 	} else if authMethod == vpn.VpnAuthMethodQRCode {
 		uiVpnAuthMethod.SetSelected(TextVpnAuthMethodQrCode)
-	} else {
-		// todo error
+	} else { // webview
+		uiVpnAuthMethod.SetSelected(TextVpnAuthMethodWebview)
 	}
 
 	// vpn host, username, password

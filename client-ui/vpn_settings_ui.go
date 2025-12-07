@@ -25,7 +25,7 @@ func (v *VpnSettingsUI) OpenVpnSettings(wssApp *fyne.App, pref fyne.Preferences)
 	v.uiVpnPassword = &widget.Entry{PlaceHolder: "vpn password", Text: "", Password: true}
 
 	// select auth method
-	v.uiVpnAuthMethod = widget.NewRadioGroup([]string{TextVpnAuthMethodPasswd, TextVpnAuthMethodQrCode}, func(value string) {
+	v.uiVpnAuthMethod = widget.NewRadioGroup([]string{TextVpnAuthMethodPasswd, TextVpnAuthMethodQrCode, TextVpnAuthMethodWebview}, func(value string) {
 		// todo:
 	})
 	v.uiVpnAuthMethod.Horizontal = true
@@ -48,6 +48,7 @@ func (v *VpnSettingsUI) OpenVpnSettings(wssApp *fyne.App, pref fyne.Preferences)
 					{Text: "password", Widget: v.uiVpnPassword},
 				}}),
 			container.NewTabItem("QR Code Auth", widget.NewLabel("World!")),
+			container.NewTabItem("Webview Auth", widget.NewLabel("World!")),
 		),
 		container.NewVBox(),
 	)
@@ -79,6 +80,7 @@ func getAuthMethodInt(uiVpnAuthMethod *widget.RadioGroup) int {
 		return vpn.VpnAuthMethodPasswd
 	} else if uiVpnAuthMethod.Selected == TextVpnAuthMethodQrCode {
 		return vpn.VpnAuthMethodQRCode
+	} else {
+		return vpn.VpnAuthMethodWebview
 	}
-	return vpn.VpnAuthMethodPasswd
 }

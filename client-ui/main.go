@@ -42,8 +42,9 @@ const (
 )
 
 const (
-	TextVpnAuthMethodPasswd = "Password"
-	TextVpnAuthMethodQrCode = "QR Code"
+	TextVpnAuthMethodPasswd  = "Password"
+	TextVpnAuthMethodQrCode  = "QR Code"
+	TextVpnAuthMethodWebview = "Webview"
 )
 
 func newEntryWithText(text string) *widget.Entry {
@@ -257,8 +258,9 @@ func loadVpnUI(wssApp *fyne.App) (*fyne.Container, func() vpn.UstbVpn, func()) {
 
 	loadUiValues := func() vpn.UstbVpn {
 		vals := vpn.UstbVpn{
-			Enable:     uiVpnEnable.Checked,
-			QrCodeAuth: newQrCodeAuth(wssApp),
+			Enable:      uiVpnEnable.Checked,
+			QrCodeAuth:  NewQrCodeAuth(wssApp),
+			WebviewAuth: NewWebviewAuth(wssApp),
 		}
 		vpnSettings.LoadSettingsValues(&vals)
 		return vals
