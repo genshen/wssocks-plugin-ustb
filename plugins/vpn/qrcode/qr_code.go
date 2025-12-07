@@ -60,7 +60,7 @@ type QrCodeAuth interface {
 // ParseQRCodeImgUrl uses ParseQRCodeHtmlUrl to get the iframe html,
 // and then parse the html file to get final image url (contains SID).
 // And set QrImg's fields of config and sid.
-func (i *QrImg) ParseQRCodeImgUrl(client *http.Client, cookies *([]*http.Cookie)) error {
+func (i *QrImg) ParseQRCodeImgUrl(client *http.Client, cookies *[]*http.Cookie) error {
 	qrImgUrlConfig, err := ParseQRCodeHtmlUrl(client, cookies)
 	if err != nil {
 		return err
@@ -110,7 +110,7 @@ func (i *QrImg) ParseQRCodeImgUrl(client *http.Client, cookies *([]*http.Cookie)
 	return nil
 }
 
-func ParseQRCodeHtmlUrl(client *http.Client, cookies *([]*http.Cookie)) (QRCodeImgLoaderConfig, error) {
+func ParseQRCodeHtmlUrl(client *http.Client, cookies *[]*http.Cookie) (QRCodeImgLoaderConfig, error) {
 	// parse the html of `LOAD_IMG_URL` to get following object text:
 	//{
 	//  id: "ustb-qrcode",
@@ -218,6 +218,7 @@ func WaitQrState(sid string) (string, error) {
 	return authData.Data, nil
 }
 
+// RedirectToLogin sends callback request.
 func RedirectToLogin(client *http.Client, cookies []*http.Cookie, appid, authCode, randToken string) error {
 	loginUrl := fmt.Sprintf(LoadImgUrl+"?ustb_sis=true&appid=%s&auth_code=%s&rand_token=%s", appid, authCode, randToken)
 	// todo: generate login url based on return url.
