@@ -19,12 +19,14 @@ import (
 type ChromedpWebview struct {
 }
 
-func (chr *ChromedpWebview) ShowWebviewAndSetCookies(client *http.Client, loginUrlStr string) ([]*http.Cookie, error) {
+func (chr *ChromedpWebview) ShowWebviewAndSetCookies(client *http.Client, loginUrlStr string, chromePathHint string) ([]*http.Cookie, error) {
 	loginUrl, err := url.Parse(loginUrlStr)
 	if err != nil {
 		return nil, err
 	}
-	if vpnCookies, err := chr.launchWebview(loginUrl, presetChromiumExecPath); err != nil {
+
+	presetPath := append(presetChromiumExecPath, chromePathHint)
+	if vpnCookies, err := chr.launchWebview(loginUrl, presetPath); err != nil {
 		return nil, err
 	} else {
 		return vpnCookies, nil

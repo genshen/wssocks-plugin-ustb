@@ -8,16 +8,18 @@ import (
 	"github.com/genshen/wssocks-plugin-ustb/plugins/vpn/webview"
 )
 
-func NewWebviewAuth(app *fyne.App) webview.WebviewAuth {
+func NewWebviewAuth(app *fyne.App, chromePathInSettings string) webview.WebviewAuth {
 	return &FyneWebviewAuth{
-		appRef:      app,
-		chromeProxy: &webview.ChromedpWebview{},
+		appRef:         app,
+		chromeProxy:    &webview.ChromedpWebview{},
+		chromePathHint: chromePathInSettings,
 	}
 }
 
 type FyneWebviewAuth struct {
-	appRef      *fyne.App
-	chromeProxy *webview.ChromedpWebview
+	appRef         *fyne.App
+	chromeProxy    *webview.ChromedpWebview
+	chromePathHint string
 }
 
 func (w *FyneWebviewAuth) GetCookie(client *http.Client, loginUrl string) ([]*http.Cookie, error) {
@@ -26,7 +28,7 @@ func (w *FyneWebviewAuth) GetCookie(client *http.Client, loginUrl string) ([]*ht
 	}
 
 	// created ui:
-	return w.chromeProxy.ShowWebviewAndSetCookies(client, loginUrl)
+	return w.chromeProxy.ShowWebviewAndSetCookies(client, loginUrl, w.chromePathHint)
 }
 
 func (w *FyneWebviewAuth) WaitAuthFinished() error {

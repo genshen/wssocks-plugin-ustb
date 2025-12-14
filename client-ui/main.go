@@ -260,7 +260,7 @@ func loadVpnUI(wssApp *fyne.App) (*fyne.Container, func() vpn.UstbVpn, func()) {
 		vals := vpn.UstbVpn{
 			Enable:      uiVpnEnable.Checked,
 			QrCodeAuth:  NewQrCodeAuth(wssApp),
-			WebviewAuth: NewWebviewAuth(wssApp),
+			WebviewAuth: NewWebviewAuth(wssApp, vpnSettings.uiChromePathContainer.Text), // todo: refactor: use callback to obtain Entry value
 		}
 		vpnSettings.LoadSettingsValues(&vals)
 		return vals
