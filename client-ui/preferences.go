@@ -21,6 +21,7 @@ const (
 	PrefVpnHostInput   = "vpn_host"
 	PrefVpnUsername    = "vpn_username"
 	PrefVpnPassword    = "vpn_password"
+	PrefVpnChromePath  = "chrome_path"
 )
 
 func saveBasicPreference(pref fyne.Preferences, uiLocalAddr, uiRemoteAddr,
@@ -41,7 +42,7 @@ func saveVPNMainPreference(pref fyne.Preferences,
 }
 
 func saveVPNPreference(pref fyne.Preferences, uiVpnAuthMethod *widget.RadioGroup, uiVpnForceLogout, uiVpnHostEncrypt *widget.Check,
-	uiVpnHostInput, uiVpnUsername, uiVpnPassword *widget.Entry) {
+	uiVpnHostInput, uiVpnUsername, uiVpnPassword *widget.Entry, uiPathContainer *widget.Entry) {
 	if !pref.Bool(PrefHasPreference) {
 		return
 	}
@@ -55,7 +56,10 @@ func saveVPNPreference(pref fyne.Preferences, uiVpnAuthMethod *widget.RadioGroup
 		pref.SetInt(PrefVpnAuthMethod, vpn.VpnAuthMethodPasswd)
 	} else if uiVpnAuthMethod.Selected == TextVpnAuthMethodQrCode {
 		pref.SetInt(PrefVpnAuthMethod, vpn.VpnAuthMethodQRCode)
+	} else { // webview
+		pref.SetInt(PrefVpnAuthMethod, vpn.VpnAuthMethodWebview)
 	}
+	pref.SetString(PrefVpnChromePath, uiPathContainer.Text)
 }
 
 func loadBasicPreference(pref fyne.Preferences, uiLocalAddr, uiRemoteAddr,
@@ -104,7 +108,7 @@ func loadVPNMainPreference(pref fyne.Preferences, uiVpnEnable *widget.Check) {
 }
 
 func loadVpnPreference(pref fyne.Preferences, uiVpnAuthMethod *widget.RadioGroup, uiVpnForceLogout, uiVpnHostEncrypt *widget.Check,
-	uiVpnHostInput, uiVpnUsername, uiVpnPassword *widget.Entry) {
+	uiVpnHostInput, uiVpnUsername, uiVpnPassword *widget.Entry, uiPathContainer *widget.Entry) {
 	if !pref.Bool(PrefHasPreference) {
 		return
 	}
@@ -123,8 +127,8 @@ func loadVpnPreference(pref fyne.Preferences, uiVpnAuthMethod *widget.RadioGroup
 		uiVpnAuthMethod.SetSelected(TextVpnAuthMethodPasswd)
 	} else if authMethod == vpn.VpnAuthMethodQRCode {
 		uiVpnAuthMethod.SetSelected(TextVpnAuthMethodQrCode)
-	} else {
-		// todo error
+	} else { // webview
+		uiVpnAuthMethod.SetSelected(TextVpnAuthMethodWebview)
 	}
 
 	// vpn host, username, password
@@ -133,6 +137,9 @@ func loadVpnPreference(pref fyne.Preferences, uiVpnAuthMethod *widget.RadioGroup
 	}
 	if username := pref.String(PrefVpnUsername); strings.TrimSpace(username) != "" {
 		uiVpnUsername.SetText(strings.TrimSpace(username))
+	}
+	if chromePath := pref.String(PrefVpnChromePath); strings.TrimSpace(chromePath) != "" {
+		uiPathContainer.SetText(strings.TrimSpace(chromePath))
 	}
 	//if password := pref.String(PrefVpnPassword); password != "" {
 	//	uiVpnPassword.SetText(password)

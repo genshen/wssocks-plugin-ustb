@@ -13,10 +13,11 @@ import (
 	"strings"
 
 	"github.com/genshen/cmds"
-	plugin "github.com/genshen/wssocks/client"
-	"github.com/genshen/wssocks/cmd/client"
 	"github.com/genshen/wssocks-plugin-ustb/plugins/vpn/passwd"
 	"github.com/genshen/wssocks-plugin-ustb/plugins/vpn/qrcode"
+	"github.com/genshen/wssocks-plugin-ustb/plugins/vpn/webview"
+	plugin "github.com/genshen/wssocks/client"
+	"github.com/genshen/wssocks/cmd/client"
 	log "github.com/sirupsen/logrus"
 	"golang.org/x/crypto/ssh/terminal"
 )
@@ -24,6 +25,7 @@ import (
 const (
 	VpnAuthMethodPasswd = iota
 	VpnAuthMethodQRCode
+	VpnAuthMethodWebview
 )
 
 type UstbVpn struct {
@@ -31,6 +33,7 @@ type UstbVpn struct {
 	AuthMethod  int // value of VpnAuthMethodPasswd or VpnAuthMethodQRCode
 	PasswdAuth  passwd.UstbVpnPasswdAuth
 	QrCodeAuth  qrcode.QrCodeAuth
+	WebviewAuth webview.WebviewAuth
 	TargetVpn   string
 	HostEncrypt bool
 	ForceLogout bool
@@ -66,6 +69,8 @@ func (v *UstbVpn) BeforeRequest(hc *http.Client, transport *http.Transport, url 
 		return v.PasswordAuthForCookie(hc, transport, url)
 	} else if v.AuthMethod == VpnAuthMethodQRCode {
 		return v.QrCodeAuthForCookie(hc, transport, url)
+	} else if v.AuthMethod == VpnAuthMethodWebview {
+		return v.WebviewAuthForCookie(hc, transport, url)
 	}
 	return fmt.Errorf("unknown auth method")
 }
@@ -146,6 +151,24 @@ func (v *UstbVpn) QrCodeAuthForCookie(hc *http.Client, transport *http.Transport
 	} else {
 		// pass cookie to websocket
 		return v.SetWebSocketCookies(true, hc, transport, url, cookies)
+	}
+}
+
+func (v *UstbVpn) WebviewAuthForCookie(hc *http.Client, transport *http.Transport, u *url.URL) error {
+	if v.WebviewAuth == nil {
+		return fmt.Errorf("WebviewAuth is not configed")
+	}
+
+	// fixme: v.TargetVpn's schema must bu checked and gnerated
+	if cookies, err := v.WebviewAuth.GetCookie(hc, "https://"+v.TargetVpn); err != nil {
+		return err
+	} else {
+		if err := v.WebviewAuth.WaitAuthFinished(); err != nil {
+			return err
+		} else {
+			// pass cookies to websocket
+			return v.SetWebSocketCookies(true, hc, transport, u, cookies)
+		}
 	}
 }
 

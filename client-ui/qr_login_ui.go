@@ -19,7 +19,7 @@ type FyneQrCodeAuth struct {
 	appRef *fyne.App
 }
 
-func newQrCodeAuth(app *fyne.App) qrcode2.QrCodeAuth {
+func NewQrCodeAuth(app *fyne.App) qrcode2.QrCodeAuth {
 	return &FyneQrCodeAuth{
 		appRef: app,
 	}
