@@ -1,4 +1,49 @@
 
+<a name="v0.8.0-beta"></a>
+## [v0.8.0-beta](https://github.com/genshen/wssocks-plugin-ustb/compare/v0.7.0...v0.8.0-beta)
+
+> 2026-01-28
+
+### Docs
+
+* **browser:** use plugin `ZeroOmega` to replace no longer maintained plugin `SwitchyOmega`
+* **changelog:** add changelog for release v0.8.0-beta
+
+### Feat
+
+* **client-ui:** add ui to customize chrome installation and pass the selected path to vpn plugin
+* **client-ui:** add chromedp-based webview implementation for client-ui
+* **version:** bump version to v0.8.0-beta
+* **vpn-qr-code:** add support of qr-code vpn login and qr-code login based wssocks connection
+* **vpn-qr-code:** feature of saving and storing "auth method" setting value
+* **vpn-qr-code:** design ui for both password and qr-code authentication
+* **vpn-qr-code:** generate qr code via its content directly, instead of requsting qr image
+* **vpn-qr-code:** feature of loading QR code image for QR code login
+* **vpn-webview:** add new vpn login method: chromedp-based webview
+
+### Fix
+
+* **compile:** fix building error of swiftui: cannot assign type GoUintptr to type UintPtr
+* **swiftui:** fix building error
+
+### Merge
+
+* Merge pull request [#39](https://github.com/genshen/wssocks-plugin-ustb/issues/39) from genshen/style-code-format-and-typo-fixes
+* Merge pull request [#32](https://github.com/genshen/wssocks-plugin-ustb/issues/32) from genshen/docs-update-browser-plugin
+* Merge pull request [#29](https://github.com/genshen/wssocks-plugin-ustb/issues/29) from genshen/fix-gh-deprecated-artifact-actions
+* **gh-action:** Merge pull request [#37](https://github.com/genshen/wssocks-plugin-ustb/issues/37) from genshen/bump-gh-action-os-and-go-version
+* **gomodule:** Merge pull request [#40](https://github.com/genshen/wssocks-plugin-ustb/issues/40) from genshen/feature-bump-fyne-2.7.0
+* **swiftui:** Merge pull request [#36](https://github.com/genshen/wssocks-plugin-ustb/issues/36) from genshen/fix-swiftui-building
+* **vpn-plugin:** Merge pull request [#38](https://github.com/genshen/wssocks-plugin-ustb/issues/38) from genshen/refactor-vpn-login-and-vpn-ui
+* **vpn-qr-code:** Merge pull request [#27](https://github.com/genshen/wssocks-plugin-ustb/issues/27) from genshen/feature-vpn-qrcode-login
+* **vpn-webview:** Merge pull request [#41](https://github.com/genshen/wssocks-plugin-ustb/issues/41) from genshen/feature-chromedp-based-webview-vpn-login
+
+### Refactor
+
+* **client-ui:** refactor ui: move vpn ui and its preferences to another window
+* **vpn-plugin:** move different vpn login methods to different dirs
+
+
 <a name="v0.7.0"></a>
 ## [v0.7.0](https://github.com/genshen/wssocks-plugin-ustb/compare/v0.6.0...v0.7.0)
 
